@@ -1,0 +1,12 @@
+{
+	"name": "lightster/lidsys-web",
+	"description": "Lightdatasys.com Source",
+	"keywords": [
+		"lightdatasys"
+	],
+	"homepage": "http://lightdatasys.com",
+	"require": {
+		"php": ">=5.3.15",
+		"zendframework/zendframework": "2.*"
+	}
+}

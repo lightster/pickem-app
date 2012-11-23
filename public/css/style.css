@@ -1,0 +1,15 @@
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+div.container a.brand {
+	background: url("../images/logo.png") no-repeat scroll 10px 5px transparent;
+	background-size: 120px 30px;
+}
+
+a.brand h1 {
+	overflow: hidden;
+	height: 0px !important;
+	height /**/: 40px;
+}

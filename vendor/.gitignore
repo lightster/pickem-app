@@ -1,5 +1,6 @@
 !.gitignore
 .composer
+bin
 composer
 autoload.php
 zendframework

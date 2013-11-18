@@ -7,6 +7,8 @@
 	"homepage": "http://lightdatasys.com",
 	"require": {
 		"php": ">=5.3.15",
-		"zendframework/zendframework": "2.*"
+		"zendframework/zendframework": "2.*",
+		"zf-commons/zfc-base": "dev-master",
+		"zf-commons/zfc-user": "dev-master"
 	}
 }

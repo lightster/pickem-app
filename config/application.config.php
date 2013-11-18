@@ -2,6 +2,9 @@
 return array(
 	'modules' => array(
 		'Application',
+		'ZfcBase',
+		'ZfcUser',
+		'LdsUser',
 	),
 	'module_listener_options' => array(
 		'config_glob_paths'    => array(

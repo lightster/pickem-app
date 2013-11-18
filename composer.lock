@@ -1,5 +1,5 @@
 {
-    "hash": "df575e88a440f8dd8e4976e2e960bd59",
+    "hash": "5c2bdcbc4caf54f6037981a21d11fa64",
     "packages": [
         {
             "name": "zendframework/zendframework",
@@ -105,6 +105,101 @@
                 "framework",
                 "zf2"
             ]
+        },
+        {
+            "name": "zf-commons/zfc-base",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/ZF-Commons/ZfcBase.git",
+                "reference": "38990ad5f51002dd271ab676b90a3d59728190e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/ZF-Commons/ZfcBase/archive/38990ad5f51002dd271ab676b90a3d59728190e2.zip",
+                "reference": "38990ad5f51002dd271ab676b90a3d59728190e2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zendframework": "2.*"
+            },
+            "time": "1351100548",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "ZfcBase": "src/"
+                },
+                "classmap": [
+                    "./Module.php"
+                ]
+            },
+            "authors": [
+                {
+                    "name": "Kyle Spraggs",
+                    "email": "theman@spiffyjr.me",
+                    "homepage": "http://www.spiffyjr.me/"
+                },
+                {
+                    "name": "Evan Coury",
+                    "email": "me@evancoury.com",
+                    "homepage": "http://blog.evan.pro/"
+                }
+            ],
+            "description": "A set of genetic (abstract) classes which are commonly used across multiple modules.",
+            "homepage": "https://github.com/ZF-Commons/ZfcBase",
+            "keywords": [
+                "zf2"
+            ]
+        },
+        {
+            "name": "zf-commons/zfc-user",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/ZF-Commons/ZfcUser.git",
+                "reference": "ca85fe3799191108e5349e4389a0e386fc236d90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/ZF-Commons/ZfcUser/archive/ca85fe3799191108e5349e4389a0e386fc236d90.zip",
+                "reference": "ca85fe3799191108e5349e4389a0e386fc236d90",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zf-commons/zfc-base": "dev-master",
+                "zendframework/zendframework": "2.*"
+            },
+            "time": "1353486747",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "ZfcUser": "src/"
+                },
+                "classmap": [
+                    "./Module.php"
+                ]
+            },
+            "authors": [
+                {
+                    "name": "Kyle Spraggs",
+                    "email": "theman@spiffyjr.me",
+                    "homepage": "http://www.spiffyjr.me/"
+                },
+                {
+                    "name": "Evan Coury",
+                    "email": "me@evancoury.com",
+                    "homepage": "http://blog.evan.pro/"
+                }
+            ],
+            "description": "A generic user registration and authentication module for ZF2. Supports Zend\\Db and Doctrine2.",
+            "homepage": "https://github.com/ZF-Commons/ZfcUser",
+            "keywords": [
+                "zf2"
+            ]
         }
     ],
     "packages-dev": null,
@@ -112,7 +207,8 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "zf-commons/zfc-base": 20,
+        "zf-commons/zfc-user": 20
+    }
 }

@@ -4,3 +4,4 @@ bin
 composer
 autoload.php
 zendframework
+zf-commons

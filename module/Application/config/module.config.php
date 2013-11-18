@@ -20,6 +20,9 @@ return array(
 		),
 	),
 	'service_manager' => array(
+		'aliases' => array(
+			'lds_db_adapter_user'	=> 'Zend\Db\Adapter\Adapter',
+		),
 		'factories' => array(
 			'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
 		),

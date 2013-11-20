@@ -5,10 +5,13 @@
 		"lightdatasys"
 	],
 	"homepage": "http://lightdatasys.com",
+	"autoload": {
+		"psr-0": {
+			"Lidsys\\": "src/"
+		}
+	},
 	"require": {
-		"php": ">=5.3.15",
-		"zendframework/zendframework": "2.*",
-		"zf-commons/zfc-base": "dev-master",
-		"zf-commons/zfc-user": "dev-master"
+		"php": ">=5.4.19",
+		"silex/silex": "~1.1"
 	}
 }

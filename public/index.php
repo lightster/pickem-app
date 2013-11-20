@@ -1,12 +1,35 @@
 <?php
-/**
- * This makes our life easier when dealing with paths. Everything is relative
- * to the application root now.
+/*
+ * Lightdatasys web site source code
+ *
+ * Copyright Matt Light <matt.light@lightdatasys.com>
+ *
+ * For copyright and licensing information, please view the LICENSE
+ * that is distributed with this source code.
  */
-chdir(dirname(__DIR__));
 
-// Setup autoloading
-require 'init_autoloader.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-// Run the application!
-Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+use Lidsys\Application\Controller\Provider as AppControllerProvider;
+use Lidsys\Football\Controller\Provider as FootballControllerProvider;
+use Lidsys\User\Controller\Provider as UserControllerProvider;
+use Lidsys\Silex\Provider\TemplateServiceProvider;
+
+use Silex\Application;
+
+$app = new Application();
+
+$app['debug'] = true;
+
+$app->register(new TemplateServiceProvider());
+
+$app->mount('/api/football', new FootballControllerProvider());
+$app->mount('/user', new UserControllerProvider());
+$app->mount('/app', new AppControllerProvider());
+
+$app->get('/', function () use ($app) {
+    return $app->redirect('/app/');
+});
+
+
+$app->run();

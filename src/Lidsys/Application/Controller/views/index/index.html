@@ -1,0 +1,51 @@
+<html ng-app="app">
+    <head>
+        <title>Lightdatasys</title>
+        
+        <link rel="stylesheet" href="/assets/foundation/css/foundation.css" />
+        <link rel="stylesheet" href="/assets/lidsys/app.css" />
+    </head>
+    <body>
+
+        <nav class="top-bar" data-topbar>
+            <ul class="title-area">
+                <li class="toggle-topbar menu-icon">
+                    <a href="#">Menu</a>
+                </li>
+                <li class="name">
+                    <h1><a href="#/">Lightdatasys</a></h1>
+                </li>
+            </ul>
+
+            <ul class="">
+            </ul>
+
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li><a href="#/user/login">Login</a></li>
+                </ul>
+
+                <!-- Left Nav Section -->
+                <ul class="left">
+                    <li><a href="#/football/picks">Football</a></lI>
+                </ul>
+            </section>
+        </nav>
+
+        <ng-view>
+            Loading
+        </ng-view>
+
+        <script type="text/javascript" src="/assets/foundation/js/vendor/jquery.js"></script>
+        <script type="text/javascript" src="/assets/foundation/js/foundation.min.js"></script>
+        <script type="text/javascript" src="/assets/angular/angular.js"></script>
+        <!--<script type="text/javascript" src="assets/angular/angular-cookies.js"></script>-->
+        <script type="text/javascript" src="/assets/angular/angular-route.js"></script>
+        <script type="text/javascript" src="/assets/lidsys/app.js"></script>
+        <script>
+            $(document).foundation();
+        </script>
+
+    </body>
+</html>

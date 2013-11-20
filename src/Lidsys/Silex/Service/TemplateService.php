@@ -11,7 +11,6 @@
 namespace Lidsys\Silex\Service;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 class TemplateService
 {

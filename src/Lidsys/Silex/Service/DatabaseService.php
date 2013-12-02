@@ -1,0 +1,49 @@
+<?php
+/*
+ * Lightdatasys web site source code
+ *
+ * Copyright Matt Light <matt.light@lightdatasys.com>
+ *
+ * For copyright and licensing information, please view the LICENSE
+ * that is distributed with this source code.
+ */
+
+namespace Lidsys\Silex\Service;
+
+use Pdo;
+
+use Silex\Application;
+
+class DatabaseService
+{
+    private $app;
+    private $config;
+
+    private $pdo;
+
+
+
+    public function __construct(Application $app, array $config)
+    {
+        $this->app    = $app;
+        $this->config = $config;
+    }
+
+
+
+    public function getPdo()
+    {
+        if (null !== $this->pdo) {
+            return $this->pdo;
+        }
+
+        $dsn      = $this->config['dsn'];
+        $username = isset($this->config['username']) ? $this->config['username'] : null;
+        $password = isset($this->config['password']) ? $this->config['password'] : null;
+        $options  = isset($this->config['driver_options']) ? $this->config['driver_options'] : null;
+
+        $this->pdo = new Pdo($dsn, $username, $password, $options);
+
+        return $this->pdo;
+    }
+}

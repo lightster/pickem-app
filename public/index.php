@@ -15,6 +15,7 @@ use Lidsys\Football\Controller\Provider as FootballControllerProvider;
 use Lidsys\User\Controller\Provider as UserControllerProvider;
 
 use Lidsys\Silex\Provider\ConfigServiceProvider;
+use Lidsys\Silex\Provider\DatabaseServiceProvider;
 use Lidsys\Silex\Provider\TemplateServiceProvider;
 
 use Silex\Application;
@@ -24,6 +25,7 @@ $app = new Application();
 $app['debug'] = true;
 
 $app->register(new ConfigServiceProvider());
+$app->register(new DatabaseServiceProvider('db', 'config', 'db.config'));
 $app->register(new TemplateServiceProvider());
 
 $app['config'] = $app['lidsys.config']->load(array(

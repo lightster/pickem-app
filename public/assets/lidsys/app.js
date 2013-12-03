@@ -55,11 +55,25 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', function ($scope, $
             return false;
         }
 
-        if ('lightster' == login.username && 'test' == login.password) {
-        } else {
-            login.error.form = 'The provided username/password are incorrect.';
-            return false;
+        var postData = {
+            username: login.username,
+            password: login.password
         }
+
+        $http.post("/app/user/login/", postData)
+            .success(function (data) {
+                if (data.authenticated) {
+                    login.error.form = 'Success!!';
+                }
+                else {
+                    login.error.form = 'The provided username/password are incorrect.';
+                }
+            })
+            .error(function (data) {
+                login.error.form = 'There was an error processing your login request. Please contact an administrator.';
+            })
+
+        return false;
     }
 
     $scope.login = {

@@ -34,7 +34,7 @@ $app['config'] = $app['lidsys.config']->load(array(
 ));
 
 $app->mount('/api/football', new FootballControllerProvider());
-$app->mount('/user', new UserControllerProvider());
+$app->mount('/app/user', new UserControllerProvider());
 $app->mount('/app', new AppControllerProvider());
 
 $app->get('/', function () use ($app) {

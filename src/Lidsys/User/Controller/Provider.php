@@ -14,6 +14,7 @@ use Lidsys\Silex\Service\Exception\TemplateNotFound;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Provider implements ControllerProviderInterface
@@ -24,16 +25,25 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/template/{module}/{template}', function ($module, $template) use ($app) {
-            try {
-                return $app['lidsys.template']->render("{$module}/{$template}");
-            } catch (TemplateNotFound $ex) {
-                return new Response($ex->getMessage(), 404);
+        $controllers->post('/login/', function (Request $request) use ($app) {
+            $authenticated = false;
+
+            if ('lightster' === $request->get('username')
+                && 'test' === $request->get('password')
+            ) {
+                $authenticated = true;
             }
+
+            return $app->json(array(
+                'authenticated' => $authenticated,
+            ));
         });
 
-        $controllers->get('/', function () use ($app) {
-            return $app['lidsys.template']->render('index/index.html');
+        $controllers->before(function (Request $request) {
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $data = json_decode($request->getContent(), true);
+                $request->request->replace(is_array($data) ? $data : array());
+            }
         });
 
         return $controllers;

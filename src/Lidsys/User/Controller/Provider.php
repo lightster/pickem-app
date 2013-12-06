@@ -15,7 +15,6 @@ use Lidsys\Silex\Service\Exception\TemplateNotFound;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class Provider implements ControllerProviderInterface
 {
@@ -28,10 +27,21 @@ class Provider implements ControllerProviderInterface
         $controllers->post('/login/', function (Request $request) use ($app) {
             $authenticated = false;
 
-            if ('lightster' === $request->get('username')
-                && 'test' === $request->get('password')
-            ) {
-                $authenticated = true;
+            $pdo   = $app['db']->getPdo();
+            $query = $pdo->prepare("
+                SELECT userId
+                FROM user
+                WHERE username = :username
+                    AND password = md5(concat(:password, securityHash))
+            ");
+            $query->execute(array(
+                'username' => $request->get('username'),
+                'password' => md5($request->get('password')),
+            ));
+            while ($row = $query->fetch()) {
+                if ($row['userId']) {
+                    $authenticated = true;
+                }
             }
 
             return $app->json(array(

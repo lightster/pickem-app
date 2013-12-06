@@ -42,7 +42,9 @@ class DatabaseService
         $password = isset($this->config['password']) ? $this->config['password'] : null;
         $options  = isset($this->config['driver_options']) ? $this->config['driver_options'] : null;
 
-        $this->pdo = new Pdo($dsn, $username, $password, $options);
+        $this->pdo = new PDO($dsn, $username, $password, $options);
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
         return $this->pdo;
     }

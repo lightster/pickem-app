@@ -11,6 +11,7 @@
 namespace Lidsys\User\Controller;
 
 use Lidsys\Silex\Service\Exception\TemplateNotFound;
+use Lidsys\Silex\Service\JsonRequestMiddlewareService;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
@@ -49,12 +50,7 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
-        $controllers->before(function (Request $request) {
-            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-                $data = json_decode($request->getContent(), true);
-                $request->request->replace(is_array($data) ? $data : array());
-            }
-        });
+        $controllers->before(new JsonRequestMiddlewareService());
 
         return $controllers;
     }

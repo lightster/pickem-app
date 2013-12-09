@@ -24,16 +24,38 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/template/{module}/{template}', function ($module, $template) use ($app) {
-            try {
-                return $app['lidsys.template']->render("{$module}/{$template}");
-            } catch (TemplateNotFound $ex) {
-                return new Response($ex->getMessage(), 404);
+        $controllers->get('/{type}/schedule/{year}/{week}', function ($type, $year, $week) use ($app) {
+            if ('nfl' !== $type) {
+                return $app->json(array(
+                    'errors' => array(
+                        'type' => "Unrecognized type: '{$type}'",
+                    ),
+                ), 400);
             }
-        });
 
-        $controllers->get('/', function () use ($app) {
-            return $app['lidsys.template']->render('index/index.html');
+            $pdo   = $app['db']->getPdo();
+            $query = $pdo->prepare("
+                SELECT 
+                    gameId AS id,
+                    gameTime AS game_time,
+                    awayId AS away_team_id,
+                    homeId AS home_team_id,
+                    awayScore AS away_score,
+                    homeScore AS home_score
+                FROM nflGame
+                WHERE gameTime BETWEEN DATE(NOW() - INTERVAL 3 DAY) AND DATE(NOW() + INTERVAL 3 DAY)
+                ORDER BY gameTime, homeId, awayId
+            ");
+            $query->execute(array(
+            ));
+            $games = array();
+            while ($row = $query->fetch()) {
+                $games[] = $row;
+            }
+
+            return $app->json(array(
+                'games' => $games,
+            ));
         });
 
         return $controllers;

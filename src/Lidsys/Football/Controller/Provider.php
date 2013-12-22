@@ -34,18 +34,20 @@ class Provider implements ControllerProviderInterface
             }
 
             $pdo   = $app['db']->getPdo();
-            $query = $pdo->prepare("
-                SELECT 
-                    gameId AS id,
-                    gameTime AS game_time,
-                    awayId AS away_team_id,
-                    homeId AS home_team_id,
-                    awayScore AS away_score,
-                    homeScore AS home_score
-                FROM nflGame
-                WHERE gameTime BETWEEN DATE(NOW() - INTERVAL 3 DAY) AND DATE(NOW() + INTERVAL 3 DAY)
-                ORDER BY gameTime, homeId, awayId
-            ");
+            $query = $pdo->prepare(
+                "
+                    SELECT 
+                        gameId AS id,
+                        gameTime AS game_time,
+                        awayId AS away_team_id,
+                        homeId AS home_team_id,
+                        awayScore AS away_score,
+                        homeScore AS home_score
+                    FROM nflGame
+                    WHERE gameTime BETWEEN DATE(NOW() - INTERVAL 3 DAY) AND DATE(NOW() + INTERVAL 3 DAY)
+                    ORDER BY gameTime, homeId, awayId
+                "
+            );
             $query->execute(array(
             ));
             $games = array();

@@ -29,12 +29,14 @@ class Provider implements ControllerProviderInterface
             $authenticated = false;
 
             $pdo   = $app['db']->getPdo();
-            $query = $pdo->prepare("
-                SELECT userId
-                FROM user
-                WHERE username = :username
-                    AND password = md5(concat(:password, securityHash))
-            ");
+            $query = $pdo->prepare(
+                "
+                    SELECT userId
+                    FROM user
+                    WHERE username = :username
+                        AND password = md5(concat(:password, securityHash))
+                "
+            );
             $query->execute(array(
                 'username' => $request->get('username'),
                 'password' => md5($request->get('password')),

@@ -18,6 +18,8 @@ use Lidsys\Silex\Provider\ConfigServiceProvider;
 use Lidsys\Silex\Provider\DatabaseServiceProvider;
 use Lidsys\Silex\Provider\TemplateServiceProvider;
 
+use Lidsys\User\Service\Provider as UserServiceProvider;
+
 use Silex\Application;
 
 $app = new Application();
@@ -27,6 +29,8 @@ $app['debug'] = true;
 $app->register(new ConfigServiceProvider());
 $app->register(new DatabaseServiceProvider('db', 'config', 'db.config'));
 $app->register(new TemplateServiceProvider());
+
+$app->register(new UserServiceProvider());
 
 $app['config'] = $app['lidsys.config']->load(array(
     __DIR__ . '/../config/autoload/*.global.php',

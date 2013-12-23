@@ -26,26 +26,10 @@ class Provider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/login/', function (Request $request) use ($app) {
-            $authenticated = false;
-
-            $pdo   = $app['db']->getPdo();
-            $query = $pdo->prepare(
-                "
-                    SELECT userId
-                    FROM user
-                    WHERE username = :username
-                        AND password = md5(concat(:password, securityHash))
-                "
+            $authenticated = $app['lidsys.user.authenticator']->verifyUsernameAndPassword(
+                $request->get('username'),
+                $request->get('password')
             );
-            $query->execute(array(
-                'username' => $request->get('username'),
-                'password' => md5($request->get('password')),
-            ));
-            while ($row = $query->fetch()) {
-                if ($row['userId']) {
-                    $authenticated = true;
-                }
-            }
 
             return $app->json(array(
                 'authenticated' => $authenticated,

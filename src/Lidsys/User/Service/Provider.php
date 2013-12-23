@@ -13,8 +13,6 @@ namespace Lidsys\User\Service;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-
-
 class Provider implements ServiceProviderInterface
 {
     public function register(Application $app)

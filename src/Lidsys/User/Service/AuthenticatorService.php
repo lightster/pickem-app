@@ -27,17 +27,19 @@ class AuthenticatorService
 
 
 
-    public function verifyUsernameAndPassword($username, $password)
+    public function getUserForUsernameAndPassword($username, $password)
     {
-        $authenticated = false;
+        $authenticated_user = false;
 
         $pdo   = $this->app['db']->getPdo();
         $query = $pdo->prepare(
             "
-                SELECT userId
-                FROM user
-                WHERE username = :username
-                    AND password = md5(concat(:password, securityHash))
+                SELECT
+                    u.username,
+                    u.timeZone AS time_zone
+                FROM user AS u
+                WHERE u.username = :username
+                    AND u.password = md5(concat(:password, u.securityHash))
             "
         );
         $query->execute(array(
@@ -45,11 +47,11 @@ class AuthenticatorService
             'password' => md5($password),
         ));
         while ($row = $query->fetch()) {
-            if ($row['userId']) {
-                $authenticated = true;
+            if ($row['username'] === $username) {
+                $authenticated_user = $row;
             }
         }
 
-        return $authenticated;
+        return $authenticated_user;
     }
 }

@@ -62,7 +62,7 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', function ($scope, $
 
         $http.post("/app/user/login/", postData)
             .success(function (data) {
-                if (data.authenticated) {
+                if (data.authenticated_user) {
                     login.error.form = 'Success!!';
                 }
                 else {

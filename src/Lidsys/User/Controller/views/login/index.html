@@ -9,29 +9,34 @@
                     <h2>Login</h2>
                 </div>
             </div>
-            <div class="row">
-                <div class="large-12 columns">
-                    <div data-alert class="alert-box warning" ng-show="login.error.form">
-                        {{login.error.form}}
+            <div lds-authenticated="false">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div data-alert class="alert-box warning" ng-show="login.error.form">
+                            {{login.error.form}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns" ng-class="{error: login.error.username}">
+                        <input type="text" placeholder="username" ng-model="login.username" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="login.error.username">{{login.error.username}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns" ng-class="{error: login.error.password}">
+                        <input type="password" placeholder="password" ng-model="login.password" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="login.error.password">{{login.error.password}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-5 columns">
+                        <input type="submit" class="button small" value="Sign In" />
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="large-12 columns" ng-class="{error: login.error.username}">
-                    <input type="text" placeholder="username" ng-model="login.username" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
-                    <small ng-show="login.error.username">{{login.error.username}}</small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="large-12 columns" ng-class="{error: login.error.password}">
-                    <input type="password" placeholder="password" ng-model="login.password" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
-                    <small ng-show="login.error.password">{{login.error.password}}</small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="large-5 columns">
-                    <input type="submit" class="button small" value="Sign In" />
-                </div>
+            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="true">
+                You are already logged in!
             </div>
         </div>
         <div class="large-5 medium-4 columns">

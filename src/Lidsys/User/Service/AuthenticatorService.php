@@ -35,6 +35,7 @@ class AuthenticatorService
         $query = $pdo->prepare(
             "
                 SELECT
+                    u.userId AS user_id,
                     u.username,
                     u.timeZone AS time_zone
                 FROM user AS u

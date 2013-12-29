@@ -22,10 +22,63 @@ app.config(['$routeProvider', function ($routeProvider) {
         });
 }])
 
+app.factory('active', [function() {
+    return new ActiveService()
+}])
+
+app.directive('ldsAuthenticated', ['$rootScope', 'active', function ($rootScope, active) {
+    return {
+        restrict: "A",
+        link: function (scope, element, attrs) {
+            var wasOriginallyDisplayed = element.css('display')
+            $rootScope.$watch(
+                function (scope) {
+                    var expected = (attrs.ldsAuthenticated !== "false")
+                    return expected === active.isLoggedIn()
+                },
+                function (isAsExpected, wasAsExpected, scope) {
+                    if (!isAsExpected) {
+                        element.css('display', 'none')
+                    }
+                    else {
+                        element.css('display', wasOriginallyDisplayed)
+                    }
+                }
+            )
+        }
+    }
+}])
+
+app.directive('ldsAuthorized', ['$rootScope', 'active', function ($rootScope, active) {
+    return {
+        restrict: "A",
+        link: function (scope, element, attrs) {
+            var wasOriginallyDisplayed = element.css('display')
+            $rootScope.$watch(
+                function (scope) {
+                    return active.getUser().isAuthorized(attrs.ldsAuthorized)
+                },
+                function (isAuthorized, wasAuthorized, scope) {
+                    if (!isAuthorized) {
+                        element.css('display', 'none');
+                    }
+                    else {
+                        element.css('display', wasOriginallyDisplayed)
+                    }
+                }
+            )
+        }
+    }
+}])
+
+app.run(['$rootScope', 'active', function ($rootScope, active) {
+    active.setUser(new User)
+}])
+
 app.controller('AppCtrl', ['$scope', '$location', function ($scope, $location) {
 }])
 
-app.controller('LoginCtrl', ['$scope', '$location', '$http', function ($scope, $location, $http) {
+app.controller('LoginCtrl', ['$scope', '$location', '$http', 'active', function ($scope, $location, $http, active) {
     $scope.formChanged = function ($event) {
         var login = $scope.login;
 
@@ -63,6 +116,7 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', function ($scope, $
         $http.post("/app/user/login/", postData)
             .success(function (data) {
                 if (data.authenticated_user) {
+                    active.setUser((new User()).setFromApi(data.authenticated_user))
                     login.error.form = 'Success!!';
                 }
                 else {

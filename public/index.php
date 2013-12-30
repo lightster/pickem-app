@@ -37,7 +37,7 @@ $app['config'] = $app['lidsys.config']->load(array(
     __DIR__ . '/../config/autoload/*.local.php',
 ));
 
-$app->mount('/api/football', new FootballControllerProvider());
+$app->mount('/api/v1.0/football', new FootballControllerProvider());
 $app->mount('/app/user', new UserControllerProvider());
 $app->mount('/app', new AppControllerProvider());
 

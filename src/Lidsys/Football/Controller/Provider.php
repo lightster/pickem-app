@@ -11,6 +11,9 @@
 namespace Lidsys\Football\Controller;
 
 use Lidsys\Silex\Service\Exception\TemplateNotFound;
+use Lidsys\Silex\Service\JsonRequestMiddlewareService;
+
+use Lidsys\Football\Service\Provider as FootballServiceProvider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
@@ -24,40 +27,45 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{type}/schedule/{year}/{week}', function ($type, $year, $week) use ($app) {
-            if ('nfl' !== $type) {
-                return $app->json(array(
-                    'errors' => array(
-                        'type' => "Unrecognized type: '{$type}'",
-                    ),
-                ), 400);
-            }
+        $controllers->get('/seasons', function () use ($app) {
+            $seasons = $app['lidsys.football.schedule']->getSeasons();
 
-            $pdo   = $app['db']->getPdo();
-            $query = $pdo->prepare(
-                "
-                    SELECT 
-                        gameId AS id,
-                        gameTime AS game_time,
-                        awayId AS away_team_id,
-                        homeId AS home_team_id,
-                        awayScore AS away_score,
-                        homeScore AS home_score
-                    FROM nflGame
-                    WHERE gameTime BETWEEN DATE(NOW() - INTERVAL 3 DAY) AND DATE(NOW() + INTERVAL 3 DAY)
-                    ORDER BY gameTime, homeId, awayId
-                "
+            array_walk(
+                $seasons,
+                function (array & $season) {
+                    unset($season['season_id']);
+                }
             );
-            $query->execute(array(
-            ));
-            $games = array();
-            while ($row = $query->fetch()) {
-                $games[] = $row;
-            }
 
             return $app->json(array(
-                'games' => $games,
+                'seasons' => $seasons,
             ));
+        });
+
+        $controllers->get('/weeks/{year}', function ($year) use ($app) {
+            $weeks = $app['lidsys.football.schedule']->getWeeksForYear($year);
+
+            array_walk(
+                $weeks,
+                function (array & $week) {
+                    unset($week['week_id']);
+                }
+            );
+
+            return $app->json(array(
+                'weeks' => $weeks,
+            ));
+        });
+
+        $controllers->get('/schedule/{year}/{week}', function ($year, $week) use ($app) {
+            return $app->json(array(
+                'games' => $app['lidsys.football.schedule']->getGamesForWeek($year, $week),
+            ));
+        });
+
+        $controllers->before(new JsonRequestMiddlewareService());
+        $controllers->before(function () use ($app) {
+            $app->register(new FootballServiceProvider());
         });
 
         return $controllers;

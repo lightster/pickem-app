@@ -10,6 +10,9 @@
 
 namespace Lidsys\Football\Controller;
 
+use DateTime;
+use DateTimeZone;
+
 use Lidsys\Silex\Service\Exception\TemplateNotFound;
 use Lidsys\Silex\Service\JsonRequestMiddlewareService;
 
@@ -58,8 +61,20 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->get('/schedule/{year}/{week}', function ($year, $week) use ($app) {
+            $games = $app['lidsys.football.schedule']->getGamesForWeek($year, $week);
+
+            $timezone = new DateTimeZone('UTC');
+
+            array_walk(
+                $games,
+                function (array & $game) use ($timezone) {
+                    $start_time = new DateTime($game['start_time'], $timezone);
+                    $game['start_time'] = $start_time->format('c');
+                }
+            );
+
             return $app->json(array(
-                'games' => $app['lidsys.football.schedule']->getGamesForWeek($year, $week),
+                'games' => $games,
             ));
         });
 

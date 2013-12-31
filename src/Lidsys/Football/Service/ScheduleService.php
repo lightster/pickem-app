@@ -18,7 +18,8 @@ class ScheduleService
 {
     private $app;
 
-    private $weeks = array();
+    private $seasons = null;
+    private $weeks   = array();
 
 
 
@@ -31,11 +32,11 @@ class ScheduleService
 
     public function getSeasons()
     {
-        if (isset($this->years)) {
-            return $this->years;
+        if (isset($this->seasons)) {
+            return $this->seasons;
         }
 
-        $years       = array();
+        $seasons       = array();
 
         $pdo   = $this->app['db']->getPdo();
         $query = $pdo->prepare(
@@ -49,13 +50,13 @@ class ScheduleService
         );
         $query->execute(array(
         ));
-        while ($year = $query->fetch()) {
-            $years[] = $year;
+        while ($season = $query->fetch()) {
+            $seasons[$season['year']] = $season;
         }
 
-        $this->years = $years;
+        $this->seasons = $seasons;
 
-        return $this->years;
+        return $this->seasons;
     }
 
 

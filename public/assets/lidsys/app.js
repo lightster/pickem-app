@@ -4,7 +4,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/',
         {
-            template: "",
+            template: "Main",
             controller: "AppCtrl"
         })
         .when('/user/login',
@@ -12,10 +12,13 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: "/app/template/login/index.html",
             controller: "LoginCtrl"
         })
-        .when('/football/picks',
+        .when('/football/schedule/:year?/:week?',
         {
-            template: "",
-            controller: "AppCtrl"
+            templateUrl: "/app/template/football/schedule.html",
+            controller: "LidsysFootballScheduleCtrl",
+            resolve: [['$route', 'lidsysFootballSchedule', function ($route, footballSchedule) {
+                return footballSchedule.load($route.current)
+            }]]
         })
         .otherwise({
             template: "This doesn't exist!"
@@ -75,7 +78,7 @@ app.run(['$rootScope', 'active', function ($rootScope, active) {
     active.setUser(new User)
 }])
 
-app.controller('AppCtrl', ['$scope', '$location', function ($scope, $location) {
+app.controller('AppCtrl', ['$scope', '$http', function ($scope, $http) {
 }])
 
 app.controller('LoginCtrl', ['$scope', '$location', '$http', 'active', function ($scope, $location, $http, active) {
@@ -138,4 +141,19 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', 'active', function 
         previousUsername: '',
         previousPassword: ''
     }
+}])
+
+
+
+
+
+
+app.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
+    return new FootballScheduleService($http, $q)
+}])
+
+app.controller('LidsysFootballScheduleCtrl', ['$scope', '$http', '$route', 'lidsysFootballSchedule', function ($scope, $http, $route, footballSchedule) {
+    var year = $route.current.params.year
+    var week = $route.current.params.week
+    $scope.data = {games: footballSchedule.getGames(year, week)}
 }])

@@ -43,7 +43,7 @@ window.FootballScheduleService = class FootballScheduleService
                 if not seasons[year]?
                     for own a_year of seasons
                         year = a_year
-                    current_route.params.year = year
+                    #current_route.params.year = year
 
                 @$q.when(@loadWeeks(year))
             )
@@ -53,10 +53,15 @@ window.FootballScheduleService = class FootballScheduleService
                 if not weeks[week]?
                     week = 0
                     for own week_num, a_week of weeks
-                        week = week_num if start_date > today or not week
-                    current_route.params.week = week
+                        week = week_num if a_week.start_date < today or not week
 
-                @$q.when(@loadGames(year, week))
+                if current_route.params.year isnt year or current_route.params.week isnt week
+                    @$q.reject({
+                        year,
+                        week
+                    })
+                else
+                    @$q.when(@loadGames(year, week))
             )
 
 
@@ -78,7 +83,6 @@ window.FootballScheduleService = class FootballScheduleService
             .success((response) =>
                 @games[year]       = {}
                 @games[year][week] = response.games
-                console.log @games
             )
 
 

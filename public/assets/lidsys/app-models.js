@@ -74,7 +74,6 @@
             if (!__hasProp.call(seasons, a_year)) continue;
             year = a_year;
           }
-          current_route.params.year = year;
         }
         return _this.$q.when(_this.loadWeeks(year));
       }).then(function(response) {
@@ -86,13 +85,19 @@
           for (week_num in weeks) {
             if (!__hasProp.call(weeks, week_num)) continue;
             a_week = weeks[week_num];
-            if (start_date > today || !week) {
+            if (a_week.start_date < today || !week) {
               week = week_num;
             }
           }
-          current_route.params.week = week;
         }
-        return _this.$q.when(_this.loadGames(year, week));
+        if (current_route.params.year !== year || current_route.params.week !== week) {
+          return _this.$q.reject({
+            year: year,
+            week: week
+          });
+        } else {
+          return _this.$q.when(_this.loadGames(year, week));
+        }
       });
     };
 
@@ -123,8 +128,7 @@
       }
       return this.$http.get("/api/v1.0/football/schedule/" + year + "/" + week).success(function(response) {
         _this.games[year] = {};
-        _this.games[year][week] = response.games;
-        return console.log(_this.games);
+        return _this.games[year][week] = response.games;
       });
     };
 

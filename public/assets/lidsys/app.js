@@ -16,8 +16,15 @@ app.config(['$routeProvider', function ($routeProvider) {
         {
             templateUrl: "/app/template/football/schedule.html",
             controller: "LidsysFootballScheduleCtrl",
-            resolve: [['$route', 'lidsysFootballSchedule', function ($route, footballSchedule) {
+            resolve: [['$location', '$q', '$route', 'lidsysFootballSchedule', function ($location, $q, $route, footballSchedule) {
                 return footballSchedule.load($route.current)
+                    .catch(function (message) {
+                        if (message.year && message.week) {
+                            $location.path("/football/schedule/" + message.year + "/" + message.week)
+                        }
+
+                        return $q.reject(message)
+                    })
             }]]
         })
         .otherwise({

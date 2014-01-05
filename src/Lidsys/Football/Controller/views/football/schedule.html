@@ -1,7 +1,13 @@
-<table>
-    <tr ng-repeat="game in data.games">
-        <td>
-            {{game.start_time | date:'MMM d, y, h:mm a'}}
-        </td>
-    </tr>
-</table>
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Schedule</h1>
+        <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+        <table>
+            <tr ng-repeat="game in data.games">
+                <td>
+                    {{game.start_time | date:'MMM d, y, h:mm a'}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

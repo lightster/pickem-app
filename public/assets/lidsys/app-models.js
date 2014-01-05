@@ -59,7 +59,21 @@
       this.seasons = null;
       this.weeks = {};
       this.games = {};
+      this.selectedSeason = null;
+      this.selectedWeek = null;
     }
+
+    FootballScheduleService.prototype.setSelectedWeek = function(selectedYear, selectedWeekNumber) {
+      return this.load(selectedYear, selectedWeekNumber);
+    };
+
+    FootballScheduleService.prototype.getSelectedSeason = function() {
+      return this.selectedSeason;
+    };
+
+    FootballScheduleService.prototype.getSelectedWeek = function() {
+      return this.selectedWeek;
+    };
 
     FootballScheduleService.prototype.load = function(requestedYear, requestedWeek) {
       var week, year,
@@ -96,6 +110,8 @@
             week: week
           });
         } else {
+          _this.selectedSeason = _this.getSeason(year);
+          _this.selectedWeek = _this.getWeek(year, week);
           return _this.$q.when(_this.loadGames(year, week));
         }
       });
@@ -132,11 +148,19 @@
       });
     };
 
+    FootballScheduleService.prototype.getSeason = function(year) {
+      return this.getSeasons()[year];
+    };
+
     FootballScheduleService.prototype.getSeasons = function() {
       if (this.seasons == null) {
         throw "Seasons not yet loaded using 'loadSeasons'";
       }
       return this.seasons;
+    };
+
+    FootballScheduleService.prototype.getWeek = function(year, week_num) {
+      return this.getWeeks(year)[week_num];
     };
 
     FootballScheduleService.prototype.getWeeks = function(year) {
@@ -146,11 +170,33 @@
       return this.weeks[year];
     };
 
-    FootballScheduleService.prototype.getGames = function(year, week) {
-      if ((this.games[year] == null) || (this.games[year][week] == null)) {
-        throw "Games not yet loaded using 'loadGames' for year " + year + " week " + week;
+    FootballScheduleService.prototype.getWeeksArray = function(year) {
+      var week, week_num, _ref, _results;
+      if (this.weeks[year] == null) {
+        throw "Weeks not yet loaded using 'loadWeeks' for year" + year;
       }
-      return this.games[year][week];
+      _ref = this.weeks[year];
+      _results = [];
+      for (week_num in _ref) {
+        if (!__hasProp.call(_ref, week_num)) continue;
+        week = _ref[week_num];
+        _results.push(week);
+      }
+      return _results;
+    };
+
+    FootballScheduleService.prototype.getGames = function(year, week_num) {
+      if (year == null) {
+        year = this.selectedSeason.year;
+        week_num = null;
+      }
+      if (week_num == null) {
+        week_num = this.selectedWeek.week_number;
+      }
+      if ((this.games[year] == null) || (this.games[year][week_num] == null)) {
+        throw "Games not yet loaded using 'loadGames' for year " + year + " week " + week_num;
+      }
+      return this.games[year][week_num];
     };
 
     return FootballScheduleService;

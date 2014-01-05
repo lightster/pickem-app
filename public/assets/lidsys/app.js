@@ -161,8 +161,27 @@ app.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
     return new FootballScheduleService($http, $q)
 }])
 
-app.controller('LidsysFootballScheduleCtrl', ['$scope', '$http', '$route', 'lidsysFootballSchedule', function ($scope, $http, $route, footballSchedule) {
-    var year = $route.current.params.year
-    var week = $route.current.params.week
-    $scope.data = {games: footballSchedule.getGames(year, week)}
+app.directive('ldsFootballWeekSelector', [function () {
+    return {
+        restrict: "E",
+        controller: ['$location', '$scope', 'lidsysFootballSchedule', function ($location, $scope, footballSchedule) {
+            var season = footballSchedule.getSelectedSeason(),
+                week   = footballSchedule.getSelectedWeek()
+            $scope.week_selector = {
+                season:  season,
+                week:    week,
+                seasons: footballSchedule.getSeasons(),
+                weeks:   footballSchedule.getWeeksArray(season.year)
+            };
+            $scope.changeSelectedWeek = function(params, params2) {
+                $location.path("/football/schedule/" + $scope.week_selector.season.year + "/" + $scope.week_selector.week.week_number)
+            }
+        }],
+        templateUrl: "/app/template/football/week-selector.html",
+
+    }
+}])
+
+app.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule', function ($scope, footballSchedule) {
+    $scope.data = {games: footballSchedule.getGames()}
 }])

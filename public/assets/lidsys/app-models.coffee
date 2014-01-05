@@ -33,6 +33,17 @@ window.FootballScheduleService = class FootballScheduleService
         @weeks   = {}
         @games   = {}
 
+        @selectedSeason = null
+        @selectedWeek   = null
+
+
+
+    setSelectedWeek: (selectedYear, selectedWeekNumber) ->
+        @load selectedYear, selectedWeekNumber
+    getSelectedSeason: -> @selectedSeason
+    getSelectedWeek:   -> @selectedWeek
+
+
 
     load: (requestedYear, requestedWeek) ->
         year    = requestedYear
@@ -60,6 +71,8 @@ window.FootballScheduleService = class FootballScheduleService
                         week
                     })
                 else
+                    @selectedSeason = @getSeason year
+                    @selectedWeek   = @getWeek year, week
                     @$q.when(@loadGames(year, week))
             )
 
@@ -85,9 +98,17 @@ window.FootballScheduleService = class FootballScheduleService
             )
 
 
+    getSeason: (year) ->
+        @getSeasons()[year]
+
+
     getSeasons: ->
         throw "Seasons not yet loaded using 'loadSeasons'" if not @seasons?
         @seasons
+
+
+    getWeek: (year, week_num) ->
+        @getWeeks(year)[week_num]
 
 
     getWeeks: (year) ->
@@ -95,6 +116,18 @@ window.FootballScheduleService = class FootballScheduleService
         @weeks[year]
 
 
-    getGames: (year, week) ->
-        throw "Games not yet loaded using 'loadGames' for year " + year + " week " + week if not @games[year]? or not @games[year][week]?
-        @games[year][week]
+    getWeeksArray: (year) ->
+        throw "Weeks not yet loaded using 'loadWeeks' for year" + year if not @weeks[year]?
+        for own week_num, week of @weeks[year]
+            week
+
+
+    getGames: (year, week_num) ->
+        if not year?
+            year     = @selectedSeason.year 
+            week_num = null
+        if not week_num?
+            week_num = @selectedWeek.week_number 
+
+        throw "Games not yet loaded using 'loadGames' for year " + year + " week " + week_num if not @games[year]? or not @games[year][week_num]?
+        @games[year][week_num]

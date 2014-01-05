@@ -82,7 +82,7 @@ app.directive('ldsAuthorized', ['$rootScope', 'active', function ($rootScope, ac
 }])
 
 app.run(['$rootScope', 'active', function ($rootScope, active) {
-    active.setUser(new User)
+    active.setUser(new User())
 }])
 
 app.controller('AppCtrl', ['$scope', '$http', function ($scope, $http) {
@@ -92,8 +92,8 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', 'active', function 
     $scope.formChanged = function ($event) {
         var login = $scope.login;
 
-        if (login.username != login.submittedUsername
-            || login.password != login.submittedPassword
+        if (login.username != login.submittedUsername ||
+            login.password != login.submittedPassword
         ) {
             login.error = '';
         }

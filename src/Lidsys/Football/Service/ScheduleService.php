@@ -126,7 +126,7 @@ class ScheduleService
                     awayScore AS away_score,
                     homeScore AS home_score
                 FROM nflGame
-                WHERE gameTime BETWEEN :start_date AND :end_date
+                WHERE DATE(gameTime) BETWEEN :start_date AND :end_date
                 ORDER BY gameTime, gameId
             "
         );

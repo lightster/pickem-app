@@ -61,11 +61,11 @@
       this.games = {};
     }
 
-    FootballScheduleService.prototype.load = function(current_route) {
+    FootballScheduleService.prototype.load = function(requestedYear, requestedWeek) {
       var week, year,
         _this = this;
-      year = current_route.params.year;
-      week = current_route.params.week;
+      year = requestedYear;
+      week = requestedWeek;
       return this.$q.when(this.loadSeasons()).then(function(response) {
         var a_year, seasons;
         seasons = _this.getSeasons();
@@ -90,7 +90,7 @@
             }
           }
         }
-        if (current_route.params.year !== year || current_route.params.week !== week) {
+        if (requestedYear !== year || requestedWeek !== week) {
           return _this.$q.reject({
             year: year,
             week: week

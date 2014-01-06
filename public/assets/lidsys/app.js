@@ -1,6 +1,6 @@
 var app =  angular.module('app', ['ngRoute']);
 
-app.config(['$routeProvider', function ($routeProvider) {
+app.config(['$injector', '$routeProvider', function ($injector, $routeProvider) {
     $routeProvider
         .when('/',
         {
@@ -16,18 +16,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         {
             templateUrl: "/app/template/football/schedule.html",
             controller: "LidsysFootballScheduleCtrl",
-            resolve: [['$location', '$q', '$route', 'lidsysFootballSchedule', function ($location, $q, $route, footballSchedule) {
-                var year = $route.current.params.year,
-                    week = $route.current.params.week
-                return footballSchedule.load(year, week)
-                    .catch(function (message) {
-                        if (message.year && message.week) {
-                            $location.path("/football/schedule/" + message.year + "/" + message.week)
-                        }
-
-                        return $q.reject(message)
-                    })
-            }]]
+            resolve: $injector.get('lidsysFootballWeekSensitiveRouteResolver')
         })
         .otherwise({
             template: "This doesn't exist!"
@@ -157,6 +146,25 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', 'active', function 
 
 
 
+app.constant('lidsysFootballWeekSensitiveRouteResolver', {
+    resolveValidWeek: ['$location', '$q', '$route', 'lidsysFootballSchedule', function ($location, $q, $route, footballSchedule) {
+        var year = $route.current.params.year,
+            week = $route.current.params.week
+        return footballSchedule.load(year, week)
+            .catch(function (message) {
+                if (message.year && message.week) {
+                    $location.path(
+                        $route.current.originalPath
+                            .replace(":year?", message.year)
+                            .replace(":week?", message.week)
+                    ).replace()
+                }
+
+                return $q.reject(message)
+            })
+    }]
+});
+
 app.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
     return new FootballScheduleService($http, $q)
 }])
@@ -164,7 +172,7 @@ app.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
 app.directive('ldsFootballWeekSelector', [function () {
     return {
         restrict: "E",
-        controller: ['$location', '$scope', 'lidsysFootballSchedule', function ($location, $scope, footballSchedule) {
+        controller: ['$location', '$route', '$scope', 'lidsysFootballSchedule', function ($location,  $route, $scope, footballSchedule) {
             var season = footballSchedule.getSelectedSeason(),
                 week   = footballSchedule.getSelectedWeek()
             $scope.week_selector = {
@@ -173,12 +181,15 @@ app.directive('ldsFootballWeekSelector', [function () {
                 seasons: footballSchedule.getSeasons(),
                 weeks:   footballSchedule.getWeeksArray(season.year)
             };
-            $scope.changeSelectedWeek = function(params, params2) {
-                $location.path("/football/schedule/" + $scope.week_selector.season.year + "/" + $scope.week_selector.week.week_number)
+            $scope.changeSelectedWeek = function() {
+                $location.path(
+                    $route.current.originalPath
+                        .replace(":year?", $scope.week_selector.season.year)
+                        .replace(":week?", $scope.week_selector.week.week_number)
+                )
             }
         }],
-        templateUrl: "/app/template/football/week-selector.html",
-
+        templateUrl: "/app/template/football/week-selector.html"
     }
 }])
 

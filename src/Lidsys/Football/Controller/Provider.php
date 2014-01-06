@@ -78,6 +78,14 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->get('/teams', function () use ($app) {
+            $teams = $app['lidsys.football.team']->getTeams();
+
+            return $app->json(array(
+                'teams' => $teams,
+            ));
+        });
+
         $controllers->before(new JsonRequestMiddlewareService());
         $controllers->before(function () use ($app) {
             $app->register(new FootballServiceProvider());

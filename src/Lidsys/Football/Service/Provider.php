@@ -20,6 +20,9 @@ class Provider implements ServiceProviderInterface
         $app['lidsys.football.schedule'] = $app->share(function ($app) {
             return new ScheduleService($app);
         });
+        $app['lidsys.football.team'] = $app->share(function ($app) {
+            return new TeamService($app);
+        });
     }
 
 

@@ -3,10 +3,33 @@
         <h1>Schedule</h1>
         <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
         <table>
-            <tr ng-repeat="game in data.games">
-                <td>
-                    {{game.start_time | date:'MMM d, y, h:mm a'}}
+            <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
+                <th colspan="8">
+                    {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
+                </th>
+            </tr>
+            <tr ng-repeat-end>
+                <td style="
+                    background-color: {{game.away_team.border_color}};
+                ">&nbsp;</td>
+                <td style="
+                    color: {{game.away_team.font_color}};
+                    background-color: {{game.away_team.background_color}};
+                    text-align: right;
+                ">
+                    {{game.away_team.location}} {{game.away_team.mascot}}
                 </td>
+                <td style="vertical-align: middle; "><input type="radio" style="margin: 0; " /></td>
+                <td style="vertical-align: middle; "><input type="radio" style="margin: 0; " /></td>
+                <td style="
+                    color: {{game.home_team.font_color}};
+                    background-color: {{game.home_team.background_color}};
+                ">
+                    {{game.home_team.location}} {{game.home_team.mascot}}
+                </td>
+                <td style="
+                    background-color: {{game.home_team.border_color}};
+                ">&nbsp;</td>
             </tr>
         </table>
     </div>

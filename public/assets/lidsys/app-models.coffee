@@ -131,3 +131,25 @@ window.FootballScheduleService = class FootballScheduleService
 
         throw "Games not yet loaded using 'loadGames' for year " + year + " week " + week_num if not @games[year]? or not @games[year][week_num]?
         @games[year][week_num]
+
+
+
+window.FootballTeamService = class FootballTeamService
+    constructor: (@$http, @$q) ->
+        @teams   = null
+
+
+
+    load: ->
+        @$q.when(@loadTeams())
+
+
+    loadTeams: ->
+        return @teams if @teams?
+        @$http.get("/api/v1.0/football/teams")
+            .success((response) => @teams = response.teams)
+
+
+    getTeams: ->
+        throw "Teams not yet loaded using 'loadTeams'" if not @teams?
+        @teams

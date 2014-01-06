@@ -162,11 +162,18 @@ app.constant('lidsysFootballWeekSensitiveRouteResolver', {
 
                 return $q.reject(message)
             })
-    }]
-});
+    }],
+    resolveTeams: ['lidsysFootballTeam', function (footballTeam) {
+        return footballTeam.load()
+    }],
+})
 
 app.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
     return new FootballScheduleService($http, $q)
+}])
+
+app.factory('lidsysFootballTeam', ['$http', '$q', function($http, $q) {
+    return new FootballTeamService($http, $q)
 }])
 
 app.directive('ldsFootballWeekSelector', [function () {
@@ -193,6 +200,27 @@ app.directive('ldsFootballWeekSelector', [function () {
     }
 }])
 
-app.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule', function ($scope, footballSchedule) {
-    $scope.data = {games: footballSchedule.getGames()}
+app.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballSchedule, footballTeam) {
+    var teams   = footballTeam.getTeams(),
+        games   = footballSchedule.getGames(),
+        game    = null,
+        game_id = null
+    for (game_id in games) {
+        game = games[game_id]
+
+        if (game.away_team_id && !game.away_team) {
+            game.away_team = teams[game.away_team_id]
+            game.home_team = teams[game.home_team_id]
+        }
+    }
+    $scope.games        = games
+    $scope.prevGameTime = null
+    $scope.headerExists = function (game) {
+        if ($scope.prevGameTime === game.start_time) {
+            return false
+        }
+
+        $scope.prevGameTime = game.start_time
+        return true
+    }
 }])

@@ -61,4 +61,80 @@ class TeamService
 
         return $this->teams;
     }
+
+
+
+    public function getStandingsForWeek($year, $week_number)
+    {
+        $weeks = $this->app['lidsys.football.schedule']->getWeeksForYear($year);
+
+        if (!isset($weeks[$week_number])) {
+            throw new Exception\WeekNotFound($year, $week_number);
+        }
+
+        $first_week     = $weeks[1];
+        $selected_week  = $weeks[$week_number];
+
+        $team_standings = array();
+
+        $pdo   = $this->app['db']->getPdo();
+        $query = $pdo->prepare(
+            "
+                SELECT
+                    t.teamId AS team_id,
+                    SUM(
+                        IF(
+                            g.awayScore IS NOT NULL
+                            AND g.homeScore IS NOT NULL
+                            AND (
+                                (t.teamId = g.awayId AND g.awayScore > g.homeScore)
+                                OR (t.teamId = g.homeId AND g.homeScore > g.awayScore)
+                            ),
+                            1,
+                            0
+                        )
+                    ) AS win_count,
+                    SUM(
+                        IF(
+                            g.awayScore IS NOT NULL
+                            AND g.homeScore IS NOT NULL
+                            AND (
+                                (t.teamId = g.awayId AND g.awayScore < g.homeScore)
+                                OR (t.teamId = g.homeId AND g.homeScore < g.awayScore)
+                            ),
+                            1,
+                            0
+                        )
+                    ) AS loss_count,
+                    SUM(
+                        IF(
+                            g.awayScore IS NOT NULL
+                            AND g.homeScore IS NOT NULL
+                            AND (
+                                (t.teamId = g.awayId AND g.awayScore = g.homeScore)
+                                OR (t.teamId = g.homeId AND g.homeScore = g.awayScore)
+                            ),
+                            1,
+                            0
+                        )
+                    ) AS tie_count
+                FROM nflTeam AS t
+                JOIN nflGame AS g
+                    ON t.teamId = g.awayId
+                    OR t.teamId = g.homeId
+                WHERE DATE(gameTime) BETWEEN :start_date AND :end_date
+                GROUP BY t.teamId
+                ORDER BY win_count, loss_count, tie_count
+            "
+        );
+        $query->execute(array(
+            'start_date' => $first_week['start_date'],
+            'end_date'   => $selected_week['end_date'],
+        ));
+        while ($team_standing = $query->fetch()) {
+            $team_standings[] = $team_standing;
+        }
+
+        return $team_standings;
+    }
 }

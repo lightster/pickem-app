@@ -94,6 +94,14 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->get('/fantasy-picks/{year}/{week}', function ($year, $week) use ($app) {
+            $picks = $app['lidsys.football.fantasy-pick']->getPicksForWeek($year, $week);
+
+            return $app->json(array(
+                'fantasy_picks' => $picks,
+            ));
+        });
+
         $controllers->before(new JsonRequestMiddlewareService());
         $controllers->before(function () use ($app) {
             $app->register(new FootballServiceProvider());

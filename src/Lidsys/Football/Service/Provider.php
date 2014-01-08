@@ -17,6 +17,9 @@ class Provider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app['lidsys.football.fantasy-pick'] = $app->share(function ($app) {
+            return new FantasyPickService($app);
+        });
         $app['lidsys.football.schedule'] = $app->share(function ($app) {
             return new ScheduleService($app);
         });

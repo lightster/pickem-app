@@ -20,8 +20,29 @@
                     background-color: {{game.away_team.border_color}};
                     width: 4%;
                 ">&nbsp;</td>
-                <td class="text-center" style="vertical-align: middle; width: 4%; "><input type="radio" style="margin: 0; " /></td>
-                <td class="text-center" style="vertical-align: middle; width: 4%; "><input type="radio" style="margin: 0; " /></td>
+                <td
+                    class="text-center"
+                    style="vertical-align: middle; width: 4%; "
+                    ng-class="
+                        {
+                            winning_team: game.away_score &amp;&amp; game.away_score >= game.home_score,
+                            losing_team: game.away_score < game.home_score
+                        }
+                    "
+                >
+                    {{game.away_score}}
+                </td>
+                <td
+                    class="text-center"
+                    style="vertical-align: middle; width: 4%; "
+                    ng-class="
+                        {
+                            winning_team: game.away_score &amp;&amp; game.away_score <= game.home_score,
+                            losing_team: game.away_score > game.home_score
+                        }
+                ">
+                    {{game.home_score}}
+                </td>
                 <td style="
                     background-color: {{game.home_team.border_color}};
                     width: 4%;

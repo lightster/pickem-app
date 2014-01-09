@@ -8,3 +8,11 @@ nav.top-bar .title-area h1 {
     height: 40px;
     white-space: nowrap;
 }
+
+.winning_team {
+    font-weight: bold;
+}
+
+.losing_team {
+    color: #999999;
+}

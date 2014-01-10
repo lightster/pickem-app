@@ -124,7 +124,7 @@ class TeamService
                     OR t.teamId = g.homeId
                 WHERE DATE(gameTime) BETWEEN :start_date AND :end_date
                 GROUP BY t.teamId
-                ORDER BY win_count, loss_count, tie_count
+                ORDER BY win_count DESC, tie_count DESC, loss_count DESC
             "
         );
         $query->execute(array(

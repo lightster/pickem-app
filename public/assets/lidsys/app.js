@@ -18,6 +18,23 @@ app.config(['$injector', '$routeProvider', function ($injector, $routeProvider) 
             controller: "LidsysFootballScheduleCtrl",
             resolve: $injector.get('lidsysFootballWeekSensitiveRouteResolver')
         })
+        .when('/football/team-standings/:year?/:week?',
+        {
+            templateUrl: "/app/template/football/team-standings.html",
+            controller: "LidsysFootballTeamStandingsCtrl",
+            resolve: [['$injector', '$route', '$q', 'lidsysFootballSchedule', 'lidsysFootballTeamStanding', function($injector, $route, $q, footballSchedule, footballTeamStanding) {
+                var resolvers = $injector.get('lidsysFootballWeekSensitiveRouteResolver');
+                return $q.all({
+                    resolveValidWeek: $injector.invoke(resolvers.resolveValidWeek),
+                    resolveTeams:     $injector.invoke(resolvers.resolveTeams)
+                }).then(function () {
+                    return footballTeamStanding.load(
+                        footballSchedule.getSelectedSeason().year,
+                        footballSchedule.getSelectedWeek().week_number
+                    )
+                })
+            }]]
+        })
         .otherwise({
             template: "This doesn't exist!"
         });
@@ -165,7 +182,7 @@ app.constant('lidsysFootballWeekSensitiveRouteResolver', {
     }],
     resolveTeams: ['lidsysFootballTeam', function (footballTeam) {
         return footballTeam.load()
-    }],
+    }]
 })
 
 app.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
@@ -174,6 +191,10 @@ app.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
 
 app.factory('lidsysFootballTeam', ['$http', '$q', function($http, $q) {
     return new FootballTeamService($http, $q)
+}])
+
+app.factory('lidsysFootballTeamStanding', ['$http', '$q', function($http, $q) {
+    return new FootballTeamStandingService($http, $q)
 }])
 
 app.directive('ldsFootballWeekSelector', [function () {
@@ -223,4 +244,23 @@ app.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule'
         $scope.prevGameTime = game.start_time
         return true
     }
+}])
+
+app.controller('LidsysFootballTeamStandingsCtrl', ['$scope', 'lidsysFootballSchedule', 'lidsysFootballTeam', 'lidsysFootballTeamStanding', function ($scope, footballSchedule, footballTeam, footballTeamStanding) {
+    var season = footballSchedule.getSelectedSeason(),
+        week   = footballSchedule.getSelectedWeek()
+    var teams               = footballTeam.getTeams(),
+        standings           = footballTeamStanding.getTeamStandings(
+            season.year,
+            week.week_number
+        ),
+        standing_idx,
+        standing
+    for (standing_idx in standings) {
+        standing = standings[standing_idx]
+        if (standing.team_id) {
+            standing.team = teams[standing.team_id]
+        }
+    }
+    $scope.standings = standings
 }])

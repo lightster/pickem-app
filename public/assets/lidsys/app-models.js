@@ -235,4 +235,37 @@
 
   })();
 
+  window.FootballTeamStandingService = FootballTeamService = (function() {
+    function FootballTeamService($http, $q) {
+      this.$http = $http;
+      this.$q = $q;
+      this.teamStandings = {};
+    }
+
+    FootballTeamService.prototype.load = function(requestedYear, requestedWeek) {
+      return this.$q.when(this.loadTeamStandings(requestedYear, requestedWeek));
+    };
+
+    FootballTeamService.prototype.loadTeamStandings = function(year, week) {
+      var _this = this;
+      if ((this.teamStandings[year] != null) && (this.teamStandings[year][week] != null)) {
+        return this.teamStandings[year][week];
+      }
+      return this.$http.get("/api/v1.0/football/team-standings/" + year + "/" + week).success(function(response) {
+        _this.teamStandings[year] = {};
+        return _this.teamStandings[year][week] = response.team_standings;
+      });
+    };
+
+    FootballTeamService.prototype.getTeamStandings = function(year, week_num) {
+      if ((this.teamStandings[year] == null) || (this.teamStandings[year][week_num] == null)) {
+        throw "Team standings not yet loaded using 'loadTeamStandings' for year " + year + " week " + week_num;
+      }
+      return this.teamStandings[year][week_num];
+    };
+
+    return FootballTeamService;
+
+  })();
+
 }).call(this);

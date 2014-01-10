@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Standings</h1>
+        <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+        <table class="small-12" style="margin: 0 auto; ">
+            <tr ng-repeat="standing in standings">
+                <td>{{standing.team.abbreviation}}</td>
+                <td>{{standing.win_count}}</td>
+                <td>{{standing.loss_count}}</td>
+                <td>{{standing.tie_count}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

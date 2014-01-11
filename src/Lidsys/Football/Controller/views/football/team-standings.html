@@ -4,11 +4,28 @@
         <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
         <lds-football-division-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-division-selector>
         <table class="small-12" style="margin: 0 auto; ">
+            <tr>
+                <th></th>
+                <th>Team</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Ties</th>
+            </tr>
             <tr ng-repeat="standing in standings">
-                <td>{{standing.team.abbreviation}}</td>
-                <td>{{standing.win_count}}</td>
-                <td>{{standing.loss_count}}</td>
-                <td>{{standing.tie_count}}</td>
+                <td style="
+                    background-color: {{standing.team.border_color}};
+                    width: 4%;
+                ">&nbsp;</td>
+                <td style="
+                    color: {{standing.team.font_color}};
+                    background-color: {{standing.team.background_color}};
+                    width: 40%;
+                ">
+                    {{standing.team.location}} {{standing.team.mascot}}
+                </td>
+                <td class="text-center">{{standing.win_count}}</td>
+                <td class="text-center">{{standing.loss_count}}</td>
+                <td class="text-center">{{standing.tie_count}}</td>
             </tr>
         </table>
     </div>

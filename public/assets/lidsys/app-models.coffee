@@ -161,6 +161,14 @@ window.FootballTeamStandingService = class FootballTeamService
     constructor: (@$http, @$q) ->
         @teamStandings   = {}
 
+        @selectedConference = 'AFC'
+        @selectedDivision   = 'North'
+
+
+    setSelectedConference: (@selectedConference) ->
+    getSelectedConference: -> @selectedConference
+    setSelectedDivision:   (@selectedDivision) ->
+    getSelectedDivision:   -> @selectedDivision
 
 
     load: (requestedYear, requestedWeek) ->

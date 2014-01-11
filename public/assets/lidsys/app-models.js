@@ -240,7 +240,25 @@
       this.$http = $http;
       this.$q = $q;
       this.teamStandings = {};
+      this.selectedConference = 'AFC';
+      this.selectedDivision = 'North';
     }
+
+    FootballTeamService.prototype.setSelectedConference = function(selectedConference) {
+      this.selectedConference = selectedConference;
+    };
+
+    FootballTeamService.prototype.getSelectedConference = function() {
+      return this.selectedConference;
+    };
+
+    FootballTeamService.prototype.setSelectedDivision = function(selectedDivision) {
+      this.selectedDivision = selectedDivision;
+    };
+
+    FootballTeamService.prototype.getSelectedDivision = function() {
+      return this.selectedDivision;
+    };
 
     FootballTeamService.prototype.load = function(requestedYear, requestedWeek) {
       return this.$q.when(this.loadTeamStandings(requestedYear, requestedWeek));

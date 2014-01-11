@@ -246,21 +246,56 @@ app.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule'
     }
 }])
 
+app.directive('ldsFootballDivisionSelector', [function () {
+    return {
+        restrict: "E",
+        controller: ['$location', '$route', '$scope', 'lidsysFootballTeamStanding', function ($location,  $route, $scope, footballTeamStanding) {
+            // var conference = footballTeamStanding.getSelectedConference(),
+            //     division   = footballTeamStanding.getSelectedDivision()
+            $scope.getSelectedConference = function () {
+                return footballTeamStanding.getSelectedConference()
+            }
+            $scope.setSelectedConference = function ($event, conference) {
+                $event.preventDefault()
+                footballTeamStanding.setSelectedConference(conference)
+                $route.reload()
+            }
+            $scope.getSelectedDivision   = function () {
+                return footballTeamStanding.getSelectedDivision()
+            }
+            $scope.setSelectedDivision   = function ($event, division) {
+                $event.preventDefault()
+                footballTeamStanding.setSelectedDivision(division)
+                $route.reload()
+            }
+        }],
+        templateUrl: "/app/template/football/division-selector.html"
+    }
+}])
+
 app.controller('LidsysFootballTeamStandingsCtrl', ['$scope', 'lidsysFootballSchedule', 'lidsysFootballTeam', 'lidsysFootballTeamStanding', function ($scope, footballSchedule, footballTeam, footballTeamStanding) {
     var season = footballSchedule.getSelectedSeason(),
-        week   = footballSchedule.getSelectedWeek()
+        week   = footballSchedule.getSelectedWeek(),
+        conference = footballTeamStanding.getSelectedConference(),
+        division   = footballTeamStanding.getSelectedDivision()
     var teams               = footballTeam.getTeams(),
         standings           = footballTeamStanding.getTeamStandings(
             season.year,
             week.week_number
         ),
         standing_idx,
-        standing
+        standing,
+        team,
+        filteredStandings = []
     for (standing_idx in standings) {
         standing = standings[standing_idx]
         if (standing.team_id) {
-            standing.team = teams[standing.team_id]
+            team          = teams[standing.team_id]
+            standing.team = team
+            if (team.conference == conference && team.division == division) {
+                filteredStandings.push(standing)
+            }
         }
     }
-    $scope.standings = standings
+    $scope.standings = filteredStandings
 }])

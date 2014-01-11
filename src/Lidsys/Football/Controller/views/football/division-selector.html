@@ -1,0 +1,10 @@
+<dl class="sub-nav">
+    <dt>Conference:</dt>
+    <dd ng-class="{active: getSelectedConference() == 'AFC'}"><a href="#" ng-click="setSelectedConference($event, 'AFC')">AFC</a></dd>
+    <dd ng-class="{active: getSelectedConference() == 'NFC'}"><a href="#" ng-click="setSelectedConference($event, 'NFC')">NFC</a></dd>
+    <dt>Division:</dt>
+    <dd ng-class="{active: getSelectedDivision() == 'North'}"><a href="#" ng-click="setSelectedDivision($event, 'North')">North</a></dd>
+    <dd ng-class="{active: getSelectedDivision() == 'East'}"><a href="#" ng-click="setSelectedDivision($event, 'East')">East</a></dd>
+    <dd ng-class="{active: getSelectedDivision() == 'South'}"><a href="#" ng-click="setSelectedDivision($event, 'South')">South</a></dd>
+    <dd ng-class="{active: getSelectedDivision() == 'West'}"><a href="#" ng-click="setSelectedDivision($event, 'West')">West</a></dd>
+</dl>

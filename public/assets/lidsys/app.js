@@ -16,7 +16,8 @@ app.config(['$injector', '$routeProvider', function ($injector, $routeProvider) 
         {
             templateUrl: "/app/template/football/schedule.html",
             controller: "LidsysFootballScheduleCtrl",
-            resolve: $injector.get('lidsysFootballWeekSensitiveRouteResolver')
+            resolve: $injector.get('lidsysFootballWeekSensitiveRouteResolver'),
+            navigationLabel: "Schedule"
         })
         .when('/football/team-standings/:year?/:week?',
         {
@@ -33,7 +34,8 @@ app.config(['$injector', '$routeProvider', function ($injector, $routeProvider) 
                         footballSchedule.getSelectedWeek().week_number
                     )
                 })
-            }]]
+            }]],
+            navigationLabel: "Team Standings"
         })
         .otherwise({
             template: "This doesn't exist!"
@@ -195,6 +197,37 @@ app.factory('lidsysFootballTeam', ['$http', '$q', function($http, $q) {
 
 app.factory('lidsysFootballTeamStanding', ['$http', '$q', function($http, $q) {
     return new FootballTeamStandingService($http, $q)
+}])
+
+app.directive('ldsFootballNavigation', [function () {
+    return {
+        restrict: "E",
+        controller: ['$location', '$route', '$scope', 'lidsysFootballSchedule', function ($location,  $route, $scope, footballSchedule) {
+            var navItems = [],
+                routeDef,
+                route,
+                currentRoute   = $route.current,
+                selectedSeason = footballSchedule.getSelectedSeason(),
+                selectedWeek   = footballSchedule.getSelectedWeek()
+            for (routeDef in $route.routes) {
+                route = $route.routes[routeDef]
+                if (routeDef.substring(0, 10) === '/football/' &&
+                    route.navigationLabel
+                ) {
+                    navItems.push({
+                        url: "#" + 
+                            routeDef
+                                .replace(":year?", selectedSeason.year)
+                                .replace(":week?", selectedWeek.week_number),
+                        label: route.navigationLabel,
+                        selected: (currentRoute.originalPath == route.originalPath)
+                    })
+                }
+            }
+            $scope.navItems = navItems
+        }],
+        templateUrl: "/app/template/football/navigation.html"
+    }
 }])
 
 app.directive('ldsFootballWeekSelector', [function () {

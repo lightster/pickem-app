@@ -1,6 +1,7 @@
 <div class="row">
     <div class="small-12 columns">
         <h1>Schedule</h1>
+        <lds-football-navigation></lds-football-navigation>
         <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
         <table class="small-12" style="margin: 0 auto; ">
             <tr ng-repeat-start="game in games" ng-show="headerExists(game)">

@@ -10,14 +10,16 @@ app.config(['$injector', '$routeProvider', function ($injector, $routeProvider) 
         .when('/user/login',
         {
             templateUrl: "/app/template/login/index.html",
-            controller: "LoginCtrl"
+            controller: "LoginCtrl",
+            navigationLabel: "Login"
         })
         .when('/football/schedule/:year?/:week?',
         {
             templateUrl: "/app/template/football/schedule.html",
             controller: "LidsysFootballScheduleCtrl",
             resolve: $injector.get('lidsysFootballWeekSensitiveRouteResolver'),
-            navigationLabel: "Schedule"
+            navigationLabel: "Schedule",
+            isFootball: true
         })
         .when('/football/team-standings/:year?/:week?',
         {
@@ -35,7 +37,8 @@ app.config(['$injector', '$routeProvider', function ($injector, $routeProvider) 
                     )
                 })
             }]],
-            navigationLabel: "Team Standings"
+            navigationLabel: "Team Standings",
+            isFootball: true
         })
         .otherwise({
             template: "This doesn't exist!"
@@ -163,6 +166,60 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', 'active', function 
 
 
 
+app.directive('ldsNavigation', [function () {
+    return {
+        restrict: "E",
+        scope: {
+        },
+        controller: ['$attrs', '$route', '$scope', 'lidsysFootballSchedule', function ($attrs, $route, $scope, footballSchedule) {
+            var navItems = [],
+                routeDef,
+                route,
+                currentRoute   = $route.current,
+                routeScope = $scope.$new(),
+                url,
+                urlParamNum,
+                urlParam,
+                urlParamFind,
+                urlParamReplace
+            for (routeDef in $route.routes) {
+                route            = $route.routes[routeDef]
+                routeScope.route = route
+                if ((!$attrs.filter || routeScope.$eval($attrs.filter)) &&
+                    route.navigationLabel
+                ) {
+                    url = "#" + routeDef
+
+                    for (urlParamNum = 0; urlParamNum < route.keys.length; urlParamNum++) {
+                        urlParam        = route.keys[urlParamNum]
+                        urlParamFind    = "/:" + urlParam.name
+                        urlParamReplace = currentRoute.params[urlParam.name]
+
+                        if (urlParam.optional) {
+                            urlParamFind += "?"
+                        }
+                        else if (!urlParamReplace) {
+                            throw "'" + urlParam.name + "' is required by navigation but cannot be found in current route"
+                        }
+
+                        url = url.replace(urlParamFind, "/" + urlParamReplace)
+                    }
+
+                    navItems.push({
+                        url:      url,
+                        label:    route.navigationLabel,
+                        selected: (currentRoute.originalPath == route.originalPath)
+                    })
+                }
+            }
+            $scope.navItems = navItems
+        }],
+        templateUrl: "/app/template/football/navigation.html"
+    }
+}])
+
+
+
 
 
 app.constant('lidsysFootballWeekSensitiveRouteResolver', {
@@ -197,37 +254,6 @@ app.factory('lidsysFootballTeam', ['$http', '$q', function($http, $q) {
 
 app.factory('lidsysFootballTeamStanding', ['$http', '$q', function($http, $q) {
     return new FootballTeamStandingService($http, $q)
-}])
-
-app.directive('ldsFootballNavigation', [function () {
-    return {
-        restrict: "E",
-        controller: ['$location', '$route', '$scope', 'lidsysFootballSchedule', function ($location,  $route, $scope, footballSchedule) {
-            var navItems = [],
-                routeDef,
-                route,
-                currentRoute   = $route.current,
-                selectedSeason = footballSchedule.getSelectedSeason(),
-                selectedWeek   = footballSchedule.getSelectedWeek()
-            for (routeDef in $route.routes) {
-                route = $route.routes[routeDef]
-                if (routeDef.substring(0, 10) === '/football/' &&
-                    route.navigationLabel
-                ) {
-                    navItems.push({
-                        url: "#" + 
-                            routeDef
-                                .replace(":year?", selectedSeason.year)
-                                .replace(":week?", selectedWeek.week_number),
-                        label: route.navigationLabel,
-                        selected: (currentRoute.originalPath == route.originalPath)
-                    })
-                }
-            }
-            $scope.navItems = navItems
-        }],
-        templateUrl: "/app/template/football/navigation.html"
-    }
 }])
 
 app.directive('ldsFootballWeekSelector', [function () {

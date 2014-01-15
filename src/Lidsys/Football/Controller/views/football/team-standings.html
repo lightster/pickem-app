@@ -1,7 +1,7 @@
 <div class="row">
     <div class="small-12 columns">
         <h1>Standings</h1>
-        <lds-navigation filter="route.isFootball"></lds-navigation>
+        <div ng-include="'/app/template/football/navigation.html'"></div>
         <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
         <lds-football-division-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-division-selector>
         <table class="small-12" style="margin: 0 auto; ">

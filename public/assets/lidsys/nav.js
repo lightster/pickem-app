@@ -3,9 +3,7 @@ var module =  angular.module('ldsNavigation', ['ngRoute']);
 module.directive('ldsNavigation', [function () {
     return {
         restrict: "E",
-        // TODO: see if we can make it work with isolate scope
-        // scope: {
-        // },
+        scope: true,
         controller: ['$attrs', '$route', '$scope', 'lidsysFootballSchedule', function ($attrs, $route, $scope, footballSchedule) {
             var navItems = [],
                 routeDef,

@@ -31,7 +31,7 @@
                         }
                     "
                 >
-                    <input type="radio" style="margin: 0; " />
+                    <input type="radio" value="{{game.away_team.team_id}}" style="margin: 0; " />
                 </td>
                 <td
                     class="text-center"
@@ -42,7 +42,7 @@
                             losing_team: game.away_score > game.home_score
                         }
                 ">
-                    <input type="radio" style="margin: 0; " />
+                    <input type="radio" value="{{game.home_team.team_id}}" style="margin: 0; " />
                 </td>
                 <td style="
                     background-color: {{game.home_team.border_color}};

@@ -187,3 +187,28 @@ window.FootballTeamStandingService = class FootballTeamService
     getTeamStandings: (year, week_num) ->
         throw "Team standings not yet loaded using 'loadTeamStandings' for year " + year + " week " + week_num if not @teamStandings[year]? or not @teamStandings[year][week_num]?
         @teamStandings[year][week_num]
+
+
+
+
+window.FootballPickService = class FootballPickService
+    constructor: (@$http, @$q) ->
+        @picks              = {}
+
+
+    load: (requestedYear, requestedWeek) ->
+        @$q.when(@loadPicks(requestedYear, requestedWeek))
+
+
+    loadPicks: (year, week) ->
+        return @picks[year][week] if @picks[year]? and @picks[year][week]?
+        @$http.get("/api/v1.0/football/fantasy-picks/" + year + "/" + week)
+            .success((response) =>
+                @picks[year]       = {}
+                @picks[year][week] = response.fantasy_picks
+            )
+
+
+    getPicks: (year, week_num) ->
+        throw "Picks not yet loaded using 'loadPicks' for year " + year + " week " + week_num if not @picks[year]? or not @picks[year][week_num]?
+        @picks[year][week_num]

@@ -6,7 +6,18 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
         {
             templateUrl: "/app/template/football/picks.html",
             controller: "LidsysFootballPicksCtrl",
-            resolve: $injector.get('lidsysFootballWeekSensitiveRouteResolver'),
+            resolve: [['$injector', '$route', '$q', 'lidsysFootballPick', 'lidsysFootballSchedule', function($injector, $route, $q, footballPick, footballSchedule) {
+                var resolvers = $injector.get('lidsysFootballWeekSensitiveRouteResolver');
+                return $q.all({
+                    resolveValidWeek: $injector.invoke(resolvers.resolveValidWeek),
+                    resolveTeams:     $injector.invoke(resolvers.resolveTeams)
+                }).then(function () {
+                    return footballPick.load(
+                        footballSchedule.getSelectedSeason().year,
+                        footballSchedule.getSelectedWeek().week_number
+                    )
+                })
+            }]],
             navigationLabel: "Picks",
             isFootball: true
         })
@@ -61,6 +72,10 @@ module.constant('lidsysFootballWeekSensitiveRouteResolver', {
     }]
 })
 
+module.factory('lidsysFootballPick', ['$http', '$q', function($http, $q) {
+    return new FootballPickService($http, $q)
+}])
+
 module.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
     return new FootballScheduleService($http, $q)
 }])
@@ -97,8 +112,11 @@ module.directive('ldsFootballWeekSelector', [function () {
     }
 }])
 
-module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballSchedule, footballTeam) {
-    var teams   = footballTeam.getTeams(),
+module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballSchedule, footballTeam) {
+    var season  = footballSchedule.getSelectedSeason(),
+        week    = footballSchedule.getSelectedWeek(),
+        picks   = footballPick.getPicks(season.year, week.week_number),
+        teams   = footballTeam.getTeams(),
         games   = footballSchedule.getGames(),
         game    = null,
         game_id = null
@@ -109,9 +127,12 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballSchedule'
             game.away_team = teams[game.away_team_id]
             game.home_team = teams[game.home_team_id]
         }
+
+        game.picks = picks[game.game_id]
     }
-    $scope.games        = games
-    $scope.prevGameTime = null
+    $scope.currentPlayerId = 6
+    $scope.games           = games
+    $scope.prevGameTime    = null
     $scope.headerExists = function (game) {
         if ($scope.prevGameTime === game.start_time) {
             return false

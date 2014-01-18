@@ -17,7 +17,7 @@
     };
 
     ActiveService.prototype.isLoggedIn = function() {
-      return this.user && this.user.userId;
+      return !!(this.user && this.user.userId);
     };
 
     return ActiveService;

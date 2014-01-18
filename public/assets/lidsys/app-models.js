@@ -17,11 +17,7 @@
     };
 
     ActiveService.prototype.isLoggedIn = function() {
-      if (this.user.userId) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.user && this.user.userId;
     };
 
     return ActiveService;

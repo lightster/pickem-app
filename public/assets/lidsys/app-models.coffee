@@ -6,7 +6,7 @@ window.ActiveService = class ActiveService
     setUser: (@user) ->
     getUser: -> @user
 
-    isLoggedIn: -> if @user.userId then true else false
+    isLoggedIn: -> @user && @user.userId
 
 
 

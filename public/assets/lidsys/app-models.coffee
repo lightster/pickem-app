@@ -85,13 +85,13 @@ window.FootballScheduleService = class FootballScheduleService
 
     loadWeeks: (year) ->
         return @weeks[year] if @weeks[year]?
-        @$http.get("/api/v1.0/football/weeks/" + year)
+        @$http.get("/api/v1.0/football/weeks/#{year}")
             .success((response) => @weeks[year] = response.weeks)
 
 
     loadGames: (year, week) ->
         return @games[year][week] if @games[year]? and @games[year][week]?
-        @$http.get("/api/v1.0/football/schedule/" + year + "/" + week)
+        @$http.get("/api/v1.0/football/schedule/#{year}/#{week}")
             .success((response) =>
                 @games[year]       = {}
                 @games[year][week] = response.games
@@ -112,12 +112,12 @@ window.FootballScheduleService = class FootballScheduleService
 
 
     getWeeks: (year) ->
-        throw "Weeks not yet loaded using 'loadWeeks' for year" + year if not @weeks[year]?
+        throw "Weeks not yet loaded using 'loadWeeks' for year #{year}" if not @weeks[year]?
         @weeks[year]
 
 
     getWeeksArray: (year) ->
-        throw "Weeks not yet loaded using 'loadWeeks' for year" + year if not @weeks[year]?
+        throw "Weeks not yet loaded using 'loadWeeks' for year #{year}" if not @weeks[year]?
         for own week_num, week of @weeks[year]
             week
 
@@ -129,7 +129,7 @@ window.FootballScheduleService = class FootballScheduleService
         if not week_num?
             week_num = @selectedWeek.week_number 
 
-        throw "Games not yet loaded using 'loadGames' for year " + year + " week " + week_num if not @games[year]? or not @games[year][week_num]?
+        throw "Games not yet loaded using 'loadGames' for year #{year} week #{week_num}" if not @games[year]? or not @games[year][week_num]?
         @games[year][week_num]
 
 
@@ -177,7 +177,7 @@ window.FootballTeamStandingService = class FootballTeamService
 
     loadTeamStandings: (year, week) ->
         return @teamStandings[year][week] if @teamStandings[year]? and @teamStandings[year][week]?
-        @$http.get("/api/v1.0/football/team-standings/" + year + "/" + week)
+        @$http.get("/api/v1.0/football/team-standings/#{year}/#{week}")
             .success((response) =>
                 @teamStandings[year]       = {}
                 @teamStandings[year][week] = response.team_standings
@@ -185,7 +185,7 @@ window.FootballTeamStandingService = class FootballTeamService
 
 
     getTeamStandings: (year, week_num) ->
-        throw "Team standings not yet loaded using 'loadTeamStandings' for year " + year + " week " + week_num if not @teamStandings[year]? or not @teamStandings[year][week_num]?
+        throw "Team standings not yet loaded using 'loadTeamStandings' for year #{year} week #{week_num}" if not @teamStandings[year]? or not @teamStandings[year][week_num]?
         @teamStandings[year][week_num]
 
 
@@ -202,7 +202,7 @@ window.FootballPickService = class FootballPickService
 
     loadPicks: (year, week) ->
         return @picks[year][week] if @picks[year]? and @picks[year][week]?
-        @$http.get("/api/v1.0/football/fantasy-picks/" + year + "/" + week)
+        @$http.get("/api/v1.0/football/fantasy-picks/#{year}/#{week}")
             .success((response) =>
                 @picks[year]       = {}
                 @picks[year][week] = response.fantasy_picks
@@ -210,5 +210,5 @@ window.FootballPickService = class FootballPickService
 
 
     getPicks: (year, week_num) ->
-        throw "Picks not yet loaded using 'loadPicks' for year " + year + " week " + week_num if not @picks[year]? or not @picks[year][week_num]?
+        throw "Picks not yet loaded using 'loadPicks' for year #{year} week #{week_num}" if not @picks[year]? or not @picks[year][week_num]?
         @picks[year][week_num]

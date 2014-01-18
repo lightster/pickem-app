@@ -165,7 +165,7 @@
 
     FootballScheduleService.prototype.getWeeks = function(year) {
       if (this.weeks[year] == null) {
-        throw "Weeks not yet loaded using 'loadWeeks' for year" + year;
+        throw "Weeks not yet loaded using 'loadWeeks' for year " + year;
       }
       return this.weeks[year];
     };
@@ -173,7 +173,7 @@
     FootballScheduleService.prototype.getWeeksArray = function(year) {
       var week, week_num, _ref, _results;
       if (this.weeks[year] == null) {
-        throw "Weeks not yet loaded using 'loadWeeks' for year" + year;
+        throw "Weeks not yet loaded using 'loadWeeks' for year " + year;
       }
       _ref = this.weeks[year];
       _results = [];

@@ -74,7 +74,7 @@ app.run(['$rootScope', 'active', function ($rootScope, active) {
 app.controller('AppCtrl', ['$scope', '$http', function ($scope, $http) {
 }])
 
-app.controller('LoginCtrl', ['$scope', '$location', '$http', 'active', function ($scope, $location, $http, active) {
+app.controller('LoginCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
     $scope.formChanged = function ($event) {
         var login = $scope.login;
 
@@ -114,6 +114,7 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', 'active', function 
                 if (data.authenticated_user) {
                     active.setUser((new User()).setFromApi(data.authenticated_user))
                     login.error.form = 'Success!!';
+                    $window.history.back()
                 }
                 else {
                     login.error.form = 'The provided username/password are incorrect.';

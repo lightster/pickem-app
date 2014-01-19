@@ -29,7 +29,7 @@ app.directive('ldsAuthenticated', ['$rootScope', 'active', function ($rootScope,
             var wasOriginallyDisplayed = element.css('display')
             $rootScope.$watch(
                 function (scope) {
-                    var expected = (attrs.ldsAuthenticated !== "false")
+                    var expected = scope.$eval(attrs.ldsAuthenticated)
                     return expected === active.isLoggedIn()
                 },
                 function (isAsExpected, wasAsExpected, scope) {

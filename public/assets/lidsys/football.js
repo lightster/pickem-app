@@ -2,12 +2,12 @@ var module =  angular.module('ldsFootball', ['ngRoute']);
 
 module.config(['$injector', '$routeProvider', function ($injector, $routeProvider) {
     $routeProvider
-        .when('/football/picks/:year?/:week?',
+        .when('/football/my-picks/:year?/:week?',
         {
-            templateUrl: "/app/template/football/picks.html",
+            templateUrl: "/app/template/football/my-picks.html",
             controller: "LidsysFootballPicksCtrl",
             resolve: $injector.get('lidsysFootballPicksRouteResolver'),
-            navigationLabel: "Picks",
+            navigationLabel: "My Picks",
             isFootball: true
         })
         .when('/football/schedule/:year?/:week?',

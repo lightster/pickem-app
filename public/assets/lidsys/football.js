@@ -6,18 +6,7 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
         {
             templateUrl: "/app/template/football/picks.html",
             controller: "LidsysFootballPicksCtrl",
-            resolve: [['$injector', '$route', '$q', 'lidsysFootballPick', 'lidsysFootballSchedule', function($injector, $route, $q, footballPick, footballSchedule) {
-                var resolvers = $injector.get('lidsysFootballWeekSensitiveRouteResolver');
-                return $q.all({
-                    resolveValidWeek: $injector.invoke(resolvers.resolveValidWeek),
-                    resolveTeams:     $injector.invoke(resolvers.resolveTeams)
-                }).then(function () {
-                    return footballPick.load(
-                        footballSchedule.getSelectedSeason().year,
-                        footballSchedule.getSelectedWeek().week_number
-                    )
-                })
-            }]],
+            resolve: $injector.get('lidsysFootballPicksRouteResolver'),
             navigationLabel: "Picks",
             isFootball: true
         })
@@ -69,6 +58,21 @@ module.constant('lidsysFootballWeekSensitiveRouteResolver', {
     }],
     resolveTeams: ['lidsysFootballTeam', function (footballTeam) {
         return footballTeam.load()
+    }]
+})
+
+module.constant('lidsysFootballPicksRouteResolver', {
+    resolvePicks: ['$injector', '$route', '$q', 'lidsysFootballPick', 'lidsysFootballSchedule', function($injector, $route, $q, footballPick, footballSchedule) {
+        var resolvers = $injector.get('lidsysFootballWeekSensitiveRouteResolver');
+        return $q.all({
+            resolveValidWeek: $injector.invoke(resolvers.resolveValidWeek),
+            resolveTeams:     $injector.invoke(resolvers.resolveTeams)
+        }).then(function () {
+            return footballPick.load(
+                footballSchedule.getSelectedSeason().year,
+                footballSchedule.getSelectedWeek().week_number
+            )
+        })
     }]
 })
 

@@ -102,6 +102,14 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->get('/fantasy-players/{year}', function ($year) use ($app) {
+            $players = $app['lidsys.football.fantasy-player']->getPlayersForYear($year);
+
+            return $app->json(array(
+                'fantasy_players' => $players,
+            ));
+        });
+
         $controllers->before(new JsonRequestMiddlewareService());
         $controllers->before(function () use ($app) {
             $app->register(new FootballServiceProvider());

@@ -62,7 +62,7 @@ module.constant('lidsysFootballWeekSensitiveRouteResolver', {
 })
 
 module.constant('lidsysFootballPicksRouteResolver', {
-    resolvePicks: ['$injector', '$route', '$q', 'lidsysFootballPick', 'lidsysFootballSchedule', function($injector, $route, $q, footballPick, footballSchedule) {
+    resolvePicks: ['$injector', '$route', '$q', 'lidsysFootballFantasyPlayer','lidsysFootballPick',  'lidsysFootballSchedule', function($injector, $route, $q, footballFantasyPlayer, footballPick, footballSchedule) {
         var resolvers = $injector.get('lidsysFootballWeekSensitiveRouteResolver');
         return $q.all({
             resolveValidWeek: $injector.invoke(resolvers.resolveValidWeek),
@@ -72,9 +72,17 @@ module.constant('lidsysFootballPicksRouteResolver', {
                 footballSchedule.getSelectedSeason().year,
                 footballSchedule.getSelectedWeek().week_number
             )
+        }).then(function () {
+            return footballFantasyPlayer.load(
+                footballSchedule.getSelectedSeason().year
+            )
         })
     }]
 })
+
+module.factory('lidsysFootballFantasyPlayer', ['$http', '$q', function($http, $q) {
+    return new FootballFantasyPlayerService($http, $q)
+}])
 
 module.factory('lidsysFootballPick', ['$http', '$q', function($http, $q) {
     return new FootballPickService($http, $q)

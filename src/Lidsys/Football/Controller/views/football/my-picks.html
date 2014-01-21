@@ -30,6 +30,7 @@
                             losing_team: game.away_score < game.home_score
                         }
                     "
+                    ng-style="getPickedTeamStyle(game, game.away_team)"
                 >
                     <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.away_team.team_id}}" style="margin: 0; " />
                 </td>
@@ -41,7 +42,9 @@
                             winning_team: game.away_score &amp;&amp; game.away_score <= game.home_score,
                             losing_team: game.away_score > game.home_score
                         }
-                ">
+                    "
+                    ng-style="getPickedTeamStyle(game, game.home_team)"
+                >
                     <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home_team.team_id}}" style="margin: 0; " />
                 </td>
                 <td style="

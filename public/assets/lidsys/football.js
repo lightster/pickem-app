@@ -124,12 +124,13 @@ module.directive('ldsFootballWeekSelector', [function () {
     }
 }])
 
-module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballSchedule, footballTeam) {
+module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPlayer', 'lidsysFootballPick', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPlayer, footballPick, footballSchedule, footballTeam) {
     var season  = footballSchedule.getSelectedSeason(),
         week    = footballSchedule.getSelectedWeek(),
         picks   = footballPick.getPicks(season.year, week.week_number),
         teams   = footballTeam.getTeams(),
         games   = footballSchedule.getGames(),
+        players = footballPlayer.getPlayers(season.year),
         game    = null,
         game_id = null
     for (game_id in games) {
@@ -143,6 +144,7 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballPick', 'l
         game.picks = picks[game.game_id]
     }
     $scope.currentPlayerId = 6
+    $scope.currentPlayer   = players[$scope.currentPlayerId]
     $scope.games           = games
     $scope.prevGameTime    = null
     $scope.headerExists = function (game) {
@@ -152,6 +154,14 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballPick', 'l
 
         $scope.prevGameTime = game.start_time
         return true
+    }
+    $scope.getPickedTeamStyle = function (game, team) {
+        console.log(game.picks[$scope.currentPlayer.player_id].team_id, team.team_id)
+        if (game.picks[$scope.currentPlayer.player_id].team_id == team.team_id) {
+            return {'background-color': '#' + $scope.currentPlayer.background_color}
+        }
+
+        return ""
     }
 }])
 

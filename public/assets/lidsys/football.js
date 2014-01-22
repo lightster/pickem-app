@@ -10,6 +10,14 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
             navigationLabel: "My Picks",
             isFootball: true
         })
+        .when('/football/league-picks/:year?/:week?',
+        {
+            templateUrl: "/app/template/football/league-picks.html",
+            controller: "LidsysFootballPicksCtrl",
+            resolve: $injector.get('lidsysFootballPicksRouteResolver'),
+            navigationLabel: "League Picks",
+            isFootball: true
+        })
         .when('/football/schedule/:year?/:week?',
         {
             templateUrl: "/app/template/football/schedule.html",
@@ -162,6 +170,37 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
         }
 
         return ""
+    }
+}])
+
+module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballSchedule, footballTeam) {
+    var season  = footballSchedule.getSelectedSeason(),
+        week    = footballSchedule.getSelectedWeek(),
+        picks   = footballPick.getPicks(season.year, week.week_number),
+        teams   = footballTeam.getTeams(),
+        games   = footballSchedule.getGames(),
+        game    = null,
+        game_id = null
+    for (game_id in games) {
+        game = games[game_id]
+
+        if (game.away_team_id && !game.away_team) {
+            game.away_team = teams[game.away_team_id]
+            game.home_team = teams[game.home_team_id]
+        }
+
+        game.picks = picks[game.game_id]
+    }
+    $scope.currentPlayerId = 6
+    $scope.games           = games
+    $scope.prevGameTime    = null
+    $scope.headerExists = function (game) {
+        if ($scope.prevGameTime === game.start_time) {
+            return false
+        }
+
+        $scope.prevGameTime = game.start_time
+        return true
     }
 }])
 

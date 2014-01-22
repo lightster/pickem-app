@@ -3,59 +3,59 @@
         <h1>Schedule</h1>
         <div ng-include="'/app/template/football/navigation.html'"></div>
         <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
-        <table class="small-12" style="margin: 0 auto; ">
-            <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
-                <th colspan="8">
-                    {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
-                </th>
-            </tr>
-            <tr ng-repeat-end>
-                <td style="
-                    color: {{game.away_team.font_color}};
-                    background-color: {{game.away_team.background_color}};
-                    width: 40%;
-                " class="text-right">
-                    {{game.away_team.location}} {{game.away_team.mascot}}
-                </td>
-                <td style="
-                    background-color: {{game.away_team.border_color}};
-                    width: 4%;
-                ">&nbsp;</td>
-                <td
-                    class="text-center"
-                    style="vertical-align: middle; width: 4%; "
-                    ng-class="
-                        {
-                            winning_team: game.away_score &amp;&amp; game.away_score >= game.home_score,
-                            losing_team: game.away_score < game.home_score
-                        }
-                    "
-                >
-                    {{game.away_score}}
-                </td>
-                <td
-                    class="text-center"
-                    style="vertical-align: middle; width: 4%; "
-                    ng-class="
-                        {
-                            winning_team: game.away_score &amp;&amp; game.away_score <= game.home_score,
-                            losing_team: game.away_score > game.home_score
-                        }
-                ">
-                    {{game.home_score}}
-                </td>
-                <td style="
-                    background-color: {{game.home_team.border_color}};
-                    width: 4%;
-                ">&nbsp;</td>
-                <td style="
-                    color: {{game.home_team.font_color}};
-                    background-color: {{game.home_team.background_color}};
-                    width: 40%;
-                ">
-                    {{game.home_team.location}} {{game.home_team.mascot}}
-                </td>
-            </tr>
-        </table>
     </div>
+    <table class="small-12" style="margin: 0 auto; ">
+        <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
+            <th colspan="8">
+                {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
+            </th>
+        </tr>
+        <tr ng-repeat-end>
+            <td style="
+                color: {{game.away_team.font_color}};
+                background-color: {{game.away_team.background_color}};
+                width: 40%;
+            " class="text-right">
+                {{game.away_team.location}} {{game.away_team.mascot}}
+            </td>
+            <td style="
+                background-color: {{game.away_team.border_color}};
+                width: 4%;
+            ">&nbsp;</td>
+            <td
+                class="text-center"
+                style="vertical-align: middle; width: 4%; "
+                ng-class="
+                    {
+                        winning_team: game.away_score &amp;&amp; game.away_score >= game.home_score,
+                        losing_team: game.away_score < game.home_score
+                    }
+                "
+            >
+                {{game.away_score}}
+            </td>
+            <td
+                class="text-center"
+                style="vertical-align: middle; width: 4%; "
+                ng-class="
+                    {
+                        winning_team: game.away_score &amp;&amp; game.away_score <= game.home_score,
+                        losing_team: game.away_score > game.home_score
+                    }
+            ">
+                {{game.home_score}}
+            </td>
+            <td style="
+                background-color: {{game.home_team.border_color}};
+                width: 4%;
+            ">&nbsp;</td>
+            <td style="
+                color: {{game.home_team.font_color}};
+                background-color: {{game.home_team.background_color}};
+                width: 40%;
+            ">
+                {{game.home_team.location}} {{game.home_team.mascot}}
+            </td>
+        </tr>
+    </table>
 </div>

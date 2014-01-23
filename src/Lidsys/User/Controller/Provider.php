@@ -10,8 +10,8 @@
 
 namespace Lidsys\User\Controller;
 
-use Lidsys\Silex\Service\Exception\TemplateNotFound;
-use Lidsys\Silex\Service\JsonRequestMiddlewareService;
+use Lstr\Silex\Service\Exception\TemplateNotFound;
+use Lstr\Silex\Service\JsonRequestMiddlewareService;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;

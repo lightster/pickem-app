@@ -10,7 +10,7 @@
 
 namespace Lidsys\Application\Controller;
 
-use Lidsys\Silex\Service\Exception\TemplateNotFound;
+use Lstr\Silex\Service\Exception\TemplateNotFound;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;

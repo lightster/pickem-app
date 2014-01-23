@@ -190,16 +190,23 @@ module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPic
 
         game.picks = picks[game.game_id]
     }
-    $scope.currentPlayerId = 6
-    $scope.games           = games
-    $scope.prevGameTime    = null
+    $scope.currentPlayerId  = 6
+    $scope.games            = games
+    $scope.prevGame         = null
+    $scope.prevHeaderExists = null
+    $scope.prevGameTime     = null
     $scope.headerExists = function (game) {
-        if ($scope.prevGameTime === game.start_time) {
-            return false
+        console.log($scope.prevGame)
+        if ($scope.prevGame === game) {
+            console.log(game)
+            return $scope.prevHeaderExists
         }
 
-        $scope.prevGameTime = game.start_time
-        return true
+        $scope.prevHeaderExists = ($scope.prevGameTime !== game.start_time)
+        $scope.prevGameTime     = game.start_time
+        $scope.prevGame         = game
+
+        return $scope.prevHeaderExists
     }
 }])
 

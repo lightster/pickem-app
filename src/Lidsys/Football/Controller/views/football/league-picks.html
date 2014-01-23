@@ -6,22 +6,14 @@
     </div>
     <table class="small-12" style="margin: 0 auto; ">
         <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
-            <th colspan="8">
+            <th colspan="8" style="background-color: #f2f2f2;">
                 {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
             </th>
         </tr>
-        <tr ng-repeat-end>
-            <td style="
-                color: {{game.away_team.font_color}};
-                background-color: {{game.away_team.background_color}};
-                width: 40%;
-            " class="text-right">
-                {{game.away_team.location}} {{game.away_team.mascot}}
-            </td>
-            <td style="
-                background-color: {{game.away_team.border_color}};
-                width: 4%;
-            ">&nbsp;</td>
+        <tr ng-hide="headerExists(game)">
+            <td style="background-color: #d9d9d9; height: 2px; font-size: 1px; padding: 0; margin: 0; " colspan="3"></td>
+        </tr>
+        <tr>
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
@@ -33,8 +25,21 @@
                 "
                 ng-style="getPickedTeamStyle(game, game.away_team)"
             >
-                <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.away_team.team_id}}" style="margin: 0; " />
+                
             </td>
+            <td style="
+                background-color: {{game.away_team.border_color}};
+                width: 4%;
+            ">&nbsp;</td>
+            <td style="
+                color: {{game.away_team.font_color}};
+                background-color: {{game.away_team.background_color}};
+                width: 40%;
+            ">
+                {{game.away_team.location}} {{game.away_team.mascot}}
+            </td>
+        </tr>
+        <tr ng-repeat-end>
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
@@ -46,7 +51,7 @@
                 "
                 ng-style="getPickedTeamStyle(game, game.home_team)"
             >
-                <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home_team.team_id}}" style="margin: 0; " />
+                
             </td>
             <td style="
                 background-color: {{game.home_team.border_color}};

@@ -12,6 +12,13 @@
 	},
 	"require": {
 		"php": ">=5.4.19",
-		"silex/silex": "~1.1"
-	}
+		"silex/silex": "~1.1",
+		"lightster/lstr-silex": "dev-master"
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "http://github.com/lightster/lstr-silex"
+		}
+	]
 }

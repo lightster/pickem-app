@@ -3,8 +3,45 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4f2b6958fdb33408b579edeea0963aa8",
+    "hash": "4f54e54dc28e923008c15d46cb77d2d5",
     "packages": [
+        {
+            "name": "lightster/lstr-silex",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lightster/lstr-silex.git",
+                "reference": "caac03e8333345cf4b76b4fad85ae05dfcf54228"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/caac03e8333345cf4b76b4fad85ae05dfcf54228",
+                "reference": "caac03e8333345cf4b76b4fad85ae05dfcf54228",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.19",
+                "silex/silex": "~1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Lstr\\": "src/"
+                }
+            },
+            "description": "Lstr/Silex Quick-start Library",
+            "homepage": "http://lightdatasys.com",
+            "keywords": [
+                "lightster",
+                "lstr",
+                "silex"
+            ],
+            "support": {
+                "source": "https://github.com/lightster/lstr-silex/tree/master",
+                "issues": "https://github.com/lightster/lstr-silex/issues"
+            },
+            "time": "2014-01-23 23:07:34"
+        },
         {
             "name": "pimple/pimple",
             "version": "v1.1.0",
@@ -477,9 +514,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "lightster/lstr-silex": 20
+    },
     "platform": {
         "php": ">=5.4.19"
     },

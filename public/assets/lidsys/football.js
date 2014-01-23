@@ -13,7 +13,7 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
         .when('/football/league-picks/:year?/:week?',
         {
             templateUrl: "/app/template/football/league-picks.html",
-            controller: "LidsysFootballPicksCtrl",
+            controller: "LidsysFootballLeaguePicksCtrl",
             resolve: $injector.get('lidsysFootballPicksRouteResolver'),
             navigationLabel: "League Picks",
             isFootball: true

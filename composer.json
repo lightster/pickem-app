@@ -13,7 +13,7 @@
 	"require": {
 		"php": ">=5.4.19",
 		"silex/silex": "~1.1",
-		"lightster/lstr-silex": "dev-master"
+		"lightster/lstr-silex": "~0.0"
 	},
 	"repositories": [
 		{

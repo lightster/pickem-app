@@ -3,11 +3,11 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4f54e54dc28e923008c15d46cb77d2d5",
+    "hash": "d1fe4848edad14ae6b2462a5bddf2c64",
     "packages": [
         {
             "name": "lightster/lstr-silex",
-            "version": "dev-master",
+            "version": "v0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex.git",
@@ -514,9 +514,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "lightster/lstr-silex": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": {
         "php": ">=5.4.19"
     },

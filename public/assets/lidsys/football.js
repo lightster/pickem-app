@@ -164,7 +164,6 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
         return true
     }
     $scope.getPickedTeamStyle = function (game, team) {
-        console.log(game.picks[$scope.currentPlayer.player_id].team_id, team.team_id)
         if (game.picks[$scope.currentPlayer.player_id].team_id == team.team_id) {
             return {'background-color': '#' + $scope.currentPlayer.background_color}
         }

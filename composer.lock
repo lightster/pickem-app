@@ -3,24 +3,24 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d1fe4848edad14ae6b2462a5bddf2c64",
+    "hash": "27f867af11ef71130434c8bc65e4d553",
     "packages": [
         {
             "name": "lightster/lstr-silex",
-            "version": "v0.0.0",
+            "version": "v0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex.git",
-                "reference": "caac03e8333345cf4b76b4fad85ae05dfcf54228"
+                "reference": "7145bb157dd656ac62fae1ec161ab8b2aead8f86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/caac03e8333345cf4b76b4fad85ae05dfcf54228",
-                "reference": "caac03e8333345cf4b76b4fad85ae05dfcf54228",
+                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/7145bb157dd656ac62fae1ec161ab8b2aead8f86",
+                "reference": "7145bb157dd656ac62fae1ec161ab8b2aead8f86",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.19",
+                "php": ">=5.3",
                 "silex/silex": "~1.1"
             },
             "type": "library",
@@ -37,10 +37,10 @@
                 "silex"
             ],
             "support": {
-                "source": "https://github.com/lightster/lstr-silex/tree/master",
+                "source": "https://github.com/lightster/lstr-silex/tree/v0.0.2",
                 "issues": "https://github.com/lightster/lstr-silex/issues"
             },
-            "time": "2014-01-23 23:07:34"
+            "time": "2014-01-24 06:50:34"
         },
         {
             "name": "pimple/pimple",

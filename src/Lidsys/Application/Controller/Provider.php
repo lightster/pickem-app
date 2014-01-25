@@ -20,20 +20,20 @@ class Provider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $app['lidsys.template.path'][] = __DIR__ . '/views';
+        $app['lstr.template.path'][] = __DIR__ . '/views';
 
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/template/{controller}/{template}', function ($controller, $template) use ($app) {
             try {
-                return $app['lidsys.template']->render("{$controller}/{$template}");
+                return $app['lstr.template']->render("{$controller}/{$template}");
             } catch (TemplateNotFound $ex) {
                 return new Response($ex->getMessage(), 404);
             }
         });
 
         $controllers->get('/', function () use ($app) {
-            return $app['lidsys.template']->render('index/index.html');
+            return $app['lstr.template']->render('index/index.html');
         });
 
         return $controllers;

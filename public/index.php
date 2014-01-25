@@ -32,7 +32,7 @@ $app->register(new TemplateServiceProvider());
 
 $app->register(new UserServiceProvider());
 
-$app['config'] = $app['lidsys.config']->load(array(
+$app['config'] = $app['lstr.config']->load(array(
     __DIR__ . '/../config/autoload/*.global.php',
     __DIR__ . '/../config/autoload/*.local.php',
 ));

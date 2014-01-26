@@ -49,9 +49,10 @@
   })();
 
   window.FootballScheduleService = FootballScheduleService = (function() {
-    function FootballScheduleService($http, $q) {
+    function FootballScheduleService($http, $q, teamService) {
       this.$http = $http;
       this.$q = $q;
+      this.teamService = teamService;
       this.seasons = null;
       this.weeks = {};
       this.games = {};
@@ -139,8 +140,17 @@
         return this.games[year][week];
       }
       return this.$http.get("/api/v1.0/football/schedule/" + year + "/" + week).success(function(response) {
+        var game, game_id, games, teams;
+        teams = _this.teamService.getTeams();
+        games = response.games;
+        for (game_id in games) {
+          if (!__hasProp.call(games, game_id)) continue;
+          game = games[game_id];
+          game.away_team = teams[game.away_team_id];
+          game.home_team = teams[game.home_team_id];
+        }
         _this.games[year] = {};
-        return _this.games[year][week] = response.games;
+        return _this.games[year][week] = games;
       });
     };
 

@@ -28,7 +28,7 @@ window.User = class User
 
 
 window.FootballScheduleService = class FootballScheduleService
-    constructor: (@$http, @$q) ->
+    constructor: (@$http, @$q, @teamService) ->
         @seasons = null
         @weeks   = {}
         @games   = {}
@@ -93,8 +93,14 @@ window.FootballScheduleService = class FootballScheduleService
         return @games[year][week] if @games[year]? and @games[year][week]?
         @$http.get("/api/v1.0/football/schedule/#{year}/#{week}")
             .success((response) =>
+                teams = @teamService.getTeams()
+                games = response.games
+                for own game_id, game of games
+                    game.away_team = teams[game.away_team_id]
+                    game.home_team = teams[game.home_team_id]
+
                 @games[year]       = {}
-                @games[year][week] = response.games
+                @games[year][week] = games
             )
 
 

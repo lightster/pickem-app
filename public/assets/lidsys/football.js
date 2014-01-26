@@ -96,8 +96,8 @@ module.factory('lidsysFootballPick', ['$http', '$q', function($http, $q) {
     return new FootballPickService($http, $q)
 }])
 
-module.factory('lidsysFootballSchedule', ['$http', '$q', function($http, $q) {
-    return new FootballScheduleService($http, $q)
+module.factory('lidsysFootballSchedule', ['$http', '$q', 'lidsysFootballTeam', function($http, $q, footballTeam) {
+    return new FootballScheduleService($http, $q, footballTeam)
 }])
 
 module.factory('lidsysFootballTeam', ['$http', '$q', function($http, $q) {
@@ -144,11 +144,6 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
     for (game_id in games) {
         game = games[game_id]
 
-        if (game.away_team_id && !game.away_team) {
-            game.away_team = teams[game.away_team_id]
-            game.home_team = teams[game.home_team_id]
-        }
-
         game.picks = picks[game.game_id]
     }
     $scope.currentPlayerId = 6
@@ -183,11 +178,6 @@ module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPic
     for (game_id in games) {
         game = games[game_id]
 
-        if (game.away_team_id && !game.away_team) {
-            game.away_team = teams[game.away_team_id]
-            game.home_team = teams[game.home_team_id]
-        }
-
         game.picks = picks[game.game_id]
     }
     $scope.currentPlayerId  = 6
@@ -215,14 +205,6 @@ module.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedu
         games   = footballSchedule.getGames(),
         game    = null,
         game_id = null
-    for (game_id in games) {
-        game = games[game_id]
-
-        if (game.away_team_id && !game.away_team) {
-            game.away_team = teams[game.away_team_id]
-            game.home_team = teams[game.home_team_id]
-        }
-    }
     $scope.games        = games
     $scope.prevGameTime = null
     $scope.headerExists = function (game) {

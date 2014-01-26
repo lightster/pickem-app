@@ -1,3 +1,29 @@
+window.FootballTeam = class FootballTeam
+    @constructor: ->
+        @abbreviation     = null
+        @background_color = null
+        @border_color     = null
+        @conference       = null
+        @division         = null
+        @font_color       = null
+        @location         = null
+        @mascot           = null
+        @team_id          = null
+
+    setFromApi: (options) ->
+        @abbreviation     = options.abbreviation
+        @background_color = options.background_color
+        @border_color     = options.border_color
+        @conference       = options.conference
+        @division         = options.division
+        @font_color       = options.font_color
+        @location         = options.location
+        @mascot           = options.mascot
+        @team_id          = options.team_id
+        @
+
+
+
 window.FootballScheduleService = class FootballScheduleService
     constructor: (@$http, @$q, @teamService) ->
         @seasons = null
@@ -124,7 +150,11 @@ window.FootballTeamService = class FootballTeamService
     loadTeams: ->
         return @teams if @teams?
         @$http.get("/api/v1.0/football/teams")
-            .success((response) => @teams = response.teams)
+            .success((response) =>
+                @teams = {}
+                for teamId, team of response.teams
+                    @teams[teamId] = (new FootballTeam()).setFromApi team
+            )
 
 
     getTeams: ->

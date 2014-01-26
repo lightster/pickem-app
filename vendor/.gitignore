@@ -1,9 +1,0 @@
-!.gitignore
-.composer
-autoload.php
-bin
-composer
-pimple
-psr
-silex
-symfony

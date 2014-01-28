@@ -6,7 +6,7 @@
     </div>
     <table class="small-12" style="margin: 0 auto; ">
         <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
-            <th colspan="8" style="background-color: #f2f2f2;">
+            <th colspan="{{playerCount + 3}}" style="background-color: #f2f2f2;">
                 {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
             </th>
         </tr>
@@ -38,6 +38,13 @@
             ">
                 {{game.away_team.location}} {{game.away_team.mascot}}
             </td>
+            <td ng-repeat="pick in game.picks">
+                <div ng-show="pick.team_id == game.away_team.team_id">
+                    <div style="background-color: #{{players[pick.player_id].background_color}}; color: #ffffff; ">
+                        {{players[pick.player_id].displayName}}
+                    </div>
+                </div>
+            </td>
         </tr>
         <tr ng-repeat-end>
             <td
@@ -63,6 +70,13 @@
                 width: 40%;
             ">
                 {{game.home_team.location}} {{game.home_team.mascot}}
+            </td>
+            <td ng-repeat="pick in game.picks">
+                <div ng-show="pick.team_id == game.home_team.team_id">
+                    <div style="background-color: #{{players[pick.player_id].background_color}}; color: #ffffff; ">
+                        {{players[pick.player_id].displayName}}
+                    </div>
+                </div>
             </td>
         </tr>
     </table>

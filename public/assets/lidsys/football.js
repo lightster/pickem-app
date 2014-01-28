@@ -167,12 +167,13 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
     }
 }])
 
-module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballSchedule, footballTeam) {
+module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballPlayer, footballSchedule, footballTeam) {
     var season  = footballSchedule.getSelectedSeason(),
         week    = footballSchedule.getSelectedWeek(),
         picks   = footballPick.getPicks(season.year, week.week_number),
         teams   = footballTeam.getTeams(),
         games   = footballSchedule.getGames(),
+        players = footballPlayer.getPlayers(season.year),
         game    = null,
         game_id = null
     for (game_id in games) {
@@ -182,13 +183,13 @@ module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPic
     }
     $scope.currentPlayerId  = 6
     $scope.games            = games
+    $scope.players          = players
+    $scope.playerCount      = 20
     $scope.prevGame         = null
     $scope.prevHeaderExists = null
     $scope.prevGameTime     = null
     $scope.headerExists = function (game) {
-        console.log($scope.prevGame)
         if ($scope.prevGame === game) {
-            console.log(game)
             return $scope.prevHeaderExists
         }
 

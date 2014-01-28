@@ -337,7 +337,17 @@
         return this.players[year];
       }
       return this.$http.get("/api/v1.0/football/fantasy-players/" + year).success(function(response) {
-        return _this.players[year] = response.fantasy_players;
+        var names, player, playerId, _ref, _results;
+        _this.players[year] = {};
+        _ref = response.fantasy_players;
+        _results = [];
+        for (playerId in _ref) {
+          player = _ref[playerId];
+          names = player.name.split(" ");
+          player.displayName = names[0][0] + names[0][1] + names[1][0];
+          _results.push(_this.players[year][playerId] = player);
+        }
+        return _results;
       });
     };
 

@@ -236,7 +236,11 @@ window.FootballFantasyPlayerService = class FootballFantasyPlayerService
         return @players[year] if @players[year]?
         @$http.get("/api/v1.0/football/fantasy-players/#{year}")
             .success((response) =>
-                @players[year]       = response.fantasy_players
+                @players[year] = {}
+                for playerId, player of response.fantasy_players
+                    names = player.name.split(" ")
+                    player.displayName = names[0][0] + names[0][1] + names[1][0]
+                    @players[year][playerId] = player
             )
 
 

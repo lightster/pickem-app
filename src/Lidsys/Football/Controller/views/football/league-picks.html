@@ -4,6 +4,8 @@
         <div ng-include="'/app/template/football/navigation.html'"></div>
         <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
     </div>
+</div>
+<div class="row full-width">
     <table class="small-12" style="margin: 0 auto; ">
         <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
             <th colspan="{{playerCount + 3}}" style="background-color: #f2f2f2;">

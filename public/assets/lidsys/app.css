@@ -16,3 +16,8 @@ nav.top-bar .title-area h1 {
 .losing_team {
     color: #999999;
 }
+
+.row.full-width {
+    max-width: 100%;
+    padding: 0 5px;
+}

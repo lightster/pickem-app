@@ -21,3 +21,7 @@ nav.top-bar .title-area h1 {
     max-width: 100%;
     padding: 0 5px;
 }
+
+.no-wrap {
+    white-space: nowrap;
+}

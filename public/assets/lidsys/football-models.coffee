@@ -239,7 +239,7 @@ window.FootballFantasyPlayerService = class FootballFantasyPlayerService
                 @players[year] = {}
                 for playerId, player of response.fantasy_players
                     names = player.name.split(" ")
-                    player.displayName = names[0][0] + names[0][1] + names[1][0]
+                    player.displayName = names[0][0] + names[0][names[0].length - 1] + names[1][0]
                     @players[year][playerId] = player
             )
 

@@ -344,7 +344,7 @@
         for (playerId in _ref) {
           player = _ref[playerId];
           names = player.name.split(" ");
-          player.displayName = names[0][0] + names[0][1] + names[1][0];
+          player.displayName = names[0][0] + names[0][names[0].length - 1] + names[1][0];
           _results.push(_this.players[year][playerId] = player);
         }
         return _results;

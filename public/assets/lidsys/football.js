@@ -199,6 +199,19 @@ module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPic
 
         return $scope.prevHeaderExists
     }
+    $scope.getPickedTeamStyle = function (pick, team) {
+        if (pick.team_id == team.team_id) {
+            return {
+                'background-color': '#' + $scope.players[pick.player_id].background_color,
+                'color': '#ffffff'
+            }
+        }
+        else {
+            return {
+                'color': '#' + $scope.players[pick.player_id].background_color
+            }
+        }
+    }
 }])
 
 module.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballSchedule, footballTeam) {

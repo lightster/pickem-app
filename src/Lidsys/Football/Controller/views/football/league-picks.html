@@ -23,7 +23,6 @@
                         losing_team: game.away_score < game.home_score
                     }
                 "
-                ng-style="getPickedTeamStyle(game, game.away_team)"
             >
                 
             </td>
@@ -38,12 +37,10 @@
             ">
                 {{game.away_team.location}} {{game.away_team.mascot}}
             </td>
-            <td ng-repeat="pick in game.picks">
-                <div ng-show="pick.team_id == game.away_team.team_id">
-                    <div style="background-color: #{{players[pick.player_id].background_color}}; color: #ffffff; ">
-                        {{players[pick.player_id].displayName}}
-                    </div>
-                </div>
+            <td ng-repeat="pick in game.picks"
+                ng-style="getPickedTeamStyle(pick, game.away_team)"
+            >
+                {{players[pick.player_id].displayName}}
             </td>
         </tr>
         <tr ng-repeat-end>
@@ -56,7 +53,6 @@
                         losing_team: game.away_score > game.home_score
                     }
                 "
-                ng-style="getPickedTeamStyle(game, game.home_team)"
             >
                 
             </td>
@@ -71,12 +67,10 @@
             ">
                 {{game.home_team.location}} {{game.home_team.mascot}}
             </td>
-            <td ng-repeat="pick in game.picks">
-                <div ng-show="pick.team_id == game.home_team.team_id">
-                    <div style="background-color: #{{players[pick.player_id].background_color}}; color: #ffffff; ">
-                        {{players[pick.player_id].displayName}}
-                    </div>
-                </div>
+            <td ng-repeat="pick in game.picks"
+                ng-style="getPickedTeamStyle(pick, game.home_team)"
+            >
+                {{players[pick.player_id].displayName}}
             </td>
         </tr>
     </table>

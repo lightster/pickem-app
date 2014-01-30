@@ -23,30 +23,44 @@
                 width: 4%;
             ">&nbsp;</td>
             <td
-                class="text-center"
+                class="text-center label"
                 style="vertical-align: middle; width: 4%; "
                 ng-class="
                     {
-                        winning_team: game.away_score &amp;&amp; game.away_score >= game.home_score,
-                        losing_team: game.away_score < game.home_score
+                        success: game.away_team.team_id == game.picks[currentPlayerId].team_id,
+                        alert: game.away_team.team_id != game.picks[currentPlayerId].team_id
                     }
                 "
-                ng-style="getPickedTeamStyle(game, game.away_team)"
             >
-                <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.away_team.team_id}}" style="margin: 0; " />
+                <span ng-show="game.isStarted && game.away_team.team_id == game.picks[currentPlayerId].team_id">
+                    {{week.win_weight}}
+                </span>
+                <span ng-show="game.isStarted && game.away_team.team_id != game.picks[currentPlayerId].team_id">
+                    0
+                </span>
+                <span ng-hide="game.isStarted">
+                    <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.away_team.team_id}}" style="margin: 0; " />
+                </span>
             </td>
             <td
-                class="text-center"
+                class="text-center label"
                 style="vertical-align: middle; width: 4%; "
                 ng-class="
                     {
-                        winning_team: game.away_score &amp;&amp; game.away_score <= game.home_score,
-                        losing_team: game.away_score > game.home_score
+                        success: game.home_team.team_id == game.picks[currentPlayerId].team_id,
+                        alert: game.home_team.team_id != game.picks[currentPlayerId].team_id
                     }
                 "
-                ng-style="getPickedTeamStyle(game, game.home_team)"
             >
-                <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home_team.team_id}}" style="margin: 0; " />
+                <span ng-show="game.isStarted && game.home_team.team_id == game.picks[currentPlayerId].team_id">
+                    {{week.win_weight}}
+                </span>
+                <span ng-show="game.isStarted && game.home_team.team_id != game.picks[currentPlayerId].team_id">
+                    0
+                </span>
+                <span ng-hide="game.isStarted">
+                    <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home_team.team_id}}" style="margin: 0; " />
+                </span>
             </td>
             <td style="
                 background-color: {{game.home_team.border_color}};

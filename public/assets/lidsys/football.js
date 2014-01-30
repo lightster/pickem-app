@@ -147,6 +147,7 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
         game.picks = picks[game.game_id]
     }
     $scope.currentPlayerId = 6
+    $scope.week            = week
     $scope.currentPlayer   = players[$scope.currentPlayerId]
     $scope.games           = games
     $scope.prevGameTime    = null

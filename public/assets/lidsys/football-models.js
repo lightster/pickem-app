@@ -135,6 +135,7 @@
           game = games[game_id];
           game.away_team = teams[game.away_team_id];
           game.home_team = teams[game.home_team_id];
+          game.isStarted = moment().isAfter(game.start_time);
         }
         _this.games[year] = {};
         return _this.games[year][week] = games;

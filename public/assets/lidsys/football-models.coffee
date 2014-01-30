@@ -95,6 +95,7 @@ window.FootballScheduleService = class FootballScheduleService
                 for own game_id, game of games
                     game.away_team = teams[game.away_team_id]
                     game.home_team = teams[game.home_team_id]
+                    game.isStarted = moment().isAfter(game.start_time)
 
                 @games[year]       = {}
                 @games[year][week] = games

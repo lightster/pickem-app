@@ -17,6 +17,16 @@ nav.top-bar .title-area h1 {
     color: #999999;
 }
 
+.label.success.wrong-team {
+    color: #43ac6a;
+    background-color: inherit;
+}
+
+.label.alert.wrong-team {
+    color: #f04124;
+    background-color: inherit;
+}
+
 .row.full-width {
     max-width: 100%;
     padding: 0 5px;

@@ -16,6 +16,7 @@
                 background-color: {{game.away_team.background_color}};
                 width: 40%;
             " class="text-right">
+                ({{standings[game.away_team_id].win_count}}-{{standings[game.away_team_id].loss_count}}-{{standings[game.away_team_id].tie_count}})
                 {{game.away_team.location}} {{game.away_team.mascot}}
             </td>
             <td style="
@@ -23,10 +24,11 @@
                 width: 4%;
             ">&nbsp;</td>
             <td
-                class="text-center label"
+                class="text-center"
                 style="vertical-align: middle; width: 4%; "
                 ng-class="
                     {
+                        label: game.away_score,
                         success: game.away_score &amp;&amp; game.away_score >= game.home_score,
                         alert: game.away_score < game.home_score,
                         'wrong-team': game.away_team.team_id != game.picks[currentPlayerId].team_id
@@ -44,10 +46,11 @@
                 </span>
             </td>
             <td
-                class="text-center label"
+                class="text-center"
                 style="vertical-align: middle; width: 4%; "
                 ng-class="
                     {
+                        label: game.away_score,
                         success: game.away_score &amp;&amp; game.away_score <= game.home_score,
                         alert: game.away_score > game.home_score,
                         'wrong-team': game.home_team.team_id != game.picks[currentPlayerId].team_id
@@ -74,6 +77,7 @@
                 width: 40%;
             ">
                 {{game.home_team.location}} {{game.home_team.mascot}}
+                ({{standings[game.home_team_id].win_count}}-{{standings[game.home_team_id].loss_count}}-{{standings[game.home_team_id].tie_count}})
             </td>
         </tr>
     </table>

@@ -41,7 +41,16 @@ class Provider implements ControllerProviderInterface
                     ),
                 ),
             ));
-            return $pipeline($type, $name);
+
+            $content_types = array(
+                'js'  => 'text/javascript',
+                'css' => 'text/css',
+            );
+
+            $content = $pipeline($type, $name);
+            return new Response($content, 200, array(
+                'Content-Type' => $content_types[$type],
+            ));
         });
 
         $controllers->get('/', function () use ($app) {

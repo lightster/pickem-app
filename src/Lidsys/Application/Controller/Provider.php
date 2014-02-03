@@ -31,6 +31,18 @@ class Provider implements ControllerProviderInterface
                 return new Response($ex->getMessage(), 404);
             }
         });
+        $controllers->get('/asset/{type}/{name}', function ($type, $name) use ($app) {
+            $pipeline = new \Sprockets\Pipeline(array(
+                'CACHE_DIRECTORY' => __DIR__ . '/../../../../cache/',
+                'template' => array(
+                    'directories' => array(
+                        'assets/bundle/',
+                        'assets/',
+                    ),
+                ),
+            ));
+            return $pipeline($type, $name);
+        });
 
         $controllers->get('/', function () use ($app) {
             return $app['lstr.template']->render('index/index.html');

@@ -13,7 +13,8 @@
 	"require": {
 		"php": ">=5.4.19",
 		"silex/silex": "~1.1",
-		"lightster/lstr-silex": "~0.0.2"
+		"lightster/lstr-silex": "~0.0.2",
+		"Nami-Doc/Sprockets-PHP": "~2.1"
 	},
 	"repositories": [
 		{

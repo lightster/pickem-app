@@ -12,6 +12,8 @@ namespace Lidsys\Application\Controller;
 
 use Lstr\Silex\Service\Exception\TemplateNotFound;
 
+use Assetic\Asset\AssetCollection;
+use Assetic\Asset\FileAsset;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,22 +34,36 @@ class Provider implements ControllerProviderInterface
             }
         });
         $controllers->get('/asset/{type}/{name}', function ($type, $name) use ($app) {
-            $pipeline = new \Sprockets\Pipeline(array(
-                'CACHE_DIRECTORY' => __DIR__ . '/../../../../cache/',
-                'template' => array(
-                    'directories' => array(
-                        'assets/bundle/',
-                        'assets/',
+            $assets = array(
+                'js' => array(
+                    'application' => array(
+                        'public/assets/moment/moment-with-langs.js',
+                        'public/assets/foundation/js/vendor/jquery.js',
+                        'public/assets/foundation/js/foundation/foundation.js',
+                        'public/assets/angular/angular.js',
+                        'public/assets/angular/angular-route.js',
+                        'public/assets/lidsys/app-models.js',
+                        'public/assets/lidsys/football-models.js',
+                        'public/assets/lidsys/football.js',
+                        'public/assets/lidsys/nav.js',
+                        'public/assets/lidsys/app.js',
                     ),
                 ),
-            ));
+            );
+
+            $asset_list = array();
+            foreach ($assets[$type][$name] as $asset) {
+                $asset_list[] = new FileAsset(__DIR__ . '/../../../../' . $asset);
+            }
+
+            $collection = new AssetCollection($asset_list);
 
             $content_types = array(
                 'js'  => 'text/javascript',
                 'css' => 'text/css',
             );
 
-            $content = $pipeline($type, $name);
+            $content = $collection->dump();
             return new Response($content, 200, array(
                 'Content-Type' => $content_types[$type],
             ));

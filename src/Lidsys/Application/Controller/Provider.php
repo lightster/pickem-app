@@ -15,6 +15,7 @@ use Lstr\Silex\Service\Exception\TemplateNotFound;
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
 use Assetic\Filter\CoffeeScriptFilter;
+use Assetic\Filter\UglifyJs2Filter;
 use Assetic\FilterManager;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
@@ -55,11 +56,16 @@ class Provider implements ControllerProviderInterface
 
             $filters = array(
                 'coffee' => new CoffeeScriptFilter('/Users/lightster/node_modules/coffee-script/bin/coffee'),
+                'uglifyJs' => new UglifyJs2Filter('/usr/local/share/npm/lib/node_modules/uglify-js/bin/uglifyjs'),
             );
 
             $filters_by_ext = array(
                 'coffee' => array(
                     $filters['coffee'],
+                    $filters['uglifyJs'],
+                ),
+                'js' => array(
+                    $filters['uglifyJs'],
                 ),
             );
 

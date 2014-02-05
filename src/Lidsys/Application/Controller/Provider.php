@@ -14,6 +14,8 @@ use Lstr\Silex\Service\Exception\TemplateNotFound;
 
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
+use Assetic\Filter\CoffeeScriptFilter;
+use Assetic\FilterManager;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,8 +44,8 @@ class Provider implements ControllerProviderInterface
                         'public/assets/foundation/js/foundation/foundation.js',
                         'public/assets/angular/angular.js',
                         'public/assets/angular/angular-route.js',
-                        'public/assets/lidsys/app-models.js',
-                        'public/assets/lidsys/football-models.js',
+                        'public/assets/lidsys/app-models.coffee',
+                        'public/assets/lidsys/football-models.coffee',
                         'public/assets/lidsys/football.js',
                         'public/assets/lidsys/nav.js',
                         'public/assets/lidsys/app.js',
@@ -51,9 +53,29 @@ class Provider implements ControllerProviderInterface
                 ),
             );
 
+            $filters = array(
+                'coffee' => new CoffeeScriptFilter('/Users/lightster/node_modules/coffee-script/bin/coffee'),
+            );
+
+            $filters_by_ext = array(
+                'coffee' => array(
+                    $filters['coffee'],
+                ),
+            );
+
             $asset_list = array();
             foreach ($assets[$type][$name] as $asset) {
-                $asset_list[] = new FileAsset(__DIR__ . '/../../../../' . $asset);
+                list($file, $ext) = explode('.', $asset, 2);
+
+                $filters = array();
+                if (array_key_exists($ext, $filters_by_ext)) {
+                    $filters = $filters_by_ext[$ext];
+                }
+
+                $asset_list[] = new FileAsset(
+                    __DIR__ . '/../../../../' . $asset,
+                    $filters
+                );
             }
 
             $collection = new AssetCollection($asset_list);

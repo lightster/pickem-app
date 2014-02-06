@@ -52,6 +52,12 @@ class Provider implements ControllerProviderInterface
                         'public/assets/lidsys/app.js',
                     ),
                 ),
+                'css' => array(
+                    'application' => array(
+                        'public/assets/foundation/css/foundation.css',
+                        'public/assets/lidsys/app.css',
+                    ),
+                ),
             );
 
             $filters = array(

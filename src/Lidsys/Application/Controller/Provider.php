@@ -15,6 +15,7 @@ use Lstr\Silex\Service\Exception\TemplateNotFound;
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
 use Assetic\Filter\CoffeeScriptFilter;
+use Assetic\Filter\CssRewriteFilter;
 use Assetic\Filter\UglifyJs2Filter;
 use Assetic\FilterManager;
 use Silex\Application;
@@ -40,22 +41,22 @@ class Provider implements ControllerProviderInterface
             $assets = array(
                 'js' => array(
                     'application' => array(
-                        'public/assets/moment/moment-with-langs.js',
-                        'public/assets/foundation/js/vendor/jquery.js',
-                        'public/assets/foundation/js/foundation/foundation.js',
-                        'public/assets/angular/angular.js',
-                        'public/assets/angular/angular-route.js',
-                        'public/assets/lidsys/app-models.coffee',
-                        'public/assets/lidsys/football-models.coffee',
-                        'public/assets/lidsys/football.js',
-                        'public/assets/lidsys/nav.js',
-                        'public/assets/lidsys/app.js',
+                        'assets/moment/moment-with-langs.js',
+                        'assets/foundation/js/vendor/jquery.js',
+                        'assets/foundation/js/foundation/foundation.js',
+                        'assets/angular/angular.js',
+                        'assets/angular/angular-route.js',
+                        'assets/lidsys/app-models.coffee',
+                        'assets/lidsys/football-models.coffee',
+                        'assets/lidsys/football.js',
+                        'assets/lidsys/nav.js',
+                        'assets/lidsys/app.js',
                     ),
                 ),
                 'css' => array(
                     'application' => array(
-                        'public/assets/foundation/css/foundation.css',
-                        'public/assets/lidsys/app.css',
+                        'assets/foundation/css/foundation.css',
+                        'assets/lidsys/app.css',
                     ),
                 ),
             );
@@ -63,6 +64,7 @@ class Provider implements ControllerProviderInterface
             $filters = array(
                 'coffee' => new CoffeeScriptFilter('/Users/lightster/node_modules/coffee-script/bin/coffee'),
                 'uglifyJs' => new UglifyJs2Filter('/usr/local/share/npm/lib/node_modules/uglify-js/bin/uglifyjs'),
+                'cssUrls' => new CssRewriteFilter(),
             );
 
             $filters_by_ext = array(
@@ -72,6 +74,9 @@ class Provider implements ControllerProviderInterface
                 ),
                 'js' => array(
                     $filters['uglifyJs'],
+                ),
+                'css' => array(
+                    $filters['cssUrls'],
                 ),
             );
 
@@ -84,10 +89,15 @@ class Provider implements ControllerProviderInterface
                     $filters = $filters_by_ext[$ext];
                 }
 
-                $asset_list[] = new FileAsset(
-                    __DIR__ . '/../../../../' . $asset,
-                    $filters
+                $file_asset = new FileAsset(
+                    __DIR__ . '/../../../../public/' . $asset,
+                    $filters,
+                    dirname(__DIR__ . '/../../../../public/' . $asset),
+                    "/{$asset}"
                 );
+                $file_asset->setTargetPath("/app/asset/{$type}/{$name}");
+
+                $asset_list[] = $file_asset;
             }
 
             $collection = new AssetCollection($asset_list);

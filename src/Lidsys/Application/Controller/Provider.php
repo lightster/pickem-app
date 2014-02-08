@@ -41,22 +41,22 @@ class Provider implements ControllerProviderInterface
             $assets = array(
                 'js' => array(
                     'application' => array(
-                        'assets/moment/moment-with-langs.js',
-                        'assets/foundation/js/vendor/jquery.js',
-                        'assets/foundation/js/foundation/foundation.js',
-                        'assets/angular/angular.js',
-                        'assets/angular/angular-route.js',
-                        'assets/lidsys/app-models.coffee',
-                        'assets/lidsys/football-models.coffee',
-                        'assets/lidsys/football.js',
-                        'assets/lidsys/nav.js',
-                        'assets/lidsys/app.js',
+                        'moment/moment-with-langs.js',
+                        'foundation/js/vendor/jquery.js',
+                        'foundation/js/foundation/foundation.js',
+                        'angular/angular.js',
+                        'angular/angular-route.js',
+                        'lidsys/app-models.coffee',
+                        'lidsys/football-models.coffee',
+                        'lidsys/football.js',
+                        'lidsys/nav.js',
+                        'lidsys/app.js',
                     ),
                 ),
                 'css' => array(
                     'application' => array(
-                        'assets/foundation/css/foundation.css',
-                        'assets/lidsys/app.css',
+                        'foundation/css/foundation.css',
+                        'lidsys/app.css',
                     ),
                 ),
             );
@@ -90,12 +90,11 @@ class Provider implements ControllerProviderInterface
                 }
 
                 $file_asset = new FileAsset(
-                    __DIR__ . '/../../../../public/' . $asset,
+                    __DIR__ . '/assets/' . $asset,
                     $filters,
-                    dirname(__DIR__ . '/../../../../public/' . $asset),
-                    "/{$asset}"
+                    dirname(__DIR__ . '/assets/' . $asset),
+                    "/app/assets/{$asset}"
                 );
-                $file_asset->setTargetPath("/app/asset/{$type}/{$name}");
 
                 $asset_list[] = $file_asset;
             }

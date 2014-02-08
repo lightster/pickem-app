@@ -1,6 +1,6 @@
 nav.top-bar .title-area h1 {
     
-    background: url("images/logo.png") no-repeat scroll 10px 5px transparent;
+    background: url("/assets/lidsys/images/logo.png") no-repeat scroll 10px 5px transparent;
     background-size: 120px 30px;
     text-indent: -9999px;
     overflow: hidden;

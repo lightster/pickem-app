@@ -46,8 +46,8 @@ class Provider implements ControllerProviderInterface
                         'foundation/js/foundation/foundation.js',
                         'angular/angular.js',
                         'angular/angular-route.js',
-                        'lidsys/app-models.coffee',
-                        'lidsys/football-models.coffee',
+                        'lidsys/app-models.js.coffee',
+                        'lidsys/football-models.js.coffee',
                         'lidsys/football.js',
                         'lidsys/nav.js',
                         'lidsys/app.js',
@@ -68,7 +68,7 @@ class Provider implements ControllerProviderInterface
             );
 
             $filters_by_ext = array(
-                'coffee' => array(
+                'js.coffee' => array(
                     $filters['coffee'],
                     $filters['uglifyJs'],
                 ),

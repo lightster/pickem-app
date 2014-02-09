@@ -68,9 +68,8 @@ class Provider implements ControllerProviderInterface
             );
 
             $filters_by_ext = array(
-                'js.coffee' => array(
+                'coffee' => array(
                     $filters['coffee'],
-                    $filters['uglifyJs'],
                 ),
                 'js' => array(
                     $filters['uglifyJs'],
@@ -82,11 +81,13 @@ class Provider implements ControllerProviderInterface
 
             $asset_list = array();
             foreach ($assets[$type][$name] as $asset) {
-                list($file, $ext) = explode('.', $asset, 2);
+                $extensions = explode('.', $asset);
 
                 $filters = array();
-                if (array_key_exists($ext, $filters_by_ext)) {
-                    $filters = $filters_by_ext[$ext];
+                foreach (array_reverse($extensions) as $ext) {
+                    if (array_key_exists($ext, $filters_by_ext)) {
+                        $filters = array_merge($filters, $filters_by_ext[$ext]);
+                    }
                 }
 
                 $file_asset = new FileAsset(

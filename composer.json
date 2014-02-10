@@ -14,12 +14,17 @@
 		"php": ">=5.4.19",
 		"silex/silex": "~1.1",
 		"lightster/lstr-silex": "~0.0.2",
-		"kriswallsmith/assetic": "~1.1"
+		"kriswallsmith/assetic": "~1.1",
+		"zacharyrankin/Sprocketeer": "dev-master"
 	},
 	"repositories": [
 		{
 			"type": "vcs",
 			"url": "http://github.com/lightster/lstr-silex"
+		},
+		{
+			"type": "vcs",
+			"url": "http://github.com/zacharyrankin/Sprocketeer"
 		}
 	]
 }

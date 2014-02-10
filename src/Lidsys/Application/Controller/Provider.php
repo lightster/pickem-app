@@ -20,6 +20,7 @@ use Assetic\Filter\UglifyJs2Filter;
 use Assetic\FilterManager;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Sprocketeer\Parser as SprocketeerParser;
 use Symfony\Component\HttpFoundation\Response;
 
 class Provider implements ControllerProviderInterface
@@ -38,20 +39,26 @@ class Provider implements ControllerProviderInterface
             }
         });
         $controllers->get('/asset/{type}/{name}', function ($type, $name) use ($app) {
+            $manifest_parser = new SprocketeerParser(array(
+                __DIR__ . '/assets/bundle',
+                __DIR__ . '/assets',
+            ));
+
+            $js_files = $manifest_parser->getJsFiles('application');
+            array_walk(
+                $js_files,
+                function (& $asset) {
+                    $asset = str_replace(
+                        __DIR__ . '/assets/',
+                        '',
+                        $asset
+                    );
+                }
+            );
+
             $assets = array(
                 'js' => array(
-                    'application' => array(
-                        'moment/moment-with-langs.js',
-                        'foundation/js/vendor/jquery.js',
-                        'foundation/js/foundation/foundation.js',
-                        'angular/angular.js',
-                        'angular/angular-route.js',
-                        'lidsys/app-models.js.coffee',
-                        'lidsys/football-models.js.coffee',
-                        'lidsys/football.js',
-                        'lidsys/nav.js',
-                        'lidsys/app.js',
-                    ),
+                    'application' => $js_files,
                 ),
                 'css' => array(
                     'application' => array(

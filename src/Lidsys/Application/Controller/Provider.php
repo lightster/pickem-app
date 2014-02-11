@@ -69,11 +69,13 @@ class Provider implements ControllerProviderInterface
                 ),
             );
 
+            $binaries = $app['config']['assetrinc.binaries'];
+
             $filters = array(
-                'coffee' => new CoffeeScriptFilter('/Users/lightster/node_modules/coffee-script/bin/coffee'),
-                'uglifyJs' => new UglifyJs2Filter('/usr/local/share/npm/lib/node_modules/uglify-js/bin/uglifyjs'),
+                'coffee' => new CoffeeScriptFilter($binaries['coffee']),
+                'uglifyJs' => new UglifyJs2Filter($binaries['uglifyJs']),
                 'cssUrls' => new CssRewriteFilter(),
-                'uglifyCss' => new UglifyCssFilter('/usr/local/share/npm/lib/node_modules/uglifycss/uglifycss'),
+                'uglifyCss' => new UglifyCssFilter($binaries['uglifyCss']),
             );
 
             $filters_by_ext = array(

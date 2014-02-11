@@ -16,6 +16,7 @@ use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
 use Assetic\Filter\CoffeeScriptFilter;
 use Assetic\Filter\CssRewriteFilter;
+use Assetic\Filter\UglifyCssFilter;
 use Assetic\Filter\UglifyJs2Filter;
 use Assetic\FilterManager;
 use Silex\Application;
@@ -72,6 +73,7 @@ class Provider implements ControllerProviderInterface
                 'coffee' => new CoffeeScriptFilter('/Users/lightster/node_modules/coffee-script/bin/coffee'),
                 'uglifyJs' => new UglifyJs2Filter('/usr/local/share/npm/lib/node_modules/uglify-js/bin/uglifyjs'),
                 'cssUrls' => new CssRewriteFilter(),
+                'uglifyCss' => new UglifyCssFilter('/usr/local/share/npm/lib/node_modules/uglifycss/uglifycss'),
             );
 
             $filters_by_ext = array(
@@ -83,6 +85,7 @@ class Provider implements ControllerProviderInterface
                 ),
                 'css' => array(
                     $filters['cssUrls'],
+                    $filters['uglifyCss'],
                 ),
             );
 

@@ -211,10 +211,20 @@ module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPic
     $scope.week             = week
     $scope.games            = games
     $scope.players          = players
-    $scope.playerCount      = 20
+    $scope.playerCount      = 0
     $scope.prevGame         = null
     $scope.prevHeaderExists = null
     $scope.prevGameTime     = null
+
+    var playerCount = 0
+    for (var player_id in players) {
+        var player = players[player_id]
+        if (player.player_id) {
+            ++playerCount
+        }
+    }
+    $scope.playerCount = playerCount
+
     $scope.headerExists = function (game) {
         if ($scope.prevGame === game) {
             return $scope.prevHeaderExists

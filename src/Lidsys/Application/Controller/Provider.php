@@ -78,18 +78,36 @@ class Provider implements ControllerProviderInterface
                 'uglifyCss' => new UglifyCssFilter($binaries['uglifyCss']),
             );
 
-            $filters_by_ext = array(
+            $filter_names_by_ext = array(
                 'coffee' => array(
-                    $filters['coffee'],
+                    'coffee',
                 ),
                 'js' => array(
-                    $filters['uglifyJs'],
+                    '?uglifyJs',
                 ),
                 'css' => array(
-                    $filters['cssUrls'],
-                    $filters['uglifyCss'],
+                    'cssUrls',
+                    '?uglifyCss',
                 ),
             );
+
+            $filters_by_ext = array();
+            foreach ($filter_names_by_ext as $ext => $filter_names) {
+                foreach ($filter_names as $filter_name) {
+                    $filter = null;
+                    if (substr($filter_name, 0, 1) === '?') {
+                        if (!$app['debug']) {
+                            $filter = $filters[substr($filter_name, 1)];
+                        }
+                    } else {
+                        $filter = $filters[$filter_name];
+                    }
+
+                    if ($filter) {
+                        $filters_by_ext[$ext][$filter_name] = $filter;
+                    }
+                }
+            }
 
             $asset_list = array();
             foreach ($assets[$type][$name] as $asset) {

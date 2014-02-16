@@ -24,8 +24,6 @@ use Silex\Application;
 
 $app = new Application();
 
-$app['debug'] = true;
-
 $app->register(new ConfigServiceProvider());
 $app->register(new DatabaseServiceProvider('db', 'config', 'db.config'));
 $app->register(new TemplateServiceProvider());
@@ -36,6 +34,10 @@ $app['config'] = $app['lstr.config']->load(array(
     __DIR__ . '/../config/autoload/*.global.php',
     __DIR__ . '/../config/autoload/*.local.php',
 ));
+
+if (isset($app['config']['debug'])) {
+    $app['debug'] = $app['config']['debug'];
+}
 
 $app->mount('/api/v1.0/football', new FootballControllerProvider());
 $app->mount('/app/user', new UserControllerProvider());

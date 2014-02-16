@@ -41,11 +41,10 @@ class Provider implements ControllerProviderInterface
         });
         $controllers->get('/asset/{type}/{name}', function ($type, $name) use ($app) {
             $manifest_parser = new SprocketeerParser(array(
-                __DIR__ . '/assets/bundle',
                 __DIR__ . '/assets',
             ));
 
-            $js_files = $manifest_parser->getJsFiles('application');
+            $js_files = $manifest_parser->getJsFiles('bundle/application');
             array_walk(
                 $js_files,
                 function (& $asset) {

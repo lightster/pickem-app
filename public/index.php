@@ -11,6 +11,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Lidsys\Application\Controller\Provider as AppControllerProvider;
+use Lidsys\Application\Provider\AssetServiceProvider as AssetServiceProvider;
 use Lidsys\Football\Controller\Provider as FootballControllerProvider;
 use Lidsys\User\Controller\Provider as UserControllerProvider;
 
@@ -27,6 +28,7 @@ $app = new Application();
 $app->register(new ConfigServiceProvider());
 $app->register(new DatabaseServiceProvider('db', 'config', 'db.config'));
 $app->register(new TemplateServiceProvider());
+$app->register(new AssetServiceProvider());
 
 $app->register(new UserServiceProvider());
 

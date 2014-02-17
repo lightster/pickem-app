@@ -28,6 +28,7 @@ class Provider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
+        $app['lidsys.asset.path'][]  = __DIR__ . '/assets';
         $app['lstr.template.path'][] = __DIR__ . '/views';
 
         $controllers = $app['controllers_factory'];

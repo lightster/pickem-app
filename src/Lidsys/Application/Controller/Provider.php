@@ -143,7 +143,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->get('/', function () use ($app) {
-            return $app['lstr.template']->render('index/index.html');
+            return $app['lstr.template']->render('index/index.phtml');
         });
 
         return $controllers;

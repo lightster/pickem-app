@@ -44,7 +44,7 @@ class Provider implements ControllerProviderInterface
                 __DIR__ . '/assets',
             ));
 
-            $js_files = $manifest_parser->getJsFiles('bundle/application');
+            $js_files = $manifest_parser->getJsFiles($name);
             array_walk(
                 $js_files,
                 function (& $asset) {
@@ -58,7 +58,7 @@ class Provider implements ControllerProviderInterface
 
             $assets = array(
                 'js' => array(
-                    'application' => $js_files,
+                    $name => $js_files,
                 ),
                 'css' => array(
                     'application' => array(
@@ -140,7 +140,8 @@ class Provider implements ControllerProviderInterface
             return new Response($content, 200, array(
                 'Content-Type' => $content_types[$type],
             ));
-        });
+        })->assert('name', '.*');
+
 
         $controllers->get('/', function () use ($app) {
             return $app['lstr.template']->render('index/index.phtml');

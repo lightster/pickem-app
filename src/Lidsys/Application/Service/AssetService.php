@@ -56,10 +56,13 @@ class AssetService
             array_walk(
                 $js_files,
                 function (& $asset) {
-                    $asset = str_replace(
-                        '/Users/lightster/server.local/web/lidsys-web/src/Lidsys/Application/Controller/assets/',
-                        '',
-                        $asset
+                    $asset = ltrim(
+                        str_replace(
+                            '/Users/lightster/server.local/web/lidsys-web/src/Lidsys/Application/Controller/assets/',
+                            '',
+                            $asset
+                        ),
+                        '/'
                     );
                 }
             );

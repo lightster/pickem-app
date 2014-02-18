@@ -36,7 +36,7 @@
             Loading
         </ng-view>
 
-        <script type="text/javascript" src="/app/asset/js/bundle/application"></script>
+        <?php echo $app['lidsys.asset']->jsTag('bundle/application'); ?>
         <script>
             $(document).foundation();
         </script>

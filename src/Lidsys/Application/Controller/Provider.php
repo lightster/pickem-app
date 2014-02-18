@@ -45,17 +45,23 @@ class Provider implements ControllerProviderInterface
                 __DIR__ . '/assets',
             ));
 
-            $js_files = $manifest_parser->getJsFiles($name);
-            array_walk(
-                $js_files,
-                function (& $asset) {
-                    $asset = str_replace(
-                        __DIR__ . '/assets/',
-                        '',
-                        $asset
-                    );
-                }
-            );
+            if ($app['debug']) {
+                $js_files = array(
+                    $name,
+                );
+            } else {
+                $js_files = $manifest_parser->getJsFiles($name);
+                array_walk(
+                    $js_files,
+                    function (& $asset) {
+                        $asset = str_replace(
+                            __DIR__ . '/assets/',
+                            '',
+                            $asset
+                        );
+                    }
+                );
+            }
 
             $assets = array(
                 'js' => array(

@@ -10,3 +10,5 @@
  *=require lidsys/nav.js
  *=require lidsys/app.js
  */
+
+$(document).foundation();

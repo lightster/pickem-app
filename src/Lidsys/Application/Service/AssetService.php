@@ -58,7 +58,7 @@ class AssetService
                 function (& $asset) {
                     $asset = ltrim(
                         str_replace(
-                            '/Users/lightster/server.local/web/lidsys-web/src/Lidsys/Application/Controller/assets/',
+                            $this->path->getArrayCopy(),
                             '',
                             $asset
                         ),

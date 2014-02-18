@@ -15,17 +15,19 @@ use Sprocketeer\Parser as SprocketeerParser;
 
 class AssetService
 {
-    private $app;
     private $path;
+    private $renderers;
+    private $options;
 
     private $sprocketeer;
 
 
 
-    public function __construct(Application $app)
+    public function __construct(array $path, array $renderers, array $options)
     {
-        $this->app     = $app;
-        $this->path    = $app['lidsys.asset.path'];
+        $this->path      = $path;
+        $this->renderers = $renderers;
+        $this->options   = $options;
     }
 
 
@@ -45,13 +47,11 @@ class AssetService
 
     public function jsTag($name)
     {
-        $app = $this->app;
-
         $manifest_parser = $this->getSprocketeer();
 
-        $js_renderer = $app['lidsys.asset.renderer']['js'];
+        $js_renderer = $this->renderers['js'];
 
-        if ($app['debug']) {
+        if ($this->options['debug']) {
             $js_files = $manifest_parser->getJsFiles($name);
             array_walk(
                 $js_files,

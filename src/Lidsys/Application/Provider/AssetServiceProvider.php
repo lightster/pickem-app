@@ -27,9 +27,20 @@ class AssetServiceProvider implements ServiceProviderInterface
                 return "<script type=\"text/javascript\" src=\"{$path}\"></script>";
             },
         );
+        $app['lidsys.asset.options']  = array();
 
         $app['lidsys.asset'] = $app->share(function ($app) {
-            return new AssetService($app);
+            $options = array_replace(
+                array(
+                    'debug' => $app['debug'],
+                ),
+                $app['lidsys.asset.options']
+            );
+            return new AssetService(
+                $app['lidsys.asset.path'],
+                $app['lidsys.asset.renderer'],
+                $options
+            );
         });
     }
 

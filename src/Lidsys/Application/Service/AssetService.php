@@ -23,7 +23,7 @@ class AssetService
 
 
 
-    public function __construct(array $path, array $renderers, array $options)
+    public function __construct($path, $renderers, array $options)
     {
         $this->path      = $path;
         $this->renderers = $renderers;

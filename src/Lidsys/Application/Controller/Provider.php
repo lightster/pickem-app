@@ -46,13 +46,13 @@ class Provider implements ControllerProviderInterface
             ));
 
             if ($app['debug']) {
-                $js_files = array(
+                $assets = array(
                     $name,
                 );
             } else {
-                $js_files = $manifest_parser->getJsFiles($name);
+                $assets = $manifest_parser->getJsFiles($name);
                 array_walk(
-                    $js_files,
+                    $assets,
                     function (& $asset) {
                         $asset = str_replace(
                             __DIR__ . '/assets/',
@@ -62,18 +62,6 @@ class Provider implements ControllerProviderInterface
                     }
                 );
             }
-
-            $assets = array(
-                'js' => array(
-                    $name => $js_files,
-                ),
-                'css' => array(
-                    'application' => array(
-                        'foundation/css/foundation.css',
-                        'lidsys/app.css',
-                    ),
-                ),
-            );
 
             $binaries = $app['config']['assetrinc.binaries'];
 
@@ -116,7 +104,7 @@ class Provider implements ControllerProviderInterface
             }
 
             $asset_list = array();
-            foreach ($assets[$type][$name] as $asset) {
+            foreach ($assets as $asset) {
                 $extensions = explode('.', $asset);
 
                 $filters = array();

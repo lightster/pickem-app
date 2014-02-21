@@ -23,6 +23,9 @@ class AssetServiceProvider implements ServiceProviderInterface
     {
         $app['lidsys.asset.path']     = new ArrayObject();
         $app['lidsys.asset.renderer'] = array(
+            'css' => function ($path) {
+                return "<link rel=\"stylesheet\" href=\"{$path}\" />";
+            },
             'js' => function ($path) {
                 return "<script type=\"text/javascript\" src=\"{$path}\"></script>";
             },

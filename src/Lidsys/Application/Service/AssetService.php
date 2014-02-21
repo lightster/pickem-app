@@ -45,6 +45,43 @@ class AssetService
 
 
 
+    public function cssTag($name)
+    {
+        $manifest_parser = $this->getSprocketeer();
+
+        $js_renderer = $this->renderers['css'];
+
+        if ($this->options['debug']) {
+            $js_files = $manifest_parser->getJsFiles($name);
+            array_walk(
+                $js_files,
+                function (& $asset) {
+                    $asset = ltrim(
+                        str_replace(
+                            $this->path->getArrayCopy(),
+                            '',
+                            $asset
+                        ),
+                        '/'
+                    );
+                }
+            );
+
+            $asset_list = array();
+            foreach ($js_files as $asset) {
+                $asset_list[] = $js_renderer("/app/asset/css/{$asset}");
+            }
+
+            $html = implode("\n", $asset_list);
+        } else {
+            $html = $js_renderer("/app/asset/css/{$name}");
+        }
+
+        return $html;
+    }
+
+
+
     public function jsTag($name)
     {
         $manifest_parser = $this->getSprocketeer();

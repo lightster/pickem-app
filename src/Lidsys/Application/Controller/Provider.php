@@ -50,7 +50,7 @@ class Provider implements ControllerProviderInterface
                     $name,
                 );
             } else {
-                $assets = $manifest_parser->getJsFiles($name);
+                $assets = $manifest_parser->getJsFiles($name . '.' . $type);
                 array_walk(
                     $assets,
                     function (& $asset) {

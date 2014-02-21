@@ -2,7 +2,7 @@
     <head>
         <title>Lightdatasys</title>
 
-        <link rel="stylesheet" href="/app/asset/css/application" />
+        <?php echo $app['lidsys.asset']->cssTag('bundle/application'); ?>
     </head>
     <body ng-controller="AppCtrl">
 

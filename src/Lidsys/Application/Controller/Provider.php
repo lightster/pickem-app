@@ -120,7 +120,7 @@ class Provider implements ControllerProviderInterface
                     __DIR__ . '/assets/' . $asset,
                     $filters,
                     dirname(__DIR__ . '/assets/' . $asset),
-                    "/app/assets/{$asset}"
+                    "/app/asset/{$asset}"
                 );
 
                 $asset_list[] = $file_asset;

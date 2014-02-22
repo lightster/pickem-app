@@ -69,12 +69,12 @@ class AssetService
 
             $asset_list = array();
             foreach ($files as $asset) {
-                $asset_list[] = $renderer("/app/asset/{$type}/{$asset}");
+                $asset_list[] = $renderer("/app/asset/{$asset}");
             }
 
             $html = implode("\n", $asset_list);
         } else {
-            $html = $renderer("/app/asset/{$type}/{$name}");
+            $html = $renderer("/app/asset/{$name}");
         }
 
         return $html;

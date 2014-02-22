@@ -40,7 +40,7 @@ class Provider implements ControllerProviderInterface
                 return new Response($ex->getMessage(), 404);
             }
         });
-        $controllers->get('/asset/{type}/{name}', function ($type, $name) use ($app) {
+        $controllers->get('/asset/{name}', function ($name) use ($app) {
             $manifest_parser = new SprocketeerParser(array(
                 __DIR__ . '/assets',
             ));
@@ -103,9 +103,11 @@ class Provider implements ControllerProviderInterface
                 }
             }
 
+            $extension  = null;
             $asset_list = array();
             foreach ($assets as $asset) {
                 $extensions = explode('.', $asset);
+                $extension  = end($extensions);
 
                 $filters = array();
                 foreach (array_reverse($extensions) as $ext) {
@@ -127,13 +129,15 @@ class Provider implements ControllerProviderInterface
             $collection = new AssetCollection($asset_list);
 
             $content_types = array(
-                'js'  => 'text/javascript',
-                'css' => 'text/css',
+                ''       => 'text/text',
+                'js'     => 'text/javascript',
+                'coffee' => 'text/javascript',
+                'css'    => 'text/css',
             );
 
             $content = $collection->dump();
             return new Response($content, 200, array(
-                'Content-Type' => $content_types[$type],
+                'Content-Type' => $content_types["{$extension}"],
             ));
         })->assert('name', '.*');
 

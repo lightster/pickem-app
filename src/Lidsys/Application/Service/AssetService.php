@@ -45,16 +45,16 @@ class AssetService
 
 
 
-    public function cssTag($name)
+    private function generateTag($name, $type)
     {
         $manifest_parser = $this->getSprocketeer();
 
-        $js_renderer = $this->renderers['css'];
+        $renderer = $this->renderers[$type];
 
         if ($this->options['debug']) {
-            $js_files = $manifest_parser->getJsFiles($name);
+            $files = $manifest_parser->getJsFiles($name);
             array_walk(
-                $js_files,
+                $files,
                 function (& $asset) {
                     $asset = ltrim(
                         str_replace(
@@ -68,13 +68,13 @@ class AssetService
             );
 
             $asset_list = array();
-            foreach ($js_files as $asset) {
-                $asset_list[] = $js_renderer("/app/asset/css/{$asset}");
+            foreach ($files as $asset) {
+                $asset_list[] = $renderer("/app/asset/{$type}/{$asset}");
             }
 
             $html = implode("\n", $asset_list);
         } else {
-            $html = $js_renderer("/app/asset/css/{$name}");
+            $html = $renderer("/app/asset/{$type}/{$name}");
         }
 
         return $html;
@@ -82,38 +82,15 @@ class AssetService
 
 
 
+    public function cssTag($name)
+    {
+        return $this->generateTag($name, 'css');
+    }
+
+
+
     public function jsTag($name)
     {
-        $manifest_parser = $this->getSprocketeer();
-
-        $js_renderer = $this->renderers['js'];
-
-        if ($this->options['debug']) {
-            $js_files = $manifest_parser->getJsFiles($name);
-            array_walk(
-                $js_files,
-                function (& $asset) {
-                    $asset = ltrim(
-                        str_replace(
-                            $this->path->getArrayCopy(),
-                            '',
-                            $asset
-                        ),
-                        '/'
-                    );
-                }
-            );
-
-            $asset_list = array();
-            foreach ($js_files as $asset) {
-                $asset_list[] = $js_renderer("/app/asset/js/{$asset}");
-            }
-
-            $html = implode("\n", $asset_list);
-        } else {
-            $html = $js_renderer("/app/asset/js/{$name}");
-        }
-
-        return $html;
+        return $this->generateTag($name, 'js');
     }
 }

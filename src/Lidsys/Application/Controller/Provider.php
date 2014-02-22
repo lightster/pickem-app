@@ -130,9 +130,13 @@ class Provider implements ControllerProviderInterface
 
             $content_types = array(
                 ''       => 'text/text',
-                'js'     => 'text/javascript',
                 'coffee' => 'text/javascript',
                 'css'    => 'text/css',
+                'gif'    => 'image/gif',
+                'ico'    => 'image/vnd.microsoft.icon',
+                'jpg'    => 'image/jpeg',
+                'js'     => 'text/javascript',
+                'png'    => 'image/png',
             );
 
             $content = $collection->dump();

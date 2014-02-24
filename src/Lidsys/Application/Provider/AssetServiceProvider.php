@@ -35,7 +35,8 @@ class AssetServiceProvider implements ServiceProviderInterface
         $app['lidsys.asset'] = $app->share(function ($app) {
             $options = array_replace(
                 array(
-                    'debug' => $app['debug'],
+                    'debug'              => $app['config']['debug'],
+                    'assetrinc.binaries' => $app['config']['assetrinc.binaries'],
                 ),
                 $app['lidsys.asset.options']
             );

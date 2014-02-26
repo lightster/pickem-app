@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "1fccfa71dd0e6863e43f3632fe8b5c15",
+    "hash": "884604eeea849c4dba21a8cad7e486fd",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -638,7 +638,7 @@
         },
         {
             "name": "zacharyrankin/Sprocketeer",
-            "version": "dev-master",
+            "version": "v0.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zacharyrankin/Sprocketeer.git",
@@ -701,9 +701,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "zacharyrankin/sprocketeer": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": {
         "php": ">=5.4.19"
     },

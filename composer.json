@@ -15,7 +15,7 @@
 		"silex/silex": "~1.1",
 		"lightster/lstr-silex": "~0.0.2",
 		"kriswallsmith/assetic": "~1.1",
-		"zacharyrankin/Sprocketeer": "dev-master"
+		"zacharyrankin/Sprocketeer": "0.0.1"
 	},
 	"repositories": [
 		{

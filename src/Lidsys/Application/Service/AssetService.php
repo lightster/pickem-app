@@ -72,7 +72,7 @@ class AssetService
                 function (& $asset) {
                     $asset = ltrim(
                         str_replace(
-                            $this->path->getArrayCopy(),
+                            $this->path,
                             '',
                             $asset
                         ),

@@ -66,24 +66,11 @@ class AssetService
         $renderer = $this->renderers[$type];
 
         if ($this->options['debug']) {
-            $files = $manifest_parser->getJsFiles($name);
-            array_walk(
-                $files,
-                function (& $asset) {
-                    $asset = ltrim(
-                        str_replace(
-                            $this->path,
-                            '',
-                            $asset
-                        ),
-                        '/'
-                    );
-                }
-            );
+            $files = $manifest_parser->getPathInfoFromManifest($name);
 
             $asset_list = array();
             foreach ($files as $asset) {
-                $asset_list[] = $renderer("/app/asset/{$asset}");
+                $asset_list[] = $renderer("/app/asset/{$asset['canonical_path']}");
             }
 
             $html = implode("\n", $asset_list);
@@ -114,22 +101,14 @@ class AssetService
     {
         $manifest_parser = $this->getSprocketeer();
 
+        list($search_path_name, $filename) = explode('/', $name, 2);
+
         if ($this->options['debug']) {
             $assets = array(
-                $name,
+                $manifest_parser->getPathInfo($search_path_name, $filename),
             );
         } else {
-            $assets = $manifest_parser->getJsFiles($name);
-            array_walk(
-                $assets,
-                function (& $asset) {
-                    $asset = str_replace(
-                        $this->path,
-                        '',
-                        $asset
-                    );
-                }
-            );
+            $assets = $manifest_parser->getPathInfoFromManifest($name);
         }
 
         $binaries = $this->options['assetrinc.binaries'];
@@ -175,7 +154,7 @@ class AssetService
         $extension  = null;
         $asset_list = array();
         foreach ($assets as $asset) {
-            $extensions = explode('.', $asset);
+            $extensions = explode('.', basename($asset['requested_asset']));
             $extension  = end($extensions);
 
             $filters = array();
@@ -186,10 +165,10 @@ class AssetService
             }
 
             $file_asset = new FileAsset(
-                $this->path[0] . '/' . $asset,
+                $asset['absolute_path'],
                 $filters,
-                dirname($this->path[0] . '/' . $asset),
-                "/app/asset/{$asset}"
+                dirname($asset['absolute_path']),
+                "/app/asset/{$asset['canonical_path']}"
             );
 
             $asset_list[] = $file_asset;

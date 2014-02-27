@@ -2,7 +2,7 @@
     <head>
         <title>Lightdatasys</title>
 
-        <?php echo $app['lidsys.asset']->cssTag('bundle/application.css'); ?>
+        <?php echo $app['lidsys.asset']->cssTag('app/bundle/application.css'); ?>
     </head>
     <body ng-controller="AppCtrl">
 
@@ -36,7 +36,7 @@
             Loading
         </ng-view>
 
-        <?php echo $app['lidsys.asset']->jsTag('bundle/application.js'); ?>
+        <?php echo $app['lidsys.asset']->jsTag('app/bundle/application.js'); ?>
 
     </body>
 </html>

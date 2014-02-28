@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AssetService
 {
+    private $url_prefix;
     private $path;
     private $renderers;
     private $options;
@@ -38,9 +39,10 @@ class AssetService
             $path = $path->getArrayCopy();
         }
 
-        $this->path      = $path;
-        $this->renderers = $renderers;
-        $this->options   = $options;
+        $this->path       = $path;
+        $this->renderers  = $renderers;
+        $this->options    = $options;
+        $this->url_prefix = $this->options['assetrinc.url_prefix'];
     }
 
 
@@ -69,12 +71,12 @@ class AssetService
 
             $asset_list = array();
             foreach ($files as $asset) {
-                $asset_list[] = $renderer("/app/asset/{$asset['sprocketeer_path']}");
+                $asset_list[] = $renderer("{$this->url_prefix}/{$asset['sprocketeer_path']}");
             }
 
             $html = implode("\n", $asset_list);
         } else {
-            $html = $renderer("/app/asset/{$name}");
+            $html = $renderer("{$this->url_prefix}/{$name}");
         }
 
         return $html;
@@ -167,7 +169,7 @@ class AssetService
                 $asset['absolute_path'],
                 $filters,
                 dirname($asset['absolute_path']),
-                "/app/asset/{$asset['sprocketeer_path']}"
+                "{$this->url_prefix}/{$asset['sprocketeer_path']}"
             );
 
             $asset_list[] = $file_asset;

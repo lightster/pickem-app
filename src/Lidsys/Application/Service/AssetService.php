@@ -19,7 +19,6 @@ use Assetic\Filter\CssRewriteFilter;
 use Assetic\Filter\UglifyCssFilter;
 use Assetic\Filter\UglifyJs2Filter;
 use Assetic\FilterManager;
-use Silex\Application;
 use Sprocketeer\Parser as SprocketeerParser;
 use Symfony\Component\HttpFoundation\Response;
 

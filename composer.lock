@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "420d11204265e69fcfec59bc2a108704",
+    "hash": "1947c89e7f349013875873dfd8c7793c",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -638,16 +638,16 @@
         },
         {
             "name": "zacharyrankin/Sprocketeer",
-            "version": "v0.0.2",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zacharyrankin/Sprocketeer.git",
-                "reference": "d1f2b18c5570f5fe660023ed9119fd2a0a5cdf46"
+                "reference": "c4de19775f1254c914da2f1354d31938af067130"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zacharyrankin/Sprocketeer/zipball/d1f2b18c5570f5fe660023ed9119fd2a0a5cdf46",
-                "reference": "d1f2b18c5570f5fe660023ed9119fd2a0a5cdf46",
+                "url": "https://api.github.com/repos/zacharyrankin/Sprocketeer/zipball/c4de19775f1254c914da2f1354d31938af067130",
+                "reference": "c4de19775f1254c914da2f1354d31938af067130",
                 "shasum": ""
             },
             "require": {
@@ -688,10 +688,10 @@
                 "sprockets"
             ],
             "support": {
-                "source": "https://github.com/zacharyrankin/Sprocketeer/tree/v0.0.2",
+                "source": "https://github.com/zacharyrankin/Sprocketeer/tree/v0.0.3",
                 "issues": "https://github.com/zacharyrankin/Sprocketeer/issues"
             },
-            "time": "2014-02-27 06:49:00"
+            "time": "2014-02-28 05:35:08"
         }
     ],
     "packages-dev": [

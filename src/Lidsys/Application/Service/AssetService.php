@@ -69,7 +69,7 @@ class AssetService
 
             $asset_list = array();
             foreach ($files as $asset) {
-                $asset_list[] = $renderer("/app/asset/{$asset['canonical_path']}");
+                $asset_list[] = $renderer("/app/asset/{$asset['sprocketeer_path']}");
             }
 
             $html = implode("\n", $asset_list);
@@ -167,7 +167,7 @@ class AssetService
                 $asset['absolute_path'],
                 $filters,
                 dirname($asset['absolute_path']),
-                "/app/asset/{$asset['canonical_path']}"
+                "/app/asset/{$asset['sprocketeer_path']}"
             );
 
             $asset_list[] = $file_asset;

@@ -31,6 +31,16 @@ class AssetService
 
     private $sprocketeer;
 
+    private $content_types = array(
+        ''       => 'text/text',
+        'css'    => 'text/css',
+        'gif'    => 'image/gif',
+        'ico'    => 'image/vnd.microsoft.icon',
+        'jpg'    => 'image/jpeg',
+        'js'     => 'text/javascript',
+        'png'    => 'image/png',
+    );
+
 
 
     public function __construct($path, $renderers, array $options)
@@ -98,7 +108,7 @@ class AssetService
 
 
 
-    public function getAssetResponse($name)
+    private function getAssetsPathInfo($name)
     {
         $manifest_parser = $this->getSprocketeer();
 
@@ -111,6 +121,31 @@ class AssetService
         } else {
             $assets = $manifest_parser->getPathInfoFromManifest($name);
         }
+
+        return $assets;
+    }
+
+
+
+    private function getContentTypeForFileName($name)
+    {
+        $extensions = explode('.', basename($name));
+        $extension  = null;
+        foreach ($extensions as $ext) {
+            if (isset($this->content_types[$ext])) {
+                $extension = $ext;
+                break;
+            }
+        }
+
+        return $this->content_types["{$extension}"];
+    }
+
+
+
+    public function getAssetContent($name)
+    {
+        $assets   = $this->getAssetsPathInfo($name);
 
         $binaries = $this->options['assetrinc.binaries'];
 
@@ -175,29 +210,19 @@ class AssetService
 
         $collection = new AssetCollection($asset_list);
 
-        $content_types = array(
-            ''       => 'text/text',
-            'css'    => 'text/css',
-            'gif'    => 'image/gif',
-            'ico'    => 'image/vnd.microsoft.icon',
-            'jpg'    => 'image/jpeg',
-            'js'     => 'text/javascript',
-            'png'    => 'image/png',
+        return $collection->dump();
+    }
+
+
+
+    public function getAssetResponse($name)
+    {
+        return new Response(
+            $this->getAssetContent($name),
+            200,
+            array(
+                'Content-Type' => $this->getContentTypeForFileName($name),
+            )
         );
-
-        $basename   = basename($filename);
-        $extensions = explode('.', basename($asset['requested_asset']));
-        $extension  = null;
-        foreach ($extensions as $ext) {
-            if (isset($content_types[$ext])) {
-                $extension = $ext;
-                break;
-            }
-        }
-
-        $content = $collection->dump();
-        return new Response($content, 200, array(
-            'Content-Type' => $content_types["{$extension}"],
-        ));
     }
 }

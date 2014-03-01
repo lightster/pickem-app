@@ -152,11 +152,9 @@ class AssetService
             }
         }
 
-        $extension  = null;
         $asset_list = array();
         foreach ($assets as $asset) {
             $extensions = explode('.', basename($asset['requested_asset']));
-            $extension  = end($extensions);
 
             $filters = array();
             foreach (array_reverse($extensions) as $ext) {
@@ -187,6 +185,16 @@ class AssetService
             'js'     => 'text/javascript',
             'png'    => 'image/png',
         );
+
+        $basename   = basename($filename);
+        $extensions = explode('.', basename($asset['requested_asset']));
+        $extension  = null;
+        foreach ($extensions as $ext) {
+            if (isset($content_types[$ext])) {
+                $extension = $ext;
+                break;
+            }
+        }
 
         $content = $collection->dump();
         return new Response($content, 200, array(

@@ -177,7 +177,6 @@ class AssetService
 
         $content_types = array(
             ''       => 'text/text',
-            'coffee' => 'text/javascript',
             'css'    => 'text/css',
             'gif'    => 'image/gif',
             'ico'    => 'image/vnd.microsoft.icon',

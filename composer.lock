@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "1947c89e7f349013875873dfd8c7793c",
+    "hash": "675f0e74f4f289f9ac1cd2cf427c1689",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -75,6 +75,46 @@
                 "minification"
             ],
             "time": "2013-07-19 00:03:27"
+        },
+        {
+            "name": "lightster/assetrinc",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lightster/assetrinc.git",
+                "reference": "1bbab1d6b331286995df65b047d5ad37337e6bfd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/1bbab1d6b331286995df65b047d5ad37337e6bfd",
+                "reference": "1bbab1d6b331286995df65b047d5ad37337e6bfd",
+                "shasum": ""
+            },
+            "require": {
+                "kriswallsmith/assetic": "~1.1",
+                "php": ">=5.3.3",
+                "symfony/http-kernel": ">=2.3,<2.5-dev",
+                "zacharyrankin/sprocketeer": "0.0.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Lstr\\Assetrinc\\": "src/"
+                }
+            },
+            "description": "assentric",
+            "homepage": "http://github.com/lightster/assetrinc",
+            "keywords": [
+                "assentric",
+                "assets",
+                "lightster",
+                "php"
+            ],
+            "support": {
+                "source": "https://github.com/lightster/assetrinc/tree/v0.0.1",
+                "issues": "https://github.com/lightster/assetrinc/issues"
+            },
+            "time": "2014-03-01 06:15:13"
         },
         {
             "name": "lightster/lstr-silex",

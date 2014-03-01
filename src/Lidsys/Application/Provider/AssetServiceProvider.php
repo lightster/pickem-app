@@ -12,7 +12,7 @@ namespace Lidsys\Application\Provider;
 
 use ArrayObject;
 
-use Lidsys\Application\Service\AssetService;
+use Lstr\Assetrinc\AssetService;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;

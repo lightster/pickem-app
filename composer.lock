@@ -78,16 +78,16 @@
         },
         {
             "name": "lightster/lstr-silex",
-            "version": "v0.0.3",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex.git",
-                "reference": "999b1c816f1f24feda6f70e1aab12d94edcb5a04"
+                "reference": "2ec40c1f14cc98dc0a00e9e73b69c50f0368c2a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/999b1c816f1f24feda6f70e1aab12d94edcb5a04",
-                "reference": "999b1c816f1f24feda6f70e1aab12d94edcb5a04",
+                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/2ec40c1f14cc98dc0a00e9e73b69c50f0368c2a8",
+                "reference": "2ec40c1f14cc98dc0a00e9e73b69c50f0368c2a8",
                 "shasum": ""
             },
             "require": {
@@ -108,10 +108,10 @@
                 "silex"
             ],
             "support": {
-                "source": "https://github.com/lightster/lstr-silex/tree/v0.0.3",
+                "source": "https://github.com/lightster/lstr-silex/tree/v0.0.4",
                 "issues": "https://github.com/lightster/lstr-silex/issues"
             },
-            "time": "2014-02-27 19:42:19"
+            "time": "2014-02-28 19:00:59"
         },
         {
             "name": "pimple/pimple",

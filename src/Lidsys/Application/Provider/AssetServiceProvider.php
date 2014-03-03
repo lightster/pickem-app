@@ -22,15 +22,13 @@ class AssetServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['lidsys.asset.path']       = new ArrayObject();
-        $app['lidsys.asset.options']    = array();
 
         $app['lidsys.asset'] = $app->share(function ($app) {
             $options = array_replace(
                 array(
-                    'debug'                => $app['config']['debug'],
-                    'assetrinc.binaries'   => $app['config']['assetrinc.binaries'],
+                    'debug' => $app['config']['debug'],
                 ),
-                $app['lidsys.asset.options']
+                $app['config']['lidsys.asset.options']
             );
             return new AssetService(
                 $app['lidsys.asset.path'],

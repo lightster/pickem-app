@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "903dc0d99963e828f99a6835aaf7d9d3",
+    "hash": "eb3434a098f607b0d8e684121ad2a2e4",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -78,16 +78,16 @@
         },
         {
             "name": "lightster/assetrinc",
-            "version": "v0.0.2",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/assetrinc.git",
-                "reference": "f2df1dcccb0682535ef624d72e82a90ded0150ef"
+                "reference": "811ef26692e7fbf6b3f9a9a8d9f4d756c4fa0072"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/f2df1dcccb0682535ef624d72e82a90ded0150ef",
-                "reference": "f2df1dcccb0682535ef624d72e82a90ded0150ef",
+                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/811ef26692e7fbf6b3f9a9a8d9f4d756c4fa0072",
+                "reference": "811ef26692e7fbf6b3f9a9a8d9f4d756c4fa0072",
                 "shasum": ""
             },
             "require": {
@@ -111,10 +111,10 @@
                 "php"
             ],
             "support": {
-                "source": "https://github.com/lightster/assetrinc/tree/v0.0.2",
+                "source": "https://github.com/lightster/assetrinc/tree/master",
                 "issues": "https://github.com/lightster/assetrinc/issues"
             },
-            "time": "2014-03-01 07:31:45"
+            "time": "2014-03-03 06:53:20"
         },
         {
             "name": "lightster/lstr-silex",

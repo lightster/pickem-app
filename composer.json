@@ -15,8 +15,7 @@
 		"silex/silex": "~1.1",
 		"lightster/assetrinc": "0.0.4",
 		"lightster/lstr-silex": "~0.0.2",
-		"kriswallsmith/assetic": "~1.1",
-		"zacharyrankin/Sprocketeer": "0.0.3"
+		"kriswallsmith/assetic": "~1.1"
 	},
 	"repositories": [
 		{
@@ -26,10 +25,6 @@
 		{
 			"type": "vcs",
 			"url": "http://github.com/lightster/lstr-silex"
-		},
-		{
-			"type": "vcs",
-			"url": "http://github.com/zacharyrankin/Sprocketeer"
 		}
 	]
 }

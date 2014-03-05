@@ -25,6 +25,10 @@
 		{
 			"type": "vcs",
 			"url": "http://github.com/lightster/lstr-silex"
+		},
+		{
+			"type": "vcs",
+			"url": "http://github.com/zacharyrankin/Sprocketeer"
 		}
 	]
 }

@@ -20,6 +20,7 @@ use Lidsys\Football\Service\Provider as FootballServiceProvider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Provider implements ControllerProviderInterface
@@ -30,7 +31,7 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/seasons', function () use ($app) {
+        $controllers->get('/seasons', function (Application $app) {
             $seasons = $app['lidsys.football.schedule']->getSeasons();
 
             array_walk(
@@ -45,7 +46,7 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
-        $controllers->get('/weeks/{year}', function ($year) use ($app) {
+        $controllers->get('/weeks/{year}', function ($year, Application $app) {
             $weeks = $app['lidsys.football.schedule']->getWeeksForYear($year);
 
             array_walk(
@@ -60,7 +61,7 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
-        $controllers->get('/schedule/{year}/{week}', function ($year, $week) use ($app) {
+        $controllers->get('/schedule/{year}/{week}', function ($year, $week, Application $app) {
             $games = $app['lidsys.football.schedule']->getGamesForWeek($year, $week);
 
             $timezone = new DateTimeZone('UTC');
@@ -78,7 +79,7 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
-        $controllers->get('/teams', function () use ($app) {
+        $controllers->get('/teams', function (Application $app) {
             $teams = $app['lidsys.football.team']->getTeams();
 
             return $app->json(array(
@@ -86,7 +87,7 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
-        $controllers->get('/team-standings/{year}/{week}', function ($year, $week) use ($app) {
+        $controllers->get('/team-standings/{year}/{week}', function ($year, $week, Application $app) {
             $team_standings = $app['lidsys.football.team']->getStandingsForWeek($year, $week);
 
             return $app->json(array(
@@ -94,7 +95,7 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
-        $controllers->get('/fantasy-picks/{year}/{week}', function ($year, $week) use ($app) {
+        $controllers->get('/fantasy-picks/{year}/{week}', function ($year, $week, Application $app) {
             $picks = $app['lidsys.football.fantasy-pick']->getPicksForWeek($year, $week);
 
             return $app->json(array(
@@ -102,7 +103,7 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
-        $controllers->get('/fantasy-players/{year}', function ($year) use ($app) {
+        $controllers->get('/fantasy-players/{year}', function ($year, Application $app) {
             $players = $app['lidsys.football.fantasy-player']->getPlayersForYear($year);
 
             return $app->json(array(
@@ -111,7 +112,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->before(new JsonRequestMiddlewareService());
-        $controllers->before(function () use ($app) {
+        $controllers->before(function (Request $request, Application $app) {
             $app->register(new FootballServiceProvider());
         });
 

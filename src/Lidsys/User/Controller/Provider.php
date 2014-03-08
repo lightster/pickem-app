@@ -25,7 +25,7 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/login/', function (Request $request) use ($app) {
+        $controllers->post('/login/', function (Request $request, Application $app) {
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUsernameAndPassword(
                     $request->get('username'),

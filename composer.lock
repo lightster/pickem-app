@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "46729bcbdbae150772031fc6f3482040",
+    "hash": "f7ee80e53376e80bfe350670bdd2ba42",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -78,23 +78,23 @@
         },
         {
             "name": "lightster/assetrinc",
-            "version": "v0.0.4",
+            "version": "v0.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/assetrinc.git",
-                "reference": "596821883c921588bf3fa87240325bf4524c57b9"
+                "reference": "61132562ec37cd399a3a2b531968393f77aacfa7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/596821883c921588bf3fa87240325bf4524c57b9",
-                "reference": "596821883c921588bf3fa87240325bf4524c57b9",
+                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/61132562ec37cd399a3a2b531968393f77aacfa7",
+                "reference": "61132562ec37cd399a3a2b531968393f77aacfa7",
                 "shasum": ""
             },
             "require": {
                 "kriswallsmith/assetic": "~1.1",
                 "php": ">=5.3.3",
                 "symfony/http-kernel": ">=2.3,<2.5-dev",
-                "zacharyrankin/sprocketeer": "0.0.3"
+                "zacharyrankin/sprocketeer": "0.0.5"
             },
             "type": "library",
             "autoload": {
@@ -102,6 +102,7 @@
                     "Lstr\\Assetrinc\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "description": "assentric",
             "homepage": "http://github.com/lightster/assetrinc",
             "keywords": [
@@ -110,11 +111,7 @@
                 "lightster",
                 "php"
             ],
-            "support": {
-                "source": "https://github.com/lightster/assetrinc/tree/v0.0.4",
-                "issues": "https://github.com/lightster/assetrinc/issues"
-            },
-            "time": "2014-03-04 07:20:18"
+            "time": "2014-03-12 05:42:38"
         },
         {
             "name": "lightster/lstr-silex",
@@ -677,17 +674,17 @@
             "time": "2014-02-11 13:52:09"
         },
         {
-            "name": "zacharyrankin/Sprocketeer",
-            "version": "v0.0.3",
+            "name": "zacharyrankin/sprocketeer",
+            "version": "v0.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zacharyrankin/Sprocketeer.git",
-                "reference": "c4de19775f1254c914da2f1354d31938af067130"
+                "url": "https://github.com/zacharyrankin/sprocketeer.git",
+                "reference": "5920d82a4d651bbf8bb43a764fbae1f73ec769a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zacharyrankin/Sprocketeer/zipball/c4de19775f1254c914da2f1354d31938af067130",
-                "reference": "c4de19775f1254c914da2f1354d31938af067130",
+                "url": "https://api.github.com/repos/zacharyrankin/sprocketeer/zipball/5920d82a4d651bbf8bb43a764fbae1f73ec769a2",
+                "reference": "5920d82a4d651bbf8bb43a764fbae1f73ec769a2",
                 "shasum": ""
             },
             "require": {
@@ -704,34 +701,31 @@
                     "Sprocketeer": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Matt Light",
-                    "homepage": "https://github.com/lightster"
-                },
-                {
                     "name": "Zachary Rankin",
                     "email": "rankin.zachary@gmail.com",
                     "homepage": "https://github.com/zacharyrankin"
+                },
+                {
+                    "name": "Matt Light",
+                    "homepage": "https://github.com/lightster"
                 }
             ],
             "description": "Sprocketeer is a PHP library for getting a simple list of files from a sprocket-like manifest.",
             "homepage": "http://github.com/zacharyrankin/Sprocketeer",
             "keywords": [
+                "Sprockets",
                 "asset",
                 "coffeescript",
                 "php",
-                "sass",
-                "sprockets"
+                "sass"
             ],
-            "support": {
-                "source": "https://github.com/zacharyrankin/Sprocketeer/tree/v0.0.3",
-                "issues": "https://github.com/zacharyrankin/Sprocketeer/issues"
-            },
-            "time": "2014-02-28 05:35:08"
+            "time": "2014-03-07 10:28:12"
         }
     ],
     "packages-dev": [

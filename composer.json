@@ -13,22 +13,14 @@
 	"require": {
 		"php": ">=5.4.19",
 		"silex/silex": "~1.1",
-		"lightster/assetrinc": "0.0.4",
+		"lightster/assetrinc": "0.0.5",
 		"lightster/lstr-silex": "~0.0.2",
 		"kriswallsmith/assetic": "~1.1"
 	},
 	"repositories": [
 		{
 			"type": "vcs",
-			"url": "http://github.com/lightster/assetrinc"
-		},
-		{
-			"type": "vcs",
 			"url": "http://github.com/lightster/lstr-silex"
-		},
-		{
-			"type": "vcs",
-			"url": "http://github.com/zacharyrankin/Sprocketeer"
 		}
 	]
 }

@@ -14,13 +14,7 @@
 		"php": ">=5.4.19",
 		"silex/silex": "~1.1",
 		"lightster/assetrinc": "0.0.6",
-		"lightster/lstr-silex": "~0.0.2",
+		"lightster/lstr-silex": "0.0.4",
 		"kriswallsmith/assetic": "~1.1"
-	},
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "http://github.com/lightster/lstr-silex"
-		}
-	]
+	}
 }

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f7ee80e53376e80bfe350670bdd2ba42",
+    "hash": "637733e9f3809310b84c7f95341f0a8d",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -78,22 +78,21 @@
         },
         {
             "name": "lightster/assetrinc",
-            "version": "v0.0.5",
+            "version": "v0.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/assetrinc.git",
-                "reference": "61132562ec37cd399a3a2b531968393f77aacfa7"
+                "reference": "ccc6dc6f8d4127de97553c3de34a18d48919051d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/61132562ec37cd399a3a2b531968393f77aacfa7",
-                "reference": "61132562ec37cd399a3a2b531968393f77aacfa7",
+                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/ccc6dc6f8d4127de97553c3de34a18d48919051d",
+                "reference": "ccc6dc6f8d4127de97553c3de34a18d48919051d",
                 "shasum": ""
             },
             "require": {
                 "kriswallsmith/assetic": "~1.1",
                 "php": ">=5.3.3",
-                "symfony/http-kernel": ">=2.3,<2.5-dev",
                 "zacharyrankin/sprocketeer": "0.0.5"
             },
             "type": "library",
@@ -103,7 +102,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "description": "assentric",
+            "description": "An unusually simple way to include assets",
             "homepage": "http://github.com/lightster/assetrinc",
             "keywords": [
                 "assentric",
@@ -111,7 +110,7 @@
                 "lightster",
                 "php"
             ],
-            "time": "2014-03-12 05:42:38"
+            "time": "2014-03-13 04:02:23"
         },
         {
             "name": "lightster/lstr-silex",

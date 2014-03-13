@@ -33,7 +33,7 @@ class Provider implements ControllerProviderInterface
             }
         });
         $controllers->get('/asset/{name}', function ($name, Application $app) {
-            return $app['lidsys.asset']->getAssetResponse($name);
+            return $app['lidsys.asset.responder']->getResponse($name);
         })->assert('name', '.*');
 
 

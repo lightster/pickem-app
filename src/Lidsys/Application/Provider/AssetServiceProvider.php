@@ -13,6 +13,7 @@ namespace Lidsys\Application\Provider;
 use ArrayObject;
 
 use Lstr\Assetrinc\AssetService;
+use Lstr\Assetrinc\ResponseAdapter\Symfony as SymfonyResponseAdapter;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -35,6 +36,9 @@ class AssetServiceProvider implements ServiceProviderInterface
                 $app['config']['assetrinc.url_prefix'],
                 $options
             );
+        });
+        $app['lidsys.asset.responder'] = $app->share(function ($app) {
+            return new SymfonyResponseAdapter($app['lidsys.asset']);
         });
     }
 

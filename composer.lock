@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "208a4e9565e995ea767e27395f78d636",
+    "hash": "3300331193e726072bddf2e7f76073d0",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -114,19 +114,20 @@
         },
         {
             "name": "lightster/lstr-silex",
-            "version": "v0.0.4",
+            "version": "v0.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex.git",
-                "reference": "2ec40c1f14cc98dc0a00e9e73b69c50f0368c2a8"
+                "reference": "e2bb59bcd75fc930fcd021ecb0e28e2425e34215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/2ec40c1f14cc98dc0a00e9e73b69c50f0368c2a8",
-                "reference": "2ec40c1f14cc98dc0a00e9e73b69c50f0368c2a8",
+                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/e2bb59bcd75fc930fcd021ecb0e28e2425e34215",
+                "reference": "e2bb59bcd75fc930fcd021ecb0e28e2425e34215",
                 "shasum": ""
             },
             "require": {
+                "lightster/assetrinc": "0.0.6",
                 "php": ">=5.3",
                 "silex/silex": "~1.1"
             },
@@ -136,6 +137,7 @@
                     "Lstr\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "description": "Lstr/Silex Quick-start Library",
             "homepage": "http://lightdatasys.com",
             "keywords": [
@@ -143,11 +145,7 @@
                 "lstr",
                 "silex"
             ],
-            "support": {
-                "source": "https://github.com/lightster/lstr-silex/tree/v0.0.4",
-                "issues": "https://github.com/lightster/lstr-silex/issues"
-            },
-            "time": "2014-02-28 19:00:59"
+            "time": "2014-03-14 01:33:22"
         },
         {
             "name": "pimple/pimple",

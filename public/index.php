@@ -11,10 +11,10 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Lidsys\Application\Controller\Provider as AppControllerProvider;
-use Lidsys\Application\Provider\AssetServiceProvider as AssetServiceProvider;
 use Lidsys\Football\Controller\Provider as FootballControllerProvider;
 use Lidsys\User\Controller\Provider as UserControllerProvider;
 
+use Lstr\Silex\Provider\AssetServiceProvider;
 use Lstr\Silex\Provider\ConfigServiceProvider;
 use Lstr\Silex\Provider\DatabaseServiceProvider;
 use Lstr\Silex\Provider\TemplateServiceProvider;

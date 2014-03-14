@@ -20,7 +20,7 @@ class Provider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $app['lidsys.asset.path']['app']  = __DIR__ . '/assets';
+        $app['lstr.asset.path']['app']  = __DIR__ . '/assets';
         $app['lstr.template.path'][] = __DIR__ . '/views';
 
         $controllers = $app['controllers_factory'];
@@ -33,7 +33,7 @@ class Provider implements ControllerProviderInterface
             }
         });
         $controllers->get('/asset/{name}', function ($name, Application $app) {
-            return $app['lidsys.asset.responder']->getResponse($name);
+            return $app['lstr.asset.responder']->getResponse($name);
         })->assert('name', '.*');
 
 

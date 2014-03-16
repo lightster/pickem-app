@@ -26,7 +26,7 @@ use Silex\Application;
 $app = new Application();
 
 $app->register(new ConfigServiceProvider());
-$app->register(new DatabaseServiceProvider('db', 'config', 'db.config'));
+$app->register(new DatabaseServiceProvider());
 $app->register(new TemplateServiceProvider());
 $app->register(new AssetServiceProvider());
 
@@ -36,6 +36,10 @@ $app['config'] = $app['lstr.config']->load(array(
     __DIR__ . '/../config/autoload/*.global.php',
     __DIR__ . '/../config/autoload/*.local.php',
 ));
+
+$app['db'] = $app['lstr.db'](function (Application $app) {
+    return $app['config']['db.config'];
+});
 
 if (isset($app['config']['debug'])) {
     $app['debug'] = $app['config']['debug'];

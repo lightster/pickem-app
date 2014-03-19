@@ -39,8 +39,8 @@ class FantasyPickService
 
         $picks = array();
 
-        $pdo   = $this->app['db']->getPdo();
-        $query = $pdo->prepare(
+        $db    = $this->app['db'];
+        $query = $db->query(
             "
                 SELECT
                     playerId AS player_id,
@@ -50,12 +50,12 @@ class FantasyPickService
                 JOIN nflGame game USING (gameId)
                 WHERE weekId = :week_id
                     AND gameTime < :now
-            "
+            ",
+            array(
+                'week_id' => $week['week_id'],
+                'now'     => gmdate('Y-m-d H:i:s'),
+            )
         );
-        $query->execute(array(
-            'week_id' => $week['week_id'],
-            'now'     => gmdate('Y-m-d H:i:s'),
-        ));
         while ($pick = $query->fetch()) {
             $picks[$pick['game_id']][$pick['player_id']] = $pick;
         }

@@ -29,8 +29,8 @@ class FantasyPlayerService
     {
         $players = array();
 
-        $pdo   = $this->app['db']->getPdo();
-        $query = $pdo->prepare(
+        $db    = $this->app['db'];
+        $query = $db->query(
             "
                 SELECT
                     playerId AS player_id,
@@ -42,11 +42,11 @@ class FantasyPlayerService
                 JOIN nflWeek week USING (weekId)
                 JOIN nflSeason season USING (seasonId)
                 WHERE year = :year
-            "
+            ",
+            array(
+                'year' => $year,
+            )
         );
-        $query->execute(array(
-            'year' => $year,
-        ));
         while ($player = $query->fetch()) {
             $names = explode(" ", $player['name']);
             foreach ($names as $name_i => $name_part) {

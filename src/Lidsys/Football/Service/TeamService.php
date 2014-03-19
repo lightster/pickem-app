@@ -37,8 +37,8 @@ class TeamService
 
         $this->teams = array();
 
-        $pdo   = $this->app['db']->getPdo();
-        $query = $pdo->prepare(
+        $db    = $this->app['db'];
+        $query = $db->query(
             "
                 SELECT
                     teamId AS team_id,
@@ -53,8 +53,6 @@ class TeamService
                 FROM nflTeam
             "
         );
-        $query->execute(array(
-        ));
         while ($team = $query->fetch()) {
             $this->teams[$team['team_id']] = $team;
         }
@@ -77,8 +75,8 @@ class TeamService
 
         $team_standings = array();
 
-        $pdo   = $this->app['db']->getPdo();
-        $query = $pdo->prepare(
+        $db    = $this->app['db'];
+        $query = $db->query(
             "
                 SELECT
                     t.teamId AS team_id,
@@ -125,12 +123,12 @@ class TeamService
                 WHERE DATE(gameTime) BETWEEN :start_date AND :end_date
                 GROUP BY t.teamId
                 ORDER BY win_count DESC, tie_count DESC, loss_count DESC
-            "
+            ",
+            array(
+                'start_date' => $first_week['start_date'],
+                'end_date'   => $selected_week['end_date'],
+            )
         );
-        $query->execute(array(
-            'start_date' => $first_week['start_date'],
-            'end_date'   => $selected_week['end_date'],
-        ));
         while ($team_standing = $query->fetch()) {
             $team_standings[] = $team_standing;
         }

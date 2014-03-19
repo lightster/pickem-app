@@ -31,8 +31,8 @@ class AuthenticatorService
     {
         $authenticated_user = false;
 
-        $pdo   = $this->app['db']->getPdo();
-        $query = $pdo->prepare(
+        $db    = $this->app['db'];
+        $query = $db->query(
             "
                 SELECT
                     u.userId AS user_id,
@@ -41,12 +41,12 @@ class AuthenticatorService
                 FROM user AS u
                 WHERE u.username = :username
                     AND u.password = md5(concat(:password, u.securityHash))
-            "
+            ",
+            array(
+                'username' => $username,
+                'password' => md5($password),
+            )
         );
-        $query->execute(array(
-            'username' => $username,
-            'password' => md5($password),
-        ));
         while ($row = $query->fetch()) {
             if ($row['username'] === $username) {
                 $authenticated_user = $row;

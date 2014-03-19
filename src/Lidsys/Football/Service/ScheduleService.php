@@ -38,8 +38,8 @@ class ScheduleService
 
         $seasons       = array();
 
-        $pdo   = $this->app['db']->getPdo();
-        $query = $pdo->prepare(
+        $db    = $this->app['db'];
+        $query = $db->query(
             "
                 SELECT
                     seasonId AS season_id,
@@ -48,8 +48,6 @@ class ScheduleService
                 ORDER BY year
             "
         );
-        $query->execute(array(
-        ));
         while ($season = $query->fetch()) {
             $seasons[$season['year']] = $season;
         }
@@ -70,8 +68,8 @@ class ScheduleService
         $weeks       = array();
         $week_number = 0;
 
-        $pdo   = $this->app['db']->getPdo();
-        $query = $pdo->prepare(
+        $db    = $this->app['db'];
+        $query = $db->query(
             "
                 SELECT
                     weekId AS week_id,
@@ -84,11 +82,11 @@ class ScheduleService
                 JOIN nflSeason AS season USING (seasonId)
                 WHERE year = :year
                 ORDER BY weekStart
-            "
+            ",
+            array(
+                'year' => $year,
+            )
         );
-        $query->execute(array(
-            'year' => $year,
-        ));
         while ($week = $query->fetch()) {
             ++$week_number;
 
@@ -115,8 +113,8 @@ class ScheduleService
 
         $games = array();
 
-        $pdo   = $this->app['db']->getPdo();
-        $query = $pdo->prepare(
+        $db    = $this->app['db'];
+        $query = $db->query(
             "
                 SELECT
                     gameId AS game_id,
@@ -128,12 +126,12 @@ class ScheduleService
                 FROM nflGame
                 WHERE DATE(gameTime) BETWEEN :start_date AND :end_date
                 ORDER BY gameTime, gameId
-            "
+            ",
+            array(
+                'start_date' => $week['start_date'],
+                'end_date'   => $week['end_date'],
+            )
         );
-        $query->execute(array(
-            'start_date' => $week['start_date'],
-            'end_date'   => $week['end_date'],
-        ));
         while ($game = $query->fetch()) {
             $games[] = $game;
         }

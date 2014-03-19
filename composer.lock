@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "6c935dde33ad09072ea0f674e48ad5fe",
+    "hash": "069650a3970d02af3028a8d6578fd512",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -114,16 +114,16 @@
         },
         {
             "name": "lightster/lstr-silex",
-            "version": "v0.0.7",
+            "version": "v0.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex.git",
-                "reference": "dd5b1e1e62d946c657356c225764d3adde0c6913"
+                "reference": "cf12341141a11f4ea71df1f3941e9ed66906fcb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/dd5b1e1e62d946c657356c225764d3adde0c6913",
-                "reference": "dd5b1e1e62d946c657356c225764d3adde0c6913",
+                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/cf12341141a11f4ea71df1f3941e9ed66906fcb8",
+                "reference": "cf12341141a11f4ea71df1f3941e9ed66906fcb8",
                 "shasum": ""
             },
             "require": {
@@ -145,7 +145,7 @@
                 "lstr",
                 "silex"
             ],
-            "time": "2014-03-16 04:58:33"
+            "time": "2014-03-16 05:15:05"
         },
         {
             "name": "pimple/pimple",

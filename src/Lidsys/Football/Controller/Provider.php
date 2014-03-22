@@ -13,8 +13,8 @@ namespace Lidsys\Football\Controller;
 use DateTime;
 use DateTimeZone;
 
-use Lstr\Silex\Service\Exception\TemplateNotFound;
-use Lstr\Silex\Service\JsonRequestMiddlewareService;
+use Lstr\Silex\Template\Exception\TemplateNotFound;
+use Lstr\Silex\Controller\JsonRequestMiddlewareService;
 
 use Lidsys\Football\Service\Provider as FootballServiceProvider;
 

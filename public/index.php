@@ -14,10 +14,10 @@ use Lidsys\Application\Controller\Provider as AppControllerProvider;
 use Lidsys\Football\Controller\Provider as FootballControllerProvider;
 use Lidsys\User\Controller\Provider as UserControllerProvider;
 
-use Lstr\Silex\Provider\AssetServiceProvider;
-use Lstr\Silex\Provider\ConfigServiceProvider;
-use Lstr\Silex\Provider\DatabaseServiceProvider;
-use Lstr\Silex\Provider\TemplateServiceProvider;
+use Lstr\Silex\Asset\AssetServiceProvider;
+use Lstr\Silex\Config\ConfigServiceProvider;
+use Lstr\Silex\Database\DatabaseServiceProvider;
+use Lstr\Silex\Template\TemplateServiceProvider;
 
 use Lidsys\User\Service\Provider as UserServiceProvider;
 

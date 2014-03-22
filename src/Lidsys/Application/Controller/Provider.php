@@ -33,7 +33,7 @@ class Provider implements ControllerProviderInterface
                 return new Response($ex->getMessage(), 404);
             }
         });
-        $controllers->get('/asset/{name}', function ($name, Application $app, Request $request) {
+        $controllers->get('/asset/{version}/{name}', function ($version, $name, Application $app, Request $request) {
             return $app['lstr.asset.responder']->getResponse(
                 $name,
                 array(

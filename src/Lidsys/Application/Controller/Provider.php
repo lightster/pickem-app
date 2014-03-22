@@ -15,6 +15,7 @@ use Lstr\Silex\Template\Exception\TemplateNotFound;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class Provider implements ControllerProviderInterface
 {
@@ -32,8 +33,13 @@ class Provider implements ControllerProviderInterface
                 return new Response($ex->getMessage(), 404);
             }
         });
-        $controllers->get('/asset/{name}', function ($name, Application $app) {
-            return $app['lstr.asset.responder']->getResponse($name);
+        $controllers->get('/asset/{name}', function ($name, Application $app, Request $request) {
+            return $app['lstr.asset.responder']->getResponse(
+                $name,
+                array(
+                    'request' => $request,
+                )
+            );
         })->assert('name', '.*');
 
 

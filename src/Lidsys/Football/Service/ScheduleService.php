@@ -12,20 +12,20 @@ namespace Lidsys\Football\Service;
 
 use Pdo;
 
-use Silex\Application;
+use Lstr\Silex\Database\DatabaseService;
 
 class ScheduleService
 {
-    private $app;
+    private $db;
 
     private $seasons = null;
     private $weeks   = array();
 
 
 
-    public function __construct(Application $app)
+    public function __construct(DatabaseService $db)
     {
-        $this->app    = $app;
+        $this->db    = $db;
     }
 
 
@@ -38,7 +38,7 @@ class ScheduleService
 
         $seasons       = array();
 
-        $db    = $this->app['db'];
+        $db    = $this->db;
         $query = $db->query(
             "
                 SELECT
@@ -68,7 +68,7 @@ class ScheduleService
         $weeks       = array();
         $week_number = 0;
 
-        $db    = $this->app['db'];
+        $db    = $this->db;
         $query = $db->query(
             "
                 SELECT
@@ -113,7 +113,7 @@ class ScheduleService
 
         $games = array();
 
-        $db    = $this->app['db'];
+        $db    = $this->db;
         $query = $db->query(
             "
                 SELECT

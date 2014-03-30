@@ -10,17 +10,17 @@
 
 namespace Lidsys\Football\Service;
 
-use Silex\Application;
+use Lstr\Silex\Database\DatabaseService;
 
 class FantasyPlayerService
 {
-    private $app;
+    private $db;
 
 
 
-    public function __construct(Application $app)
+    public function __construct(DatabaseService $db)
     {
-        $this->app    = $app;
+        $this->db    = $db;
     }
 
 
@@ -29,7 +29,7 @@ class FantasyPlayerService
     {
         $players = array();
 
-        $db    = $this->app['db'];
+        $db    = $this->db;
         $query = $db->query(
             "
                 SELECT

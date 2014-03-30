@@ -13,7 +13,6 @@ namespace Lidsys\Football\Service;
 use Pdo;
 
 use Lstr\Silex\Database\DatabaseService;
-use Silex\Application;
 
 class FantasyPickService
 {

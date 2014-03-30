@@ -24,13 +24,20 @@ class Provider implements ServiceProviderInterface
             );
         });
         $app['lidsys.football.fantasy-player'] = $app->share(function ($app) {
-            return new FantasyPlayerService($app);
+            return new FantasyPlayerService(
+                $app['db']
+            );
         });
         $app['lidsys.football.schedule'] = $app->share(function ($app) {
-            return new ScheduleService($app);
+            return new ScheduleService(
+                $app['db']
+            );
         });
         $app['lidsys.football.team'] = $app->share(function ($app) {
-            return new TeamService($app);
+            return new TeamService(
+                $app['db'],
+                $app['lidsys.football.schedule']
+            );
         });
     }
 

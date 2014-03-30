@@ -12,19 +12,21 @@ namespace Lidsys\Football\Service;
 
 use Pdo;
 
-use Silex\Application;
+use Lstr\Silex\Database\DatabaseService;
 
 class TeamService
 {
-    private $app;
+    private $db;
+    private $schedule;
 
     private $teams = null;
 
 
 
-    public function __construct(Application $app)
+    public function __construct(DatabaseService $db, ScheduleService $schedule)
     {
-        $this->app    = $app;
+        $this->db       = $db;
+        $this->schedule = $schedule;
     }
 
 
@@ -37,7 +39,7 @@ class TeamService
 
         $this->teams = array();
 
-        $db    = $this->app['db'];
+        $db    = $this->db;
         $query = $db->query(
             "
                 SELECT
@@ -64,7 +66,7 @@ class TeamService
 
     public function getStandingsForWeek($year, $week_number)
     {
-        $weeks = $this->app['lidsys.football.schedule']->getWeeksForYear($year);
+        $weeks = $this->schedule->getWeeksForYear($year);
 
         if (!isset($weeks[$week_number])) {
             throw new Exception\WeekNotFound($year, $week_number);
@@ -75,7 +77,7 @@ class TeamService
 
         $team_standings = array();
 
-        $db    = $this->app['db'];
+        $db    = $this->db;
         $query = $db->query(
             "
                 SELECT

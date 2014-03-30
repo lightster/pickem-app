@@ -7,13 +7,14 @@
 	"homepage": "http://lightdatasys.com",
 	"autoload": {
 		"psr-0": {
-			"Lidsys\\": "src/"
+			"Lidsys\\": "src/",
+			"Lstr\\Silex\\Database": "../lstr-silex-database/src"
 		}
 	},
 	"require": {
 		"php": ">=5.4.19",
 		"silex/silex": "~1.1",
-		"lightster/lstr-silex": "0.1.4",
+		"lightster/lstr-silex": "0.1.6",
 		"kriswallsmith/assetic": "~1.1"
 	}
 }

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "107501627c91eeedacf43830ca3bc171",
+    "hash": "67f569cf758fab8b1e9a99fee694bf05",
     "packages": [
         {
             "name": "kriswallsmith/assetic",
@@ -77,21 +77,68 @@
             "time": "2013-07-19 00:03:27"
         },
         {
-            "name": "lightster/assetrinc",
-            "version": "v0.0.7",
+            "name": "leafo/scssphp",
+            "version": "v0.0.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/lightster/assetrinc.git",
-                "reference": "af1b511ee3dbc275ae57c5e96e37bcd2f456cb0b"
+                "url": "https://github.com/leafo/scssphp.git",
+                "reference": "a06d702ebf9fabb22542bbb27cc12a905813bb6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/af1b511ee3dbc275ae57c5e96e37bcd2f456cb0b",
-                "reference": "af1b511ee3dbc275ae57c5e96e37bcd2f456cb0b",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/a06d702ebf9fabb22542bbb27cc12a905813bb6d",
+                "reference": "a06d702ebf9fabb22542bbb27cc12a905813bb6d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "php": ">=5.3.0",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "bin": [
+                "pscss"
+            ],
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "scss.inc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Leaf Corcoran",
+                    "email": "leafot@gmail.com",
+                    "homepage": "http://leafo.net"
+                }
+            ],
+            "description": "scssphp is a compiler for SCSS written in PHP.",
+            "homepage": "http://leafo.net/scssphp/",
+            "time": "2013-12-23 23:28:02"
+        },
+        {
+            "name": "lightster/assetrinc",
+            "version": "v0.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lightster/assetrinc.git",
+                "reference": "69827a69f55370fe8070a031a150ec13957fbd22"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/69827a69f55370fe8070a031a150ec13957fbd22",
+                "reference": "69827a69f55370fe8070a031a150ec13957fbd22",
                 "shasum": ""
             },
             "require": {
                 "kriswallsmith/assetic": "~1.1",
+                "leafo/scssphp": "0.0.9",
                 "php": ">=5.3.3",
                 "zacharyrankin/sprocketeer": "0.0.6"
             },
@@ -110,28 +157,28 @@
                 "lightster",
                 "php"
             ],
-            "time": "2014-03-20 19:21:48"
+            "time": "2014-03-28 04:34:07"
         },
         {
             "name": "lightster/lstr-silex",
-            "version": "v0.1.4",
+            "version": "v0.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex.git",
-                "reference": "9cf6635155d7b4cd74032ec0b8c8d7eb9eded5c9"
+                "reference": "99880306d4e6adfdb24222b9a27b7aab2006b47c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/9cf6635155d7b4cd74032ec0b8c8d7eb9eded5c9",
-                "reference": "9cf6635155d7b4cd74032ec0b8c8d7eb9eded5c9",
+                "url": "https://api.github.com/repos/lightster/lstr-silex/zipball/99880306d4e6adfdb24222b9a27b7aab2006b47c",
+                "reference": "99880306d4e6adfdb24222b9a27b7aab2006b47c",
                 "shasum": ""
             },
             "require": {
                 "lightster/lstr-silex-app": "0.0.2",
-                "lightster/lstr-silex-asset": "0.0.1",
+                "lightster/lstr-silex-asset": "0.0.3",
                 "lightster/lstr-silex-config": "0.0.1",
                 "lightster/lstr-silex-controller": "0.0.1",
-                "lightster/lstr-silex-database": "0.0.2",
+                "lightster/lstr-silex-database": "0.0.3",
                 "lightster/lstr-silex-template": "0.0.1"
             },
             "type": "library",
@@ -143,7 +190,7 @@
                 "lstr",
                 "silex"
             ],
-            "time": "2014-03-25 05:01:51"
+            "time": "2014-03-30 03:32:51"
         },
         {
             "name": "lightster/lstr-silex-app",
@@ -181,20 +228,20 @@
         },
         {
             "name": "lightster/lstr-silex-asset",
-            "version": "v0.0.1",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex-asset.git",
-                "reference": "e07853145c1239db5a8ce4ba030e8b0295ff22cd"
+                "reference": "347217d16363b7b614f78102e5da2dc55ae391f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex-asset/zipball/e07853145c1239db5a8ce4ba030e8b0295ff22cd",
-                "reference": "e07853145c1239db5a8ce4ba030e8b0295ff22cd",
+                "url": "https://api.github.com/repos/lightster/lstr-silex-asset/zipball/347217d16363b7b614f78102e5da2dc55ae391f5",
+                "reference": "347217d16363b7b614f78102e5da2dc55ae391f5",
                 "shasum": ""
             },
             "require": {
-                "lightster/assetrinc": "0.0.7",
+                "lightster/assetrinc": "0.0.9",
                 "php": ">=5.3",
                 "silex/silex": "~1.1"
             },
@@ -213,7 +260,7 @@
                 "lstr",
                 "silex"
             ],
-            "time": "2014-03-23 04:28:28"
+            "time": "2014-03-28 04:39:20"
         },
         {
             "name": "lightster/lstr-silex-config",
@@ -287,16 +334,16 @@
         },
         {
             "name": "lightster/lstr-silex-database",
-            "version": "v0.0.2",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex-database.git",
-                "reference": "a750ce7c865d50b2267bdb7a3d0a44c925a6c7ec"
+                "reference": "a560c7a0ea53e3ca5efde1cd423080ab036bb048"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex-database/zipball/a750ce7c865d50b2267bdb7a3d0a44c925a6c7ec",
-                "reference": "a750ce7c865d50b2267bdb7a3d0a44c925a6c7ec",
+                "url": "https://api.github.com/repos/lightster/lstr-silex-database/zipball/a560c7a0ea53e3ca5efde1cd423080ab036bb048",
+                "reference": "a560c7a0ea53e3ca5efde1cd423080ab036bb048",
                 "shasum": ""
             },
             "require": {
@@ -318,7 +365,7 @@
                 "lstr",
                 "silex"
             ],
-            "time": "2014-03-25 04:48:56"
+            "time": "2014-03-27 04:34:25"
         },
         {
             "name": "lightster/lstr-silex-template",
@@ -443,59 +490,59 @@
         },
         {
             "name": "silex/silex",
-            "version": "v1.1.2",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "47cc7d6545450ef8a91f50c04e8c7b3b04fceae9"
+                "reference": "aed7cb81eef9ba1082204027a0e3b60440a212e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/47cc7d6545450ef8a91f50c04e8c7b3b04fceae9",
-                "reference": "47cc7d6545450ef8a91f50c04e8c7b3b04fceae9",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/aed7cb81eef9ba1082204027a0e3b60440a212e0",
+                "reference": "aed7cb81eef9ba1082204027a0e3b60440a212e0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "pimple/pimple": "~1.0",
-                "symfony/event-dispatcher": ">=2.3,<2.5-dev",
-                "symfony/http-foundation": ">=2.3,<2.5-dev",
-                "symfony/http-kernel": ">=2.3,<2.5-dev",
-                "symfony/routing": ">=2.3,<2.5-dev"
+                "symfony/event-dispatcher": ">=2.3,<2.6-dev",
+                "symfony/http-foundation": ">=2.3,<2.6-dev",
+                "symfony/http-kernel": ">=2.3,<2.6-dev",
+                "symfony/routing": ">=2.3,<2.6-dev"
             },
             "require-dev": {
-                "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
+                "doctrine/dbal": "~2.2",
                 "monolog/monolog": "~1.4,>=1.4.1",
                 "phpunit/phpunit": "~3.7",
                 "swiftmailer/swiftmailer": "5.*",
-                "symfony/browser-kit": ">=2.3,<2.5-dev",
-                "symfony/config": ">=2.3,<2.5-dev",
-                "symfony/css-selector": ">=2.3,<2.5-dev",
-                "symfony/debug": ">=2.3,<2.5-dev",
-                "symfony/dom-crawler": ">=2.3,<2.5-dev",
-                "symfony/finder": ">=2.3,<2.5-dev",
-                "symfony/form": ">=2.3,<2.5-dev",
-                "symfony/locale": ">=2.3,<2.5-dev",
-                "symfony/monolog-bridge": ">=2.3,<2.5-dev",
-                "symfony/options-resolver": ">=2.3,<2.5-dev",
-                "symfony/process": ">=2.3,<2.5-dev",
-                "symfony/security": ">=2.3,<2.5-dev",
-                "symfony/serializer": ">=2.3,<2.5-dev",
-                "symfony/translation": ">=2.3,<2.5-dev",
-                "symfony/twig-bridge": ">=2.3,<2.5-dev",
-                "symfony/validator": ">=2.3,<2.5-dev",
+                "symfony/browser-kit": ">=2.3,<2.6-dev",
+                "symfony/config": ">=2.3,<2.6-dev",
+                "symfony/css-selector": ">=2.3,<2.6-dev",
+                "symfony/debug": ">=2.3,<2.6-dev",
+                "symfony/dom-crawler": ">=2.3,<2.6-dev",
+                "symfony/finder": ">=2.3,<2.6-dev",
+                "symfony/form": ">=2.3,<2.6-dev",
+                "symfony/locale": ">=2.3,<2.6-dev",
+                "symfony/monolog-bridge": ">=2.3,<2.6-dev",
+                "symfony/options-resolver": ">=2.3,<2.6-dev",
+                "symfony/process": ">=2.3,<2.6-dev",
+                "symfony/security": ">=2.3,<2.6-dev",
+                "symfony/serializer": ">=2.3,<2.6-dev",
+                "symfony/translation": ">=2.3,<2.6-dev",
+                "symfony/twig-bridge": ">=2.3,<2.6-dev",
+                "symfony/validator": ">=2.3,<2.6-dev",
                 "twig/twig": ">=1.8.0,<2.0-dev"
             },
             "suggest": {
-                "symfony/browser-kit": ">=2.3,<2.5-dev",
-                "symfony/css-selector": ">=2.3,<2.5-dev",
-                "symfony/dom-crawler": ">=2.3,<2.5-dev",
-                "symfony/form": ">=2.3,<2.5-dev"
+                "symfony/browser-kit": ">=2.3,<2.6-dev",
+                "symfony/css-selector": ">=2.3,<2.6-dev",
+                "symfony/dom-crawler": ">=2.3,<2.6-dev",
+                "symfony/form": ">=2.3,<2.6-dev"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -525,7 +572,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2013-10-30 08:53:26"
+            "time": "2014-03-29 14:15:59"
         },
         {
             "name": "symfony/debug",

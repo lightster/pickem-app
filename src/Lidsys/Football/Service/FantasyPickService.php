@@ -12,24 +12,29 @@ namespace Lidsys\Football\Service;
 
 use Pdo;
 
+use Lstr\Silex\Database\DatabaseService;
 use Silex\Application;
 
 class FantasyPickService
 {
-    private $app;
+    private $db;
+    private $schedule;
 
 
 
-    public function __construct(Application $app)
-    {
-        $this->app    = $app;
+    public function __construct(
+        DatabaseService $db,
+        ScheduleService $schedule
+    ) {
+        $this->db       = $db;
+        $this->schedule = $schedule;
     }
 
 
 
     public function getPicksForWeek($year, $week_number)
     {
-        $weeks = $this->app['lidsys.football.schedule']->getWeeksForYear($year);
+        $weeks = $this->schedule->getWeeksForYear($year);
 
         if (!isset($weeks[$week_number])) {
             throw new Exception\WeekNotFound($year, $week_number);
@@ -39,7 +44,7 @@ class FantasyPickService
 
         $picks = array();
 
-        $db    = $this->app['db'];
+        $db    = $this->db;
         $query = $db->query(
             "
                 SELECT

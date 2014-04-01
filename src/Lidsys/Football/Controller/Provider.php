@@ -79,6 +79,37 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->get('/scores/{year}', function ($year, Application $app) {
+            $sched_service = $app['lidsys.football.schedule'];
+            $weeks         = $sched_service->getWeeksForYear($year);
+
+            $timezone = new DateTimeZone('UTC');
+
+            $formatter = function (array & $game) use ($timezone) {
+                unset(
+                    $game['start_time'],
+                    $game['away_team_id'],
+                    $game['home_team_id']
+                );
+            };
+
+            $all_games = array();
+            foreach ($weeks as $week_num => $week) {
+                $all_games[$week_num] = $sched_service->getGamesForWeek(
+                    $year,
+                    $week_num
+                );
+                array_walk(
+                    $all_games[$week_num],
+                    $formatter
+                );
+            }
+
+            return $app->json(array(
+                'games' => $all_games,
+            ));
+        });
+
         $controllers->get('/teams', function (Application $app) {
             $teams = $app['lidsys.football.team']->getTeams();
 

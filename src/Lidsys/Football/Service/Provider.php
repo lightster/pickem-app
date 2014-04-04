@@ -28,6 +28,12 @@ class Provider implements ServiceProviderInterface
                 $app['db']
             );
         });
+        $app['lidsys.football.fantasy-standings'] = $app->share(function ($app) {
+            return new FantasyStandingService(
+                $app['db'],
+                $app['lidsys.football.schedule']
+            );
+        });
         $app['lidsys.football.schedule'] = $app->share(function ($app) {
             return new ScheduleService(
                 $app['db']

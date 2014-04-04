@@ -164,6 +164,14 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->get('/fantasy-standings/{year}', function ($year, Application $app) {
+            $players = $app['lidsys.football.fantasy-standings']->getFantasyStandingsForYear($year);
+
+            return $app->json(array(
+                'fantasy_standings' => $players,
+            ));
+        });
+
         $controllers->before(new JsonRequestMiddlewareService());
         $controllers->before(function (Request $request, Application $app) {
             $app->register(new FootballServiceProvider());

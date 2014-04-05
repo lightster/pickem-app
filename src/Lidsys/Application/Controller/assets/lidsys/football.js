@@ -28,6 +28,14 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
             navigationLabel: "League Picks",
             isFootball: true
         })
+        .when('/football/fantasy-standings/:year?/:week?',
+        {
+            templateUrl: "/app/template/football/fantasy-standings.html",
+            controller: "LidsysFootballFantasyStandingsCtrl",
+            resolve: $injector.get('lidsysFootballFantasyStandingsRouteResolver'),
+            navigationLabel: "Fantasy Standings",
+            isFootball: true
+        })
         .when('/football/schedule/:year?/:week?',
         {
             templateUrl: "/app/template/football/schedule.html",
@@ -80,6 +88,25 @@ module.constant('lidsysFootballWeekSensitiveRouteResolver', {
 })
 
 module.constant('lidsysFootballPicksRouteResolver', {
+    resolvePicks: ['$injector', '$route', '$q', 'lidsysFootballFantasyPlayer','lidsysFootballPick',  'lidsysFootballSchedule', function($injector, $route, $q, footballFantasyPlayer, footballPick, footballSchedule) {
+        var resolvers = $injector.get('lidsysFootballWeekSensitiveRouteResolver');
+        return $q.all({
+            resolveValidWeek: $injector.invoke(resolvers.resolveValidWeek),
+            resolveTeams:     $injector.invoke(resolvers.resolveTeams)
+        }).then(function () {
+            return footballPick.load(
+                footballSchedule.getSelectedSeason().year,
+                footballSchedule.getSelectedWeek().week_number
+            )
+        }).then(function () {
+            return footballFantasyPlayer.load(
+                footballSchedule.getSelectedSeason().year
+            )
+        })
+    }]
+})
+
+module.constant('lidsysFootballFantasyStandingsRouteResolver', {
     resolvePicks: ['$injector', '$route', '$q', 'lidsysFootballFantasyPlayer','lidsysFootballPick',  'lidsysFootballSchedule', function($injector, $route, $q, footballFantasyPlayer, footballPick, footballSchedule) {
         var resolvers = $injector.get('lidsysFootballWeekSensitiveRouteResolver');
         return $q.all({
@@ -193,6 +220,65 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
 }])
 
 module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballPlayer, footballSchedule, footballTeam) {
+    var season  = footballSchedule.getSelectedSeason(),
+        week    = footballSchedule.getSelectedWeek(),
+        picks   = footballPick.getPicks(season.year, week.week_number),
+        teams   = footballTeam.getTeams(),
+        games   = footballSchedule.getGames(),
+        players = footballPlayer.getPlayers(season.year),
+        game    = null,
+        game_id = null
+    for (game_id in games) {
+        game = games[game_id]
+
+        game.picks = picks[game.game_id]
+    }
+
+    $scope.currentPlayerId  = 6
+    $scope.week             = week
+    $scope.games            = games
+    $scope.players          = players
+    $scope.playerCount      = 0
+    $scope.prevGame         = null
+    $scope.prevHeaderExists = null
+    $scope.prevGameTime     = null
+
+    var playerCount = 0
+    for (var player_id in players) {
+        var player = players[player_id]
+        if (player.player_id) {
+            ++playerCount
+        }
+    }
+    $scope.playerCount = playerCount
+
+    $scope.headerExists = function (game) {
+        if ($scope.prevGame === game) {
+            return $scope.prevHeaderExists
+        }
+
+        $scope.prevHeaderExists = ($scope.prevGameTime !== game.start_time)
+        $scope.prevGameTime     = game.start_time
+        $scope.prevGame         = game
+
+        return $scope.prevHeaderExists
+    }
+    $scope.getPickedTeamStyle = function (pick, team) {
+        if (pick.team_id == team.team_id) {
+            return {
+                'background-color': '#' + $scope.players[pick.player_id].background_color,
+                'color': '#ffffff'
+            }
+        }
+        else {
+            return {
+                'color': '#' + $scope.players[pick.player_id].background_color
+            }
+        }
+    }
+}])
+
+module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballPlayer, footballSchedule, footballTeam) {
     var season  = footballSchedule.getSelectedSeason(),
         week    = footballSchedule.getSelectedWeek(),
         picks   = footballPick.getPicks(season.year, week.week_number),

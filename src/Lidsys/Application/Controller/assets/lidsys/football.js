@@ -107,18 +107,13 @@ module.constant('lidsysFootballPicksRouteResolver', {
 })
 
 module.constant('lidsysFootballFantasyStandingsRouteResolver', {
-    resolvePicks: ['$injector', '$route', '$q', 'lidsysFootballFantasyPlayer','lidsysFootballPick',  'lidsysFootballSchedule', function($injector, $route, $q, footballFantasyPlayer, footballPick, footballSchedule) {
+    resolveFantasyStandings: ['$injector', '$route', '$q', 'lidsysFootballFantasyPlayer','lidsysFootballFantasyStanding',  'lidsysFootballSchedule', function($injector, $route, $q, footballFantasyPlayer, footballFantasyStanding, footballSchedule) {
         var resolvers = $injector.get('lidsysFootballWeekSensitiveRouteResolver');
         return $q.all({
             resolveValidWeek: $injector.invoke(resolvers.resolveValidWeek),
             resolveTeams:     $injector.invoke(resolvers.resolveTeams)
         }).then(function () {
-            return footballPick.load(
-                footballSchedule.getSelectedSeason().year,
-                footballSchedule.getSelectedWeek().week_number
-            )
-        }).then(function () {
-            return footballFantasyPlayer.load(
+            return footballFantasyStanding.load(
                 footballSchedule.getSelectedSeason().year
             )
         })
@@ -127,6 +122,10 @@ module.constant('lidsysFootballFantasyStandingsRouteResolver', {
 
 module.factory('lidsysFootballFantasyPlayer', ['$http', '$q', function($http, $q) {
     return new FootballFantasyPlayerService($http, $q)
+}])
+
+module.factory('lidsysFootballFantasyStanding', ['$http', '$q', function($http, $q) {
+    return new FootballFantasyStandingService($http, $q)
 }])
 
 module.factory('lidsysFootballPick', ['$http', '$q', function($http, $q) {
@@ -278,7 +277,10 @@ module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPic
     }
 }])
 
-module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballPlayer, footballSchedule, footballTeam) {
+module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballFantasyStanding', function ($scope, footballPlayer, footballSchedule, footballFantasyStanding) {
+    var season  = footballSchedule.getSelectedSeason()
+    console.log(footballFantasyStanding.getStandings(season.year))
+    /*
     var season  = footballSchedule.getSelectedSeason(),
         week    = footballSchedule.getSelectedWeek(),
         picks   = footballPick.getPicks(season.year, week.week_number),
@@ -335,6 +337,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
             }
         }
     }
+    */
 }])
 
 module.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballSchedule, footballTeam) {

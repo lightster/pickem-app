@@ -33,8 +33,9 @@ class FantasyStandingService
     {
         $player_stats = array();
 
-        $seasons   = $this->schedule->getSeasons();
-        $season_id = $seasons[$year]['season_id'];
+        $schedule_service = $this->schedule;
+        $seasons          = $schedule_service->getSeasons();
+        $season_id        = $seasons[$year]['season_id'];
 
         $db    = $this->db;
         $query = $db->query(
@@ -63,7 +64,8 @@ class FantasyStandingService
             )
         );
         while ($player = $query->fetch()) {
-            $player_stats[$player['week_id']][$player['player_id']] = $player;
+            $week_number = $schedule_service->getWeekNumberForWeekId($player['week_id']);
+            $player_stats[$week_number][$player['player_id']] = $player;
         }
 
         return $player_stats;

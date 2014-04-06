@@ -18,8 +18,9 @@ class ScheduleService
 {
     private $db;
 
-    private $seasons = null;
-    private $weeks   = array();
+    private $seasons                   = null;
+    private $weeks                     = array();
+    private $week_numbers_for_week_ids = array();
 
 
 
@@ -97,6 +98,47 @@ class ScheduleService
         $this->weeks[$year] = $weeks;
 
         return $this->weeks[$year];
+    }
+
+
+
+    private function getYearForWeekId($week_id)
+    {
+        $db    = $this->db;
+        $query = $db->query(
+            "
+                SELECT year
+                FROM nflWeek AS week
+                JOIN nflSeason AS season USING (seasonId)
+                WHERE weekId = :week_id
+            ",
+            array(
+                'week_id' => $week_id,
+            )
+        );
+        while ($week = $query->fetch()) {
+            return $week['year'];
+        }
+
+        throw new Exception("Could not determine year for week_id '{$week_id}'.");
+    }
+
+
+
+    public function getWeekNumberForWeekId($week_id)
+    {
+        if (isset($this->week_numbers_for_week_ids[$week_id])) {
+            return $this->week_numbers_for_week_ids[$week_id];
+        }
+
+        $year  = $this->getYearForWeekId($week_id);
+        $weeks = $this->getWeeksForYear($year);
+
+        foreach ($weeks as $week_number => $week) {
+            $this->week_numbers_for_week_ids[$week['week_id']] = $week_number;
+        }
+
+        return $this->week_numbers_for_week_ids[$week_id];
     }
 
 

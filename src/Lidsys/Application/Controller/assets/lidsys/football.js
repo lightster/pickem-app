@@ -288,7 +288,8 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
         standings        = footballFantasyStanding.getStandings(season.year),
         players          = footballPlayer.getPlayers(season.year),
         weeks            = [],
-        player_standings = []
+        player_standings = [],
+        rank             = 0
     for (var week_num in all_weeks) {
         var week = all_weeks[week_num]
         weeks.push({
@@ -306,7 +307,8 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
             player_standing = {
                 player:       player,
                 standings:    [],
-                total_points: 0
+                total_points: 0,
+                rank:         0
             }
         for (var week_idx in weeks) {
             var week     = weeks[week_idx],
@@ -326,6 +328,15 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
     player_standings.sort(function (a, b) {
         return b.total_points - a.total_points
     })
+    var lastPoints = 0
+    for (var player_standing_idx in player_standings) {
+        var player_standing = player_standings[player_standing_idx]
+        if (lastPoints != player_standing.total_points) {
+            rank++
+        }
+        player_standings[player_standing_idx].rank = rank
+        lastPoints = player_standing.total_points
+    }
 
     $scope.currentPlayerId  = 6
     $scope.week             = selected_week

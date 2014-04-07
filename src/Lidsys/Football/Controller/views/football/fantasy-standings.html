@@ -16,7 +16,9 @@
             <th>Total</th>
         </tr>
         <tr ng-repeat="standing in standings">
-            <td></td>
+            <td style="width: 35px; text-align: right; ">
+                {{standing.rank}}
+            </td>
             <td ng-style="getDisplayNameStyle(standing.player)" style="width: 70px; text-align: center; ">
                 {{standing.player.displayName}}
             </td>

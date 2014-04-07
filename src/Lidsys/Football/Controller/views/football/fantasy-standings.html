@@ -7,90 +7,25 @@
 </div>
 <div class="row full-width">
     <table class="small-12" style="margin: 0 auto; ">
-        <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
-            <th colspan="{{playerCount + 3}}" style="background-color: #f2f2f2;">
-                {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
-            </th>
-        </tr>
-        <tr ng-hide="headerExists(game)">
-            <td style="background-color: #d9d9d9; height: 2px; font-size: 1px; padding: 0; margin: 0; " colspan="20"></td>
-        </tr>
         <tr>
-            <td
-                class="text-center"
-                style="vertical-align: middle; width: 4%; "
-                ng-class="
-                    {
-                        label: game.away_score,
-                        success: game.away_score &amp;&amp; game.away_score >= game.home_score,
-                        alert: game.away_score < game.home_score,
-                        'wrong-team': game.away_team.team_id != game.picks[currentPlayerId].team_id
-                    }
-                "
-            >
-                <span ng-show="game.away_score &amp;&amp; game.away_score >= game.home_score">
-                    {{week.win_weight}}
-                </span>
-                <span ng-show="game.away_score &amp;&amp; game.away_score < game.home_score">
-                    0
-                </span>
-            </td>
-            <td style="
-                background-color: {{game.away_team.border_color}};
-                width: 4%;
-            ">&nbsp;</td>
-            <td style="
-                    color: {{game.away_team.font_color}};
-                    background-color: {{game.away_team.background_color}};
-                    width: 40%;
-                "
-                class="no-wrap"
-            >
-                {{game.away_team.location}} {{game.away_team.mascot}}
-            </td>
-            <td ng-repeat="pick in game.picks"
-                ng-style="getPickedTeamStyle(pick, game.away_team)"
-            >
-                {{players[pick.player_id].displayName}}
-            </td>
+            <th>Rank</th>
+            <th colspan="2">Player</th>
+            <th ng-repeat="week in weeks">
+                {{week.week_num}}
+            </th>
+            <th>Total</th>
         </tr>
-        <tr ng-repeat-end>
-            <td
-                class="text-center"
-                style="vertical-align: middle; width: 4%; "
-                ng-class="
-                    {
-                        label: game.away_score,
-                        success: game.away_score &amp;&amp; game.away_score <= game.home_score,
-                        alert: game.away_score > game.home_score,
-                        'wrong-team': game.home_team.team_id != game.picks[currentPlayerId].team_id
-                    }
-                "
-            >
-                <span ng-show="game.away_score &amp;&amp; game.away_score <= game.home_score">
-                    {{week.win_weight}}
-                </span>
-                <span ng-show="game.away_score &amp;&amp; game.away_score > game.home_score">
-                    0
-                </span>
+        <tr ng-repeat="standing in standings">
+            <td></td>
+            <td ng-style="getDisplayNameStyle(standing.player)" style="width: 70px; text-align: center; ">
+                {{standing.player.displayName}}
             </td>
-            <td style="
-                background-color: {{game.home_team.border_color}};
-                width: 4%;
-            ">&nbsp;</td>
-            <td style="
-                    color: {{game.home_team.font_color}};
-                    background-color: {{game.home_team.background_color}};
-                    width: 40%;
-                "
-                class="no-wrap"
-            >
-                {{game.home_team.location}} {{game.home_team.mascot}}
+            <td>{{standing.player.name}}</td>
+            <td ng-repeat="player_standing in standing.standings" style="text-align: right; ">
+                {{player_standing.points}}
             </td>
-            <td ng-repeat="pick in game.picks"
-                ng-style="getPickedTeamStyle(pick, game.home_team)"
-            >
-                {{players[pick.player_id].displayName}}
+            <td style="text-align: right; ">
+                {{standing.total_points}}
             </td>
         </tr>
     </table>

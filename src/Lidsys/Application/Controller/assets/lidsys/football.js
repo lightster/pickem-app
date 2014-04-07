@@ -113,6 +113,10 @@ module.constant('lidsysFootballFantasyStandingsRouteResolver', {
             resolveValidWeek: $injector.invoke(resolvers.resolveValidWeek),
             resolveTeams:     $injector.invoke(resolvers.resolveTeams)
         }).then(function () {
+            return footballFantasyPlayer.load(
+                footballSchedule.getSelectedSeason().year
+            )
+        }).then(function () {
             return footballFantasyStanding.load(
                 footballSchedule.getSelectedSeason().year
             )
@@ -278,32 +282,65 @@ module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPic
 }])
 
 module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballFantasyStanding', function ($scope, footballPlayer, footballSchedule, footballFantasyStanding) {
-    var season  = footballSchedule.getSelectedSeason()
-    console.log(footballFantasyStanding.getStandings(season.year))
-    /*
-    var season  = footballSchedule.getSelectedSeason(),
-        week    = footballSchedule.getSelectedWeek(),
-        picks   = footballPick.getPicks(season.year, week.week_number),
-        teams   = footballTeam.getTeams(),
-        games   = footballSchedule.getGames(),
-        players = footballPlayer.getPlayers(season.year),
-        game    = null,
-        game_id = null
-    for (game_id in games) {
-        game = games[game_id]
+    var season           = footballSchedule.getSelectedSeason(),
+        selected_week    = footballSchedule.getSelectedWeek(),
+        all_weeks        = footballSchedule.getWeeks(season.year),
+        standings        = footballFantasyStanding.getStandings(season.year),
+        players          = footballPlayer.getPlayers(season.year),
+        weeks            = [],
+        player_standings = []
+    for (var week_num in all_weeks) {
+        var week = all_weeks[week_num]
+        weeks.push({
+            week: week,
+            week_num: week_num
+        })
 
-        game.picks = picks[game.game_id]
+        if (week == selected_week) {
+            break
+        }
     }
 
-    $scope.currentPlayerId  = 6
-    $scope.week             = week
-    $scope.games            = games
-    $scope.players          = players
-    $scope.playerCount      = 0
-    $scope.prevGame         = null
-    $scope.prevHeaderExists = null
-    $scope.prevGameTime     = null
+    for (var player_idx in players) {
+        var player = players[player_idx],
+            player_standing = {
+                player:       player,
+                standings:    [],
+                total_points: 0
+            }
+        for (var week_idx in weeks) {
+            var week     = weeks[week_idx],
+                standing = standings[week.week_num][player.player_id]
 
+            if (standing) {
+                player_standing.total_points += parseInt(standing.points)
+                player_standing.standings.push(standing)
+            }
+            else {
+                player_standing.standings.push({})
+            }
+        }
+
+        player_standings.push(player_standing)
+    }
+    player_standings.sort(function (a, b) {
+        return b.total_points - a.total_points
+    })
+
+    $scope.currentPlayerId  = 6
+    $scope.week             = selected_week
+    $scope.weeks            = weeks
+    $scope.players          = players
+    $scope.standings        = player_standings
+
+    $scope.getDisplayNameStyle = function (player) {
+        return {
+            'background-color': '#' + player.background_color,
+            'color': '#ffffff'
+        }
+    }
+
+/*
     var playerCount = 0
     for (var player_id in players) {
         var player = players[player_id]

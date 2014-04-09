@@ -7,8 +7,7 @@
 	"homepage": "http://lightdatasys.com",
 	"autoload": {
 		"psr-0": {
-			"Lidsys\\": "src/",
-			"Lstr\\Silex\\Database": "../lstr-silex-database/src"
+			"Lidsys\\": "src/"
 		}
 	},
 	"require": {

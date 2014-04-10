@@ -15,19 +15,19 @@
             </th>
             <th>Total</th>
         </tr>
-        <tr ng-repeat="standing in standings">
+        <tr ng-repeat="player_standing in standings">
             <td style="width: 35px; text-align: right; ">
-                {{standing.rank}}
+                {{player_standing.rank}}
             </td>
-            <td style="text-align: right; ">{{standing.player.name}}</td>
-            <td ng-style="getDisplayNameStyle(standing.player)" style="width: 70px; text-align: center; ">
-                {{standing.player.displayName}}
+            <td style="text-align: right; ">{{player_standing.player.name}}</td>
+            <td ng-style="getDisplayNameStyle(player_standing.player)" style="width: 70px; text-align: center; ">
+                {{player_standing.player.displayName}}
             </td>
-            <td ng-repeat="player_standing in standing.standings" style="text-align: right; ">
-                {{player_standing.standing.points}}
+            <td ng-repeat="week_standing in player_standing.standings" style="text-align: right; ">
+                {{week_standing.standing.points}}
             </td>
             <td style="text-align: right; ">
-                {{standing.total_points}}
+                {{player_standing.total_points}}
             </td>
         </tr>
     </table>

@@ -316,10 +316,16 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
 
             if (standing) {
                 player_standing.total_points += parseInt(standing.points)
-                player_standing.standings.push(standing)
+                player_standing.standings.push({
+                    standing: standing,
+                    week:     week
+                })
             }
             else {
-                player_standing.standings.push({})
+                player_standing.standings.push({
+                    standing: {},
+                    week:     week
+                })
             }
         }
 

@@ -23,7 +23,11 @@
             <td ng-style="getDisplayNameStyle(player_standing.player)" style="width: 70px; text-align: center; ">
                 {{player_standing.player.displayName}}
             </td>
-            <td ng-repeat="week_standing in player_standing.standings" style="text-align: right; ">
+            <td
+                ng-repeat="week_standing in player_standing.standings"
+                ng-style="getWeekPointsStyle(week_standing)"
+                style="text-align: right; "
+            >
                 {{week_standing.standing.points}}
             </td>
             <td style="text-align: right; ">

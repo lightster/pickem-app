@@ -289,7 +289,9 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
         players          = footballPlayer.getPlayers(season.year),
         weeks            = [],
         player_standings = [],
-        rank             = 0
+        rank             = 0,
+        minPointsPerWeek = {},
+        maxPointsPerWeek = {}
     for (var week_num in all_weeks) {
         var week = all_weeks[week_num]
         weeks.push({
@@ -320,6 +322,24 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
                     standing: standing,
                     week:     week
                 })
+
+                var standing_points = parseInt(standing.points)
+
+                if (!minPointsPerWeek[week.week_num]) {
+                    minPointsPerWeek[week.week_num] = standing.points
+                }
+                else {
+                    minPointsPerWeek[week.week_num]
+                        = Math.min(standing.points, minPointsPerWeek[week.week_num])
+                }
+
+                if (!maxPointsPerWeek[week.week_num]) {
+                    maxPointsPerWeek[week.week_num] = standing.points
+                }
+                else {
+                    maxPointsPerWeek[week.week_num]
+                        = Math.max(standing.points, maxPointsPerWeek[week.week_num])
+                }
             }
             else {
                 player_standing.standings.push({
@@ -349,12 +369,46 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
     $scope.weeks            = weeks
     $scope.players          = players
     $scope.standings        = player_standings
+    $scope.minPointsPerWeek = minPointsPerWeek
+    $scope.maxPointsPerWeek = maxPointsPerWeek
 
     $scope.getDisplayNameStyle = function (player) {
         return {
             'background-color': '#' + player.background_color,
             'color': '#ffffff'
         }
+    }
+    $scope.getWeekPointsStyle = function (player_standing) {
+        var fontColor = 192
+            week      = player_standing.week,
+            standing  = player_standing.standing,
+            minPoints = minPointsPerWeek[week.week_num],
+            maxPoints = maxPointsPerWeek[week.week_num] 
+        if(maxPoints - minPoints == 0) {
+            fontColor = 0
+        } else if (standing) {
+            fontColor = parseInt(Math.max(
+                0,
+                parseInt(
+                    fontColor
+                    * (1 - (
+                        (standing.points - minPoints)
+                        / (maxPoints - minPoints)
+                    ))
+                )
+            ))
+        }
+
+        return {
+            'color': 'rgb('
+                + fontColor
+                + ','
+                + fontColor
+                + ','
+                + fontColor
+                + ')'
+        }
+
     }
 
 /*

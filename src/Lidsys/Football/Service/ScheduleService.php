@@ -78,10 +78,13 @@ class ScheduleService
                     weekStart AS start_date,
                     weekEnd AS end_date,
                     winWeight AS win_weight,
-                    year
+                    year,
+                    COUNT(DISTINCT game.gameId) AS game_count
                 FROM nflWeek AS week
                 JOIN nflSeason AS season USING (seasonId)
+                JOIN nflGame AS game USING (weekId)
                 WHERE year = :year
+                GROUP BY weekId
                 ORDER BY weekStart
             ",
             array(

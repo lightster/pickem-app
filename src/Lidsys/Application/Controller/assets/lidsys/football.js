@@ -399,7 +399,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
             ))
         }
 
-        return {
+        var style = {
             'color': 'rgb('
                 + fontColor
                 + ','
@@ -409,6 +409,11 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
                 + ')'
         }
 
+        if (maxPoints != minPoints && maxPoints == standing.points) {
+            style['background-color'] = '#ffff99'
+        }
+
+        return style
     }
 
 /*

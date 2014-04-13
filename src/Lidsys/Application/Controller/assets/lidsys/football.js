@@ -391,23 +391,20 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
         }
     }
     $scope.getWeekPointsStyle = function (player_standing) {
-        var fontColor = 192
-            week      = player_standing.week,
-            standing  = player_standing.standing,
-            minPoints = minPointsPerWeek[week.week_num],
-            maxPoints = maxPointsPerWeek[week.week_num] 
+        var fontColor   = 192
+            week        = player_standing.week,
+            standing    = player_standing.standing,
+            minPoints   = minPointsPerWeek[week.week_num],
+            maxPoints   = maxPointsPerWeek[week.week_num],
+            pointsRange = maxPoints - minPoints,
+            pointsDiff  = 0
         if(maxPoints - minPoints == 0) {
             fontColor = 0
         } else if (standing) {
-            fontColor = parseInt(Math.max(
+            pointsDiff = standing.points - minPoints
+            fontColor  = parseInt(Math.max(
                 0,
-                parseInt(
-                    fontColor
-                    * (1 - (
-                        (standing.points - minPoints)
-                        / (maxPoints - minPoints)
-                    ))
-                )
+                parseInt(fontColor * (1 - (pointsDiff / (pointsRange))))
             ))
         }
 

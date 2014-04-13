@@ -427,42 +427,6 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
 
         return style
     }
-
-/*
-    var playerCount = 0
-    for (var player_id in players) {
-        var player = players[player_id]
-        if (player.player_id) {
-            ++playerCount
-        }
-    }
-    $scope.playerCount = playerCount
-
-    $scope.headerExists = function (game) {
-        if ($scope.prevGame === game) {
-            return $scope.prevHeaderExists
-        }
-
-        $scope.prevHeaderExists = ($scope.prevGameTime !== game.start_time)
-        $scope.prevGameTime     = game.start_time
-        $scope.prevGame         = game
-
-        return $scope.prevHeaderExists
-    }
-    $scope.getPickedTeamStyle = function (pick, team) {
-        if (pick.team_id == team.team_id) {
-            return {
-                'background-color': '#' + $scope.players[pick.player_id].background_color,
-                'color': '#ffffff'
-            }
-        }
-        else {
-            return {
-                'color': '#' + $scope.players[pick.player_id].background_color
-            }
-        }
-    }
-    */
 }])
 
 module.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballSchedule, footballTeam) {

@@ -6,6 +6,42 @@
     "hash": "5e5496d2551542e4fe54b7539fb79481",
     "packages": [
         {
+            "name": "assetrinc/assetrinc",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/assetrinc/assetrinc.git",
+                "reference": "b6624c2cd6289c848f5a24055074063ad1ffb55f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/assetrinc/assetrinc/zipball/b6624c2cd6289c848f5a24055074063ad1ffb55f",
+                "reference": "b6624c2cd6289c848f5a24055074063ad1ffb55f",
+                "shasum": ""
+            },
+            "require": {
+                "kriswallsmith/assetic": "~1.1",
+                "leafo/scssphp": "0.0.9",
+                "php": ">=5.3.3",
+                "zacharyrankin/sprocketeer": "~0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Assetrinc\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "An unusually simple way to include assets",
+            "homepage": "http://github.com/assetrinc/assetrinc",
+            "keywords": [
+                "assentric",
+                "assets",
+                "php"
+            ],
+            "time": "2014-04-15 05:38:36"
+        },
+        {
             "name": "kriswallsmith/assetic",
             "version": "v1.1.2",
             "source": {
@@ -123,43 +159,6 @@
             "time": "2013-12-23 23:28:02"
         },
         {
-            "name": "lightster/assetrinc",
-            "version": "v0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lightster/assetrinc.git",
-                "reference": "d397e4dc50db378b7998f982db7cec95b93ad595"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lightster/assetrinc/zipball/d397e4dc50db378b7998f982db7cec95b93ad595",
-                "reference": "d397e4dc50db378b7998f982db7cec95b93ad595",
-                "shasum": ""
-            },
-            "require": {
-                "kriswallsmith/assetic": "~1.1",
-                "leafo/scssphp": "0.0.9",
-                "php": ">=5.3.3",
-                "zacharyrankin/sprocketeer": "~0.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Assetrinc\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "description": "An unusually simple way to include assets",
-            "homepage": "http://github.com/lightster/assetrinc",
-            "keywords": [
-                "assentric",
-                "assets",
-                "lightster",
-                "php"
-            ],
-            "time": "2014-04-11 06:09:06"
-        },
-        {
             "name": "lightster/lstr-silex",
             "version": "v0.2.0",
             "source": {
@@ -228,20 +227,20 @@
         },
         {
             "name": "lightster/lstr-silex-asset",
-            "version": "v0.2.0",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex-asset.git",
-                "reference": "50a455377cfc91347cedd8742fd79daef37655ec"
+                "reference": "65f0663acb1b1e679d902c094c896c345ad4e382"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex-asset/zipball/50a455377cfc91347cedd8742fd79daef37655ec",
-                "reference": "50a455377cfc91347cedd8742fd79daef37655ec",
+                "url": "https://api.github.com/repos/lightster/lstr-silex-asset/zipball/65f0663acb1b1e679d902c094c896c345ad4e382",
+                "reference": "65f0663acb1b1e679d902c094c896c345ad4e382",
                 "shasum": ""
             },
             "require": {
-                "lightster/assetrinc": "~0.2",
+                "assetrinc/assetrinc": "~0.3",
                 "php": ">=5.3",
                 "silex/silex": "~1.1"
             },
@@ -260,7 +259,7 @@
                 "lstr",
                 "silex"
             ],
-            "time": "2014-04-11 06:19:25"
+            "time": "2014-04-16 05:44:30"
         },
         {
             "name": "lightster/lstr-silex-config",
@@ -369,16 +368,16 @@
         },
         {
             "name": "lightster/lstr-silex-template",
-            "version": "v0.0.1",
+            "version": "v0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex-template.git",
-                "reference": "715d453c9fcc625f86302697b45230799067aa22"
+                "reference": "31cf4cdd1650d80798f378b7933cd4eaa46b81d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex-template/zipball/715d453c9fcc625f86302697b45230799067aa22",
-                "reference": "715d453c9fcc625f86302697b45230799067aa22",
+                "url": "https://api.github.com/repos/lightster/lstr-silex-template/zipball/31cf4cdd1650d80798f378b7933cd4eaa46b81d5",
+                "reference": "31cf4cdd1650d80798f378b7933cd4eaa46b81d5",
                 "shasum": ""
             },
             "require": {
@@ -400,7 +399,7 @@
                 "silex",
                 "template"
             ],
-            "time": "2014-03-23 04:29:21"
+            "time": "2014-04-17 03:21:15"
         },
         {
             "name": "pimple/pimple",

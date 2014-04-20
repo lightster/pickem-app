@@ -291,13 +291,15 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
         player_standings = [],
         rank             = 0,
         minPointsPerWeek = {},
-        maxPointsPerWeek = {}
+        maxPointsPerWeek = {},
+        possiblePoints   = 0
     for (var week_num in all_weeks) {
         var week = all_weeks[week_num]
         weeks.push({
             week: week,
             week_num: week_num
         })
+        possiblePoints += week.game_count * week.win_weight
 
         if (week == selected_week) {
             break
@@ -307,11 +309,12 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
     for (var player_idx in players) {
         var player = players[player_idx],
             player_standing = {
-                player:       player,
-                standings:    [],
-                total_points: 0,
-                rank:         0,
-                weeks_won:    0
+                player:        player,
+                standings:     [],
+                total_points:  0,
+                total_percent: 0,
+                rank:          0,
+                weeks_won:     0
             }
         for (var week_idx in weeks) {
             var week     = weeks[week_idx],
@@ -349,6 +352,8 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
                 })
             }
         }
+
+        player_standing.total_percent = player_standing.total_points / possiblePoints
 
         player_standings.push(player_standing)
     }

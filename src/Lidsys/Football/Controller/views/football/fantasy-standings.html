@@ -14,6 +14,7 @@
                 {{week.week_num}}
             </th>
             <th>Total</th>
+            <th>%</th>
             <th></th>
             <th>Weeks<br />Won</th>
         </tr>
@@ -34,6 +35,9 @@
             </td>
             <td style="text-align: right; ">
                 {{player_standing.total_points}}
+            </td>
+            <td style="text-align: right; ">
+                {{player_standing.total_percent * 100 | number:1}}%
             </td>
             <td></td>
             <td style="text-align: right; ">

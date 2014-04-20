@@ -227,16 +227,16 @@
         },
         {
             "name": "lightster/lstr-silex-asset",
-            "version": "v0.4.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lightster/lstr-silex-asset.git",
-                "reference": "65f0663acb1b1e679d902c094c896c345ad4e382"
+                "reference": "d3d3716769803c715510838caf95ab782c6a2394"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightster/lstr-silex-asset/zipball/65f0663acb1b1e679d902c094c896c345ad4e382",
-                "reference": "65f0663acb1b1e679d902c094c896c345ad4e382",
+                "url": "https://api.github.com/repos/lightster/lstr-silex-asset/zipball/d3d3716769803c715510838caf95ab782c6a2394",
+                "reference": "d3d3716769803c715510838caf95ab782c6a2394",
                 "shasum": ""
             },
             "require": {
@@ -259,7 +259,7 @@
                 "lstr",
                 "silex"
             ],
-            "time": "2014-04-16 05:44:30"
+            "time": "2014-04-19 03:33:50"
         },
         {
             "name": "lightster/lstr-silex-config",

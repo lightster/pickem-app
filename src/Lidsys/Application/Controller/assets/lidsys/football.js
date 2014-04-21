@@ -314,6 +314,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
                 total_points:     0,
                 total_percent:    0,
                 potential_points: 0,
+                weighted_percent: 0,
                 rank:             0,
                 weeks_won:        0
             }
@@ -356,6 +357,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
         }
 
         player_standing.total_percent = player_standing.total_points / possiblePoints
+        player_standing.weighted_percent = player_standing.total_points / player_standing.potential_points
 
         player_standings.push(player_standing)
     }

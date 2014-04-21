@@ -19,6 +19,7 @@
             <th>Weeks<br />Won</th>
             <th></th>
             <th>GP</th>
+            <th>Weighted %</th>
         </tr>
         <tr ng-repeat="player_standing in standings">
             <td style="width: 35px; text-align: right; ">
@@ -48,6 +49,9 @@
             <td></td>
             <td style="text-align: right; ">
                 {{player_standing.potential_points}}
+            </td>
+            <td style="text-align: right; ">
+                {{player_standing.weighted_percent * 100 | number:1}}%
             </td>
         </tr>
     </table>

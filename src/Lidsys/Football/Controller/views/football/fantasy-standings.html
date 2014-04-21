@@ -17,6 +17,8 @@
             <th>%</th>
             <th></th>
             <th>Weeks<br />Won</th>
+            <th></th>
+            <th>GP</th>
         </tr>
         <tr ng-repeat="player_standing in standings">
             <td style="width: 35px; text-align: right; ">
@@ -42,6 +44,10 @@
             <td></td>
             <td style="text-align: right; ">
                 {{player_standing.weeks_won}}
+            </td>
+            <td></td>
+            <td style="text-align: right; ">
+                {{player_standing.potential_points}}
             </td>
         </tr>
     </table>

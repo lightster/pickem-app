@@ -309,19 +309,21 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
     for (var player_idx in players) {
         var player = players[player_idx],
             player_standing = {
-                player:        player,
-                standings:     [],
-                total_points:  0,
-                total_percent: 0,
-                rank:          0,
-                weeks_won:     0
+                player:           player,
+                standings:        [],
+                total_points:     0,
+                total_percent:    0,
+                potential_points: 0,
+                rank:             0,
+                weeks_won:        0
             }
         for (var week_idx in weeks) {
             var week     = weeks[week_idx],
                 standing = standings[week.week_num][player.player_id]
 
             if (standing) {
-                player_standing.total_points += parseInt(standing.points)
+                player_standing.total_points     += parseInt(standing.points)
+                player_standing.potential_points += parseInt(standing.potential_points)
                 player_standing.standings.push({
                     standing: standing,
                     week:     week

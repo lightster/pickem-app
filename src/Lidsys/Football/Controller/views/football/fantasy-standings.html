@@ -15,9 +15,9 @@
             </th>
             <th>Total</th>
             <th>%</th>
-            <th></th>
+            <th rowspan="{{standings.length + 1}}"></th>
             <th>Weeks<br />Won</th>
-            <th></th>
+            <th rowspan="{{standings.length + 1}}"></th>
             <th>GP</th>
             <th>Weighted %</th>
         </tr>
@@ -42,11 +42,9 @@
             <td style="text-align: right; ">
                 {{player_standing.total_percent * 100 | number:1}}%
             </td>
-            <td></td>
             <td style="text-align: right; ">
                 {{player_standing.weeks_won}}
             </td>
-            <td></td>
             <td style="text-align: right; ">
                 {{player_standing.potential_points}}
             </td>

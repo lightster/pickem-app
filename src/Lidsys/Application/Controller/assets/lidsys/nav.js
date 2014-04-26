@@ -4,7 +4,7 @@ module.directive('ldsNavigation', [function () {
     return {
         restrict: "E",
         scope: true,
-        controller: ['$attrs', '$route', '$scope', 'lidsysFootballSchedule', function ($attrs, $route, $scope, footballSchedule) {
+        controller: ['$attrs', '$route', '$scope', function ($attrs, $route, $scope) {
             var navItems = [],
                 routeDef,
                 route,

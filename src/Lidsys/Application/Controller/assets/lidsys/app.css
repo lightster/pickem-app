@@ -35,3 +35,7 @@ nav.top-bar .title-area h1 {
 .no-wrap {
     white-space: nowrap;
 }
+
+table tr.week-header th {
+    text-align: center;
+}

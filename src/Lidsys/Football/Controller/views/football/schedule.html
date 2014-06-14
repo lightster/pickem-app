@@ -5,7 +5,7 @@
         <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
     </div>
     <table class="small-12" style="margin: 0 auto; ">
-        <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
+        <tr ng-repeat-start="game in games" ng-show="headerExists(game)" class="week-header">
             <th colspan="8">
                 {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
             </th>

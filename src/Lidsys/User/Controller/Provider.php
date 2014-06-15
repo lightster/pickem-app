@@ -32,6 +32,15 @@ class Provider implements ControllerProviderInterface
                     $request->get('password')
                 );
 
+            if ($authenticated_user) {
+                $app['session']->set(
+                    'user_id',
+                    $authenticated_user['user_id']
+                );
+            } else {
+                $app['session']->remove('user_id');
+            }
+
             return $app->json(array(
                 'authenticated_user' => $authenticated_user,
             ));

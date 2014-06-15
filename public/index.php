@@ -25,11 +25,10 @@ use Silex\Application;
 
 $app = new Application();
 
+$app->register(new AssetServiceProvider());
 $app->register(new ConfigServiceProvider());
 $app->register(new DatabaseServiceProvider());
 $app->register(new TemplateServiceProvider());
-$app->register(new AssetServiceProvider());
-
 $app->register(new UserServiceProvider());
 
 $app['config'] = $app['lstr.config']->load(array(

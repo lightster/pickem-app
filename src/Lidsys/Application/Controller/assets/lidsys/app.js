@@ -71,7 +71,15 @@ app.run(['$rootScope', 'active', function ($rootScope, active) {
     active.setUser(new User())
 }])
 
-app.controller('AppCtrl', ['$scope', '$http', function ($scope, $http) {
+app.controller('AppCtrl', ['$scope', '$http', 'active', function ($scope, $http, active) {
+    $http.post("/app/user/authenticated-user/")
+        .success(function (data) {
+            if (data.authenticated_user) {
+                active.setUser((new User()).setFromApi(data.authenticated_user))
+            }
+        })
+        .error(function (data) {
+        })
 }])
 
 app.controller('LoginCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {

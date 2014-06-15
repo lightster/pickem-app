@@ -46,6 +46,23 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->post('/authenticated-user/', function (Request $request, Application $app) {
+            $user_id = $app['session']->get('user_id');
+
+            $authenticated_user = false;
+
+            if ($user_id) {
+                $authenticated_user =
+                    $app['lidsys.user.authenticator']->getUserForUserId(
+                        $user_id
+                    );
+            }
+
+            return $app->json(array(
+                'authenticated_user' => $authenticated_user,
+            ));
+        });
+
         $controllers->before(new JsonRequestMiddlewareService());
 
         return $controllers;

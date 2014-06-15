@@ -22,12 +22,14 @@ use Lstr\Silex\Template\TemplateServiceProvider;
 use Lidsys\User\Service\Provider as UserServiceProvider;
 
 use Silex\Application;
+use Silex\Provider\SessionServiceProvider;
 
 $app = new Application();
 
 $app->register(new AssetServiceProvider());
 $app->register(new ConfigServiceProvider());
 $app->register(new DatabaseServiceProvider());
+$app->register(new SessionServiceProvider());
 $app->register(new TemplateServiceProvider());
 $app->register(new UserServiceProvider());
 

@@ -25,6 +25,7 @@ use Lidsys\User\Service\Provider as UserServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 
 $app = new Application();
+$app['route_class'] = 'Lidsys\Application\Route';
 
 $app->register(new AssetServiceProvider());
 $app->register(new ConfigServiceProvider());

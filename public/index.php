@@ -10,6 +10,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use Lidsys\Application\Application;
 use Lidsys\Application\Controller\Provider as AppControllerProvider;
 use Lidsys\Football\Controller\Provider as FootballControllerProvider;
 use Lidsys\User\Controller\Provider as UserControllerProvider;
@@ -21,7 +22,6 @@ use Lstr\Silex\Template\TemplateServiceProvider;
 
 use Lidsys\User\Service\Provider as UserServiceProvider;
 
-use Silex\Application;
 use Silex\Provider\SessionServiceProvider;
 
 $app = new Application();

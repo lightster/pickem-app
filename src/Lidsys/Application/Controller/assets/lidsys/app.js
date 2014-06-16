@@ -13,6 +13,12 @@ app.config(['$injector', '$routeProvider', function ($injector, $routeProvider) 
             controller: "LoginCtrl",
             navigationLabel: "Login"
         })
+        .when('/user/logout',
+        {
+            template: "Logging you out...",
+            controller: "LogoutCtrl",
+            navigationLabel: "Logout"
+        })
         .otherwise({
             template: "This doesn't exist!"
         });
@@ -143,4 +149,16 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', '$window', 'active'
         previousUsername: '',
         previousPassword: ''
     }
+}])
+
+app.controller('LogoutCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
+    $http.post("/app/user/logout/")
+        .success(function (data) {
+            if (data.logged_out) {
+                active.setUser(new User())
+            }
+            $window.history.back()
+        })
+        .error(function (data) {
+        })
 }])

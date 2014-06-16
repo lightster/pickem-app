@@ -63,6 +63,14 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->post('/logout/', function (Request $request, Application $app) {
+            $app['session']->remove('user_id');
+
+            return $app->json(array(
+                'logged_out' => true,
+            ));
+        });
+
         $controllers->before(new JsonRequestMiddlewareService());
 
         return $controllers;

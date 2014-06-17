@@ -73,6 +73,15 @@ app.directive('ldsAuthorized', ['$rootScope', 'active', function ($rootScope, ac
     }
 }])
 
+app.directive('ldsUserInfo', ['$rootScope', 'active', function ($rootScope, active) {
+    return {
+        restrict: "A",
+        link: function (scope, element, attrs) {
+            scope.user = active
+        }
+    }
+}])
+
 app.run(['$rootScope', 'active', function ($rootScope, active) {
     active.setUser(new User())
 }])

@@ -77,7 +77,7 @@ app.directive('ldsUserInfo', ['$rootScope', 'active', function ($rootScope, acti
     return {
         restrict: "A",
         link: function (scope, element, attrs) {
-            scope.user = active
+            scope.user = active.getUser()
         }
     }
 }])
@@ -90,7 +90,7 @@ app.controller('AppCtrl', ['$scope', '$http', 'active', function ($scope, $http,
     $http.post("/app/user/authenticated-user/")
         .success(function (data) {
             if (data.authenticated_user) {
-                active.setUser((new User()).setFromApi(data.authenticated_user))
+                active.getUser().setFromApi(data.authenticated_user)
             }
         })
         .error(function (data) {
@@ -135,7 +135,7 @@ app.controller('LoginCtrl', ['$scope', '$location', '$http', '$window', 'active'
         $http.post("/app/user/login/", postData)
             .success(function (data) {
                 if (data.authenticated_user) {
-                    active.setUser((new User()).setFromApi(data.authenticated_user))
+                    active.getUser().setFromApi(data.authenticated_user)
                     login.error.form = 'Success!!';
                     $window.history.back()
                 }
@@ -164,7 +164,7 @@ app.controller('LogoutCtrl', ['$scope', '$location', '$http', '$window', 'active
     $http.post("/app/user/logout/")
         .success(function (data) {
             if (data.logged_out) {
-                active.setUser(new User())
+                active.getUser().setFromApi({})
             }
             $window.history.back()
         })

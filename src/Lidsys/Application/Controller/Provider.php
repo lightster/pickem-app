@@ -26,13 +26,16 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/template/{controller}/{template}', function ($controller, $template, Application $app) {
-            try {
-                return $app['lstr.template']->render("{$controller}/{$template}");
-            } catch (TemplateNotFound $ex) {
-                return new Response($ex->getMessage(), 404);
+        $controllers->get(
+            '/template/{controller}/{template}',
+            function ($controller, $template, Application $app) {
+                try {
+                    return $app['lstr.template']->render("{$controller}/{$template}");
+                } catch (TemplateNotFound $ex) {
+                    return new Response($ex->getMessage(), 404);
+                }
             }
-        });
+        );
         $controllers->get('/asset/{version}/{name}', function ($version, $name, Application $app, Request $request) {
             return $app['lstr.asset.responder']->getResponse(
                 $name,

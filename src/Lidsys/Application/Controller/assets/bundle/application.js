@@ -1,7 +1,9 @@
 /**
  *=require ../moment/moment-with-langs.js
  *=require ../foundation/js/vendor/jquery.js
+ *=require ../foundation/js/modernizr.js
  *=require ../foundation/js/foundation/foundation.js
+ *=require ../foundation/js/foundation/foundation.topbar.js
  *=require ../angular/angular.js
  *=require ../angular/angular-route.js
  *=require ../lidsys/app-models.js.coffee

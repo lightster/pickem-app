@@ -6,7 +6,7 @@
     </head>
     <body ng-controller="AppCtrl">
 
-        <nav class="top-bar" data-topbar>
+        <nav class="top-bar" data-topbar data-options="is_hover: false">
             <ul class="title-area">
                 <li class="toggle-topbar menu-icon">
                     <a href="#">Menu</a>
@@ -22,7 +22,15 @@
             <section class="top-bar-section">
                 <!-- Right Nav Section -->
                 <ul class="right">
-                    <li lds-authenticated="true" lds-user-info><a href="#">Hello {{user.username}}</a></li>
+                    <li lds-authenticated="true" lds-user-info class="has-dropdown">
+                        <a href="#" class="dropdown-parent">
+                            Hello {{user.username}}
+                        </a>
+                        <ul class="dropdown">
+                            <li><a href="#">Edit Profile</a></li>
+                            <li><a href="#">Change Password</a></li>
+                        </ul>
+                    </li>
                     <li lds-authenticated="false"><a href="#/user/login">Login</a></li>
                     <li lds-authenticated="true"><a href="#/user/logout">Logout</a></li>
                 </ul>

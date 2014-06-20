@@ -82,6 +82,20 @@ app.directive('ldsUserInfo', ['$rootScope', 'active', function ($rootScope, acti
     }
 }])
 
+app.directive('dropdownParent', ['$rootScope', 'active', function ($rootScope, active) {
+    return {
+        restrict: "C",
+        link: function (scope, element, attrs) {
+            console.log(attrs)
+            if (attrs.href == '#') {
+                element.on('click', function(event) {
+                    event.preventDefault()
+                })
+            }
+        }
+    }
+}])
+
 app.run(['$rootScope', 'active', function ($rootScope, active) {
     active.setUser(new User())
 }])

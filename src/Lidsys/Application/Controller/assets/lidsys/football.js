@@ -215,7 +215,10 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
     }
     $scope.getPickedTeamStyle = function (game, team) {
         if (game.picks[$scope.currentPlayer.player_id].team_id == team.team_id) {
-            return {'background-color': '#' + $scope.currentPlayer.background_color}
+            return {
+                'background-color': '#' + $scope.currentPlayer.background_color,
+                'color':            '#' + $scope.currentPlayer.text_color
+            }
         }
 
         return ""
@@ -270,7 +273,7 @@ module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPic
         if (pick.team_id == team.team_id) {
             return {
                 'background-color': '#' + $scope.players[pick.player_id].background_color,
-                'color': '#ffffff'
+                'color':            '#' + $scope.players[pick.player_id].text_color
             }
         }
         else {
@@ -396,7 +399,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
     $scope.getDisplayNameStyle = function (player) {
         return {
             'background-color': '#' + player.background_color,
-            'color': '#ffffff'
+            'color':            '#' + player.text_color
         }
     }
     $scope.getWeekPointsStyle = function (player_standing) {

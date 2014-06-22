@@ -56,7 +56,7 @@ class FantasyPlayerService
                 $names[$name_i] = $name_part;
             }
 
-            $perceived_luminance = 1 - (
+            $perceived_luminance = (
                   0.299 * hexdec(substr($player['background_color'], 0, 2))
                 + 0.587 * hexdec(substr($player['background_color'], 2, 2))
                 + 0.114 * hexdec(substr($player['background_color'], 4, 2))
@@ -64,7 +64,7 @@ class FantasyPlayerService
 
             $player['name'] = implode(" ", $names);
             $player['text_color'] = (
-                $perceived_luminance < 0.5
+                $perceived_luminance >= 0.5
                 ? '000000'
                 : 'ffffff'
             );

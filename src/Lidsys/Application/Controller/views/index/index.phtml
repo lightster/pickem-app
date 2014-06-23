@@ -6,47 +6,51 @@
     </head>
     <body ng-controller="AppCtrl">
 
-        <nav class="top-bar" data-topbar data-options="is_hover: false">
-            <ul class="title-area">
-                <li class="toggle-topbar menu-icon">
-                    <a href="#">Menu</a>
-                </li>
-                <li class="name">
-                    <h1><a href="#/">Lightdatasys</a></h1>
-                </li>
-            </ul>
+        <div style="display: none; " ng-style="{'display': 'block'}">
 
-            <ul class="">
-            </ul>
-
-            <section class="top-bar-section">
-                <!-- Right Nav Section -->
-                <ul class="right">
-                    <li lds-authenticated="true" lds-user-info class="has-dropdown">
-                        <a href="#" class="dropdown-parent">
-                            Hello {{user.username}}
-                        </a>
-                        <ul class="dropdown">
-                            <li><a href="#/user/profile">Edit Profile</a></li>
-                            <li><a href="#/user/password">Change Password</a></li>
-                        </ul>
+            <nav class="top-bar" data-topbar data-options="is_hover: false">
+                <ul class="title-area">
+                    <li class="toggle-topbar menu-icon">
+                        <a href="#">Menu</a>
                     </li>
-                    <li lds-authenticated="false"><a href="#/user/login">Login</a></li>
-                    <li lds-authenticated="true"><a href="#/user/logout">Logout</a></li>
+                    <li class="name">
+                        <h1><a href="#/">Lightdatasys</a></h1>
+                    </li>
                 </ul>
 
-                <!-- Left Nav Section -->
-                <ul class="left">
-                    <li><a href="#/football/schedule">Football</a></lI>
+                <ul class="">
                 </ul>
-            </section>
-        </nav>
 
-        <ng-view>
-            Loading
-        </ng-view>
+                <section class="top-bar-section">
+                    <!-- Right Nav Section -->
+                    <ul class="right">
+                        <li lds-authenticated="true" lds-user-info class="has-dropdown">
+                            <a href="#" class="dropdown-parent">
+                                Hello {{user.username}}
+                            </a>
+                            <ul class="dropdown">
+                                <li><a href="#/user/profile">Edit Profile</a></li>
+                                <li><a href="#/user/password">Change Password</a></li>
+                            </ul>
+                        </li>
+                        <li lds-authenticated="false"><a href="#/user/login">Login</a></li>
+                        <li lds-authenticated="true"><a href="#/user/logout">Logout</a></li>
+                    </ul>
 
-        <?php echo $app['lstr.asset']->jsTag('app/bundle/application.js'); ?>
+                    <!-- Left Nav Section -->
+                    <ul class="left">
+                        <li><a href="#/football/schedule">Football</a></lI>
+                    </ul>
+                </section>
+            </nav>
+
+            <ng-view>
+                Loading
+            </ng-view>
+
+            <?php echo $app['lstr.asset']->jsTag('app/bundle/application.js'); ?>
+
+        </div>
 
     </body>
 </html>

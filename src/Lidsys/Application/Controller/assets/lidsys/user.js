@@ -5,13 +5,13 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
         .when('/user/login',
         {
             templateUrl: "/app/template/login/index.html",
-            controller: "LoginCtrl",
+            controller: "UserLoginCtrl",
             navigationLabel: "Login"
         })
         .when('/user/logout',
         {
             template: "Logging you out...",
-            controller: "LogoutCtrl",
+            controller: "UserLogoutCtrl",
             navigationLabel: "Logout"
         })
 }])
@@ -74,7 +74,7 @@ module.directive('ldsUserInfo', ['$rootScope', 'active', function ($rootScope, a
     }
 }])
 
-module.controller('LoginCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
+module.controller('UserLoginCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
     $scope.formChanged = function ($event) {
         var login = $scope.login;
 
@@ -137,7 +137,7 @@ module.controller('LoginCtrl', ['$scope', '$location', '$http', '$window', 'acti
     }
 }])
 
-module.controller('LogoutCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
+module.controller('UserLogoutCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
     $http.post("/app/user/logout/")
         .success(function (data) {
             if (data.logged_out) {

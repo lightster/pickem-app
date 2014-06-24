@@ -14,6 +14,18 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
             controller: "UserLogoutCtrl",
             navigationLabel: "Logout"
         })
+        .when('/user/password',
+        {
+            templateUrl: "/app/template/password/index.html",
+            controller: "UserPasswordCtrl",
+            navigationLabel: "Edit Profile"
+        })
+        .when('/user/profile',
+        {
+            templateUrl: "/app/template/profile/index.html",
+            controller: "UserProfileCtrl",
+            navigationLabel: "Edit Profile"
+        })
 }])
 
 module.factory('active', [function() {
@@ -147,4 +159,10 @@ module.controller('UserLogoutCtrl', ['$scope', '$location', '$http', '$window', 
         })
         .error(function (data) {
         })
+}])
+
+module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
+}])
+
+module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
 }])

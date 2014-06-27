@@ -1,4 +1,4 @@
-<form ng-submit="processLogin($event)">
+<form ng-submit="processPasswordChange($event)">
     <div class="row">
         <div class="large-2 medium-2 columns">
             &nbsp;
@@ -12,27 +12,27 @@
             <div lds-authenticated="true">
                 <div class="row">
                     <div class="large-12 columns">
-                        <div data-alert class="alert-box warning" ng-show="credentials.error.form">
-                            {{credentials.error.form}}
+                        <div data-alert class="alert-box warning" ng-show="form.error.form">
+                            {{form.error.form}}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="large-12 columns" ng-class="{error: credentials.error.current_password}">
-                        <input type="password" placeholder="current password" ng-model="credentials.current_password" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
-                        <small ng-show="credentials.error.current_password">{{credentials.error.current_password}}</small>
+                    <div class="large-12 columns" ng-class="{error: form.error.currentPassword}">
+                        <input type="password" placeholder="current password" ng-model="form.passwordChange.currentPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="form.error.currentPassword">{{form.error.currentPassword}}</small>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="large-12 columns" ng-class="{error: credentials.error.new_password}">
-                        <input type="password" placeholder="new password" ng-model="login.new_password" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
-                        <small ng-show="credentials.error.new_password">{{credentials.error.new_password}}</small>
+                    <div class="large-12 columns" ng-class="{error: form.error.newPassword}">
+                        <input type="password" placeholder="new password" ng-model="form.passwordChange.newPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="form.error.newPassword">{{form.error.newPassword}}</small>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="large-12 columns" ng-class="{error: credentials.error.confirm_password}">
-                        <input type="password" placeholder="confirm new password" ng-model="login.confirm_password" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
-                        <small ng-show="credentials.error.confirm_password">{{credentials.error.confirm_password}}</small>
+                    <div class="large-12 columns" ng-class="{error: form.error.confirmPassword}">
+                        <input type="password" placeholder="confirm new password" ng-model="form.passwordChange.confirmPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="form.error.confirmPassword">{{form.error.confirmPassword}}</small>
                     </div>
                 </div>
                 <div class="row">

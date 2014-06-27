@@ -162,6 +162,11 @@ module.controller('UserLogoutCtrl', ['$scope', '$location', '$http', '$window', 
 }])
 
 module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
+    $scope.form = {
+        error: {},
+        passwordChange: new UserPasswordChange,
+        shadowPasswordChange: new UserPasswordChange
+    }
 }])
 
 module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {

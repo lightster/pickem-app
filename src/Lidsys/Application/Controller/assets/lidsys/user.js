@@ -167,6 +167,32 @@ module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window'
         passwordChange: new UserPasswordChange,
         shadowPasswordChange: new UserPasswordChange
     }
+
+    $scope.processPasswordChange = function ($event) {
+        var form           = $scope.form
+        var passwordChange = form.passwordChange
+
+        form.error = {}
+
+        if (!passwordChange.currentPassword) {
+            form.error.hasError = true;
+            form.error.currentPassword = 'Please enter your current password.';
+        }
+        if (!passwordChange.newPassword) {
+            form.error.hasError = true;
+            form.error.newPassword = 'Please enter your new password.';
+        }
+        if (!passwordChange.confirmPassword) {
+            form.error.hasError = true;
+            form.error.confirmPassword = 'Please confirm your new password.';
+        }
+        if (passwordChange.newPassword != passwordChange.confirmPassword) {
+            form.error.hasError = true;
+            form.error.confirmPassword = 'The new passwords do not match.';
+        }
+
+        return false;
+    }
 }])
 
 module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {

@@ -46,6 +46,12 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->post('/password/', function (Request $request, Application $app) {
+            return $app->json(array(
+                'error' => 'This feature has not yet been implemented.',
+            ));
+        });
+
         $controllers->post('/authenticated-user/', function (Request $request, Application $app) {
             $user_id = $app['session']->get('user_id');
 

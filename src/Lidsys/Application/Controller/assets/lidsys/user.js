@@ -191,6 +191,28 @@ module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window'
             form.error.confirmPassword = 'The new passwords do not match.';
         }
 
+        if (form.error.hasError) {
+            return false
+        }
+
+        var postData = {
+            confirmPassword: passwordChange.currentPassword,
+            newPassword:     passwordChange.newPassword
+        }
+
+        $http.post("/app/user/password/", postData)
+            .success(function (data) {
+                if (!data.error) {
+                    form.success = "Your password has successfully been changed."
+                }
+                else {
+                    form.error.form = data.error
+                }
+            })
+            .error(function (data) {
+                form.error.form = 'There was an error processing your password change request. Please contact an administrator.';
+            })
+
         return false;
     }
 }])

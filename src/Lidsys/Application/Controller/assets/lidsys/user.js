@@ -196,7 +196,7 @@ module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window'
         }
 
         var postData = {
-            confirmPassword: passwordChange.currentPassword,
+            currentPassword: passwordChange.currentPassword,
             newPassword:     passwordChange.newPassword
         }
 

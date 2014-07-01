@@ -56,6 +56,35 @@ class AuthenticatorService
         return $authenticated_user;
     }
 
+    public function getUserForUserIdAndPassword($user_id, $password)
+    {
+        $authenticated_user = false;
+
+        $db    = $this->app['db'];
+        $query = $db->query(
+            "
+                SELECT
+                    u.userId AS user_id,
+                    u.username,
+                    u.timeZone AS time_zone
+                FROM user AS u
+                WHERE u.userId = :user_id
+                    AND u.password = md5(concat(:password, u.securityHash))
+            ",
+            array(
+                'user_id' => $user_id,
+                'password' => md5($password),
+            )
+        );
+        while ($row = $query->fetch()) {
+            if ($row['user_id'] === $user_id) {
+                $authenticated_user = $row;
+            }
+        }
+
+        return $authenticated_user;
+    }
+
     public function getUserForUserId($user_id)
     {
         $authenticated_user = false;

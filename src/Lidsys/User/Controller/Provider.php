@@ -47,8 +47,32 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->post('/password/', function (Request $request, Application $app) {
+            $user_id = $app['session']->get('user_id');
+
+            $authenticated_user = false;
+
+            if (!$request->get('currentPassword')) {
+                $error = 'Your current password is required.';
+            } elseif (!$request->get('newPassword')) {
+                $error = 'A new password is required.';
+            } elseif ($user_id) {
+                $authenticated_user =
+                    $app['lidsys.user.authenticator']->getUserForUserIdAndPassword(
+                        $user_id,
+                        $request->get('currentPassword')
+                    );
+
+                if (!$authenticated_user) {
+                    $error = 'The current password you entered could not be verified.';
+                } else {
+                    $error = 'This feature has not yet been implemented.';
+                }
+            } else {
+                $error = 'The user you are logged in as could not be determined.';
+            }
+
             return $app->json(array(
-                'error' => 'This feature has not yet been implemented.',
+                'error' => $error,
             ));
         });
 

@@ -111,4 +111,22 @@ class AuthenticatorService
 
         return $authenticated_user;
     }
+
+    public function updatePasswordForUser($user_id, $password)
+    {
+        $db = $this->app['db'];
+        $db->query(
+            "
+                UPDATE user
+                SET password = md5(concat(:password, securityHash))
+                WHERE userId = :user_id
+            ",
+            array(
+                'user_id'  => $user_id,
+                'password' => md5($password),
+            )
+        );
+
+        return true;
+    }
 }

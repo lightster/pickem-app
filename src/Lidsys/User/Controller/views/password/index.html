@@ -9,7 +9,14 @@
                     <h2>Change Password</h2>
                 </div>
             </div>
-            <div lds-authenticated="true">
+            <div class="row" ng-show="form.success.form">
+                <div class="large-12 columns">
+                    <div data-alert class="alert-box success">
+                        {{form.success.form}}
+                    </div>
+                </div>
+            </div>
+            <div lds-authenticated="true" ng-hide="form.success.form">
                 <div class="row">
                     <div class="large-12 columns">
                         <div data-alert class="alert-box warning" ng-show="form.error.form">

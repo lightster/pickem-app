@@ -164,6 +164,7 @@ module.controller('UserLogoutCtrl', ['$scope', '$location', '$http', '$window', 
 module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
     $scope.form = {
         error: {},
+        success: {},
         passwordChange: new UserPasswordChange,
         shadowPasswordChange: new UserPasswordChange
     }
@@ -202,8 +203,8 @@ module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window'
 
         $http.post("/app/user/password/", postData)
             .success(function (data) {
-                if (!data.error) {
-                    form.success = "Your password has successfully been changed."
+                if (data.success) {
+                    form.success.form = data.success
                 }
                 else {
                     form.error.form = data.error

@@ -65,7 +65,17 @@ class Provider implements ControllerProviderInterface
                 if (!$authenticated_user) {
                     $error = 'The current password you entered could not be verified.';
                 } else {
-                    $error = 'This feature has not yet been implemented.';
+                    $password_change = $app['lidsys.user.authenticator']->updatePasswordForUser(
+                        $user_id,
+                        $request->get('newPassword')
+                    );
+                    if ($password_change) {
+                        return $app->json(array(
+                            'success' => 'Your password has successfully been changed.',
+                        ));
+                    } else {
+                        $error = 'An error occurred. Your password change was not saved.';
+                    }
                 }
             } else {
                 $error = 'The user you are logged in as could not be determined.';

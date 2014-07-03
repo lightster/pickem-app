@@ -1,0 +1,48 @@
+<form ng-submit="">
+    <div class="row">
+        <div class="large-2 medium-2 columns">
+            &nbsp;
+        </div>
+        <div class="large-5 medium-6 columns">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h2>Change Color</h2>
+                </div>
+            </div>
+            <div class="row" ng-show="form.success.form">
+                <div class="large-12 columns">
+                    <div data-alert class="alert-box success">
+                        {{form.success.form}}
+                    </div>
+                </div>
+            </div>
+            <div lds-authenticated="true" ng-hide="form.success.form">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div data-alert class="alert-box warning" ng-show="form.error.form">
+                            {{form.error.form}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <table>
+                            <tbody>
+                                <tr style="height: 20px; " ng-repeat="r in [0, 51, 102, 153, 204, 255]">
+                                    <td style="width: 20px; " ng-repeat="g in [0, 51, 102, 153, 204, 255]" ng-style="{'background-color': 'rgb({{r}}, {{g}}, 0)'}">
+                                        t
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="false">
+                You must be logged in to view this page!
+            </div>
+        </div>
+        <div class="large-5 medium-4 columns">
+        </div>
+    </div>
+</form>

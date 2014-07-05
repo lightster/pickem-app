@@ -89,7 +89,7 @@ module.directive('ldsUserInfo', ['$rootScope', 'active', function ($rootScope, a
 module.directive('ldsUserColorChooser', ['$rootScope', 'active', function ($rootScope, active) {
     return {
         restrict: "E",
-        link: function (scope, element, attrs) {
+        template: function () {
             var html, r, g, b
             html = '<table style="width: 800px; ">'
             for (r = 0; r <= 255; r += 51) {
@@ -101,7 +101,12 @@ module.directive('ldsUserColorChooser', ['$rootScope', 'active', function ($root
                             + r + ', '
                             + g + ', '
                             + b
-                            + '); ">'
+                            + '); " '
+                            + 'ng-click="ldsUserChooseColor($event)" '
+                            + 'data-color="{'
+                            + 'r: ' + r + ', '
+                            + 'g: ' + g + ', '
+                            + 'b: ' + b + '}">'
                             + '&nbsp;'
                             + '</td>'
                     }
@@ -110,7 +115,13 @@ module.directive('ldsUserColorChooser', ['$rootScope', 'active', function ($root
             }
             html += '</table>'
 
-            element.html(html)
+            return html
+        },
+        controller: function ($scope, $element) {
+            $scope.ldsUserChooseColor = function($event) {
+                var callback = $scope.$eval($element.attr('on-select'))
+                callback($($event.target))
+            }
         }
     }
 }])
@@ -248,4 +259,8 @@ module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window'
 }])
 
 module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
+    $scope.selectColor = function($element)
+    {
+        //console.log($scope.$eval($element.attr('data-color')))
+    }
 }])

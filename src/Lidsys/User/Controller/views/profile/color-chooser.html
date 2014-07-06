@@ -1,0 +1,14 @@
+<table style="width: 600px; ">
+    <tr ng-repeat="colorRow in colorRows" style="height: 15px; ">
+        <td
+            ng-repeat="color in colorRow"
+            style="
+                width: 15px;
+                padding: 0px;
+                background-color: rgb({{color.r}}, {{color.g}}, {{color.b}}
+            "
+            ng-click="ldsUserChooseColor($event)"
+            data-color="{r: {{color.r}}, g: {{color.g}}, b: {{color.b}} }">
+        </td>
+    </tr>
+</table>

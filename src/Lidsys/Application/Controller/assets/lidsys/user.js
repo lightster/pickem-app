@@ -89,35 +89,22 @@ module.directive('ldsUserInfo', ['$rootScope', 'active', function ($rootScope, a
 module.directive('ldsUserColorChooser', ['$rootScope', 'active', function ($rootScope, active) {
     return {
         restrict: "E",
-        template: function () {
-            var html, r, g, b
-            html = '<table style="width: 600px; ">'
+        templateUrl: '/app/template/profile/color-chooser.html',
+        controller: function ($scope, $element) {
+            var html, r, g, b, colorRows, colors
+            colorRows = []
             for (r = 0; r <= 255; r += 51) {
-                html += '<tr style="height: 15px; ">'
+                colors = []
+                colorRows.push(colors)
                 for (g = 0; g <= 255; g += 51) {
                     for (b = 0; b <= 255; b += 51) {
-                        html += '<td style="width: 15px; padding: 0px; font-size: 1pt; '
-                            + 'background-color: rgb('
-                            + r + ', '
-                            + g + ', '
-                            + b
-                            + '); " '
-                            + 'ng-click="ldsUserChooseColor($event)" '
-                            + 'data-color="{'
-                            + 'r: ' + r + ', '
-                            + 'g: ' + g + ', '
-                            + 'b: ' + b + '}">'
-                            + ''
-                            + '</td>'
+                        colors.push({r: r, g: g, b: b})
                     }
                 }
-                html += '</tr>'
             }
-            html += '</table>'
 
-            return html
-        },
-        controller: function ($scope, $element) {
+            $scope.colorRows = colorRows
+
             $scope.ldsUserChooseColor = function($event) {
                 var callback = $scope.$eval($element.attr('on-select'))
                 callback($($event.target))

@@ -91,12 +91,12 @@ module.directive('ldsUserColorChooser', ['$rootScope', 'active', function ($root
         restrict: "E",
         template: function () {
             var html, r, g, b
-            html = '<table style="width: 800px; ">'
+            html = '<table style="width: 600px; ">'
             for (r = 0; r <= 255; r += 51) {
-                html += '<tr style="height: 20px; ">'
+                html += '<tr style="height: 15px; ">'
                 for (g = 0; g <= 255; g += 51) {
                     for (b = 0; b <= 255; b += 51) {
-                        html += '<td style="width: 20px; padding: 0px; '
+                        html += '<td style="width: 15px; padding: 0px; font-size: 1pt; '
                             + 'background-color: rgb('
                             + r + ', '
                             + g + ', '
@@ -107,7 +107,7 @@ module.directive('ldsUserColorChooser', ['$rootScope', 'active', function ($root
                             + 'r: ' + r + ', '
                             + 'g: ' + g + ', '
                             + 'b: ' + b + '}">'
-                            + '&nbsp;'
+                            + ''
                             + '</td>'
                     }
                 }

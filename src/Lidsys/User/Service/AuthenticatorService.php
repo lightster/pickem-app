@@ -37,8 +37,14 @@ class AuthenticatorService
                 SELECT
                     u.userId AS user_id,
                     u.username,
-                    u.timeZone AS time_zone
+                    u.timeZone AS time_zone,
+                    p.name AS name,
+                    p.bgcolor AS background_color
                 FROM user AS u
+                JOIN player_user AS pu
+                    ON pu.userId = u.userId
+                JOIN player AS p
+                    ON p.playerId = pu.playerId
                 WHERE u.username = :username
                     AND u.password = md5(concat(:password, u.securityHash))
             ",
@@ -66,8 +72,14 @@ class AuthenticatorService
                 SELECT
                     u.userId AS user_id,
                     u.username,
-                    u.timeZone AS time_zone
+                    u.timeZone AS time_zone,
+                    p.name AS name,
+                    p.bgcolor AS background_color
                 FROM user AS u
+                JOIN player_user AS pu
+                    ON pu.userId = u.userId
+                JOIN player AS p
+                    ON p.playerId = pu.playerId
                 WHERE u.userId = :user_id
                     AND u.password = md5(concat(:password, u.securityHash))
             ",
@@ -95,8 +107,14 @@ class AuthenticatorService
                 SELECT
                     u.userId AS user_id,
                     u.username,
-                    u.timeZone AS time_zone
+                    u.timeZone AS time_zone,
+                    p.name AS name,
+                    p.bgcolor AS background_color
                 FROM user AS u
+                JOIN player_user AS pu
+                    ON pu.userId = u.userId
+                JOIN player AS p
+                    ON p.playerId = pu.playerId
                 WHERE u.userId = :user_id
             ",
             array(

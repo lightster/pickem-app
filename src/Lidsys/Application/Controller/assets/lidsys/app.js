@@ -16,7 +16,6 @@ app.directive('dropdownParent', ['$rootScope', 'active', function ($rootScope, a
     return {
         restrict: "C",
         link: function (scope, element, attrs) {
-            console.log(attrs)
             if (attrs.href == '#') {
                 element.on('click', function(event) {
                     event.preventDefault()

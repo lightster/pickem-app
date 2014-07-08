@@ -12,8 +12,11 @@ window.ActiveService = class ActiveService
 
 window.User = class User
     constructor: ->
-        @userId = null
-        @permissions = {}
+        @userId          = null
+        @username        = null
+        @name            = null
+        @backgroundColor = null
+        @permissions     = {}
 
 
     isAuthorized: (permission) ->
@@ -21,6 +24,8 @@ window.User = class User
 
 
     setFromApi: (options) ->
-        @userId = options.user_id
-        @username = options.username
+        @userId          = options.user_id
+        @username        = options.username
+        @name            = options.name
+        @backgroundColor = options.background_color
         @

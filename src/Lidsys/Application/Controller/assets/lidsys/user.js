@@ -246,8 +246,27 @@ module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window'
 }])
 
 module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
+    $scope.dec2hex = function(dec, minDigits) {
+        var hex = dec.toString(16)
+        if (!minDigits) {
+            minDigits = 0
+        }
+        for (var i = hex.length; i < minDigits; i++) {
+            hex = '0' + hex
+        }
+        return hex
+    }
+
     $scope.selectColor = function($element)
     {
-        //console.log($scope.$eval($element.attr('data-color')))
+        var user = active.getUser(),
+            color = $element.data('color'),
+            hex
+
+        hex = $scope.dec2hex(color.r, 2)
+            + $scope.dec2hex(color.g, 2)
+            + $scope.dec2hex(color.b, 2)
+
+        user.backgroundColor = hex
     }
 }])

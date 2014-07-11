@@ -246,6 +246,11 @@ module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window'
 }])
 
 module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
+    $scope.form = {
+        error: {},
+        success: {}
+    }
+
     $scope.dec2hex = function(dec, minDigits) {
         var hex = dec.toString(16)
         if (!minDigits) {
@@ -261,12 +266,30 @@ module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window',
     {
         var user = active.getUser(),
             color = $element.data('color'),
-            hex
+            form = $scope.form,
+            hex,
+            postData
 
         hex = $scope.dec2hex(color.r, 2)
             + $scope.dec2hex(color.g, 2)
             + $scope.dec2hex(color.b, 2)
 
-        user.backgroundColor = hex
+        postData = {
+            background_color: hex
+        }
+
+        $http.post("/app/user/user-profile/color/", postData)
+            .success(function (data) {
+                if (data.success) {
+                    user.backgroundColor = hex
+                    form.success.form = data.success
+                }
+                else {
+                    form.error.form = data.error
+                }
+            })
+            .error(function (data) {
+                form.error.form = 'There was an error processing your profile change request. Please contact an administrator.';
+            })
     }
 }])

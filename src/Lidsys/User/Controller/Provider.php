@@ -86,6 +86,23 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->post('/user-profile/color/', function (Request $request, Application $app) {
+            $user_id = $app['session']->get('user_id');
+
+            $authenticated_user =
+                $app['lidsys.user.authenticator']->getUserForUserId($user_id);
+
+            if (!$authenticated_user) {
+                return $app->json(array(
+                    'error' => 'The user you are logged in as could not be determined.',
+                ));
+            }
+
+            return $app->json(array(
+                'success' => 'This feature has not yet been implemented.',
+            ));
+        });
+
         $controllers->post('/authenticated-user/', function (Request $request, Application $app) {
             $user_id = $app['session']->get('user_id');
 

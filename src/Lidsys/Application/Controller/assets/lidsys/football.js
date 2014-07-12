@@ -193,7 +193,7 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
 
         game.picks = picks[game.game_id]
     }
-    console.log(team_standings)
+
     for (standing_id in team_standings) {
         team_standing = team_standings[standing_id]
         standings[team_standing.team_id] = team_standing
@@ -335,7 +335,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
 
                 var standing_points = parseInt(standing.points)
 
-                if (!minPointsPerWeek[week.week_num]) {
+                if (typeof minPointsPerWeek[week.week_num] == 'undefined') {
                     minPointsPerWeek[week.week_num] = standing.points
                 }
                 else {
@@ -343,7 +343,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootba
                         = Math.min(standing.points, minPointsPerWeek[week.week_num])
                 }
 
-                if (!maxPointsPerWeek[week.week_num]) {
+                if (typeof maxPointsPerWeek[week.week_num] == 'undefined') {
                     maxPointsPerWeek[week.week_num] = standing.points
                 }
                 else {

@@ -10,6 +10,8 @@
 
 namespace Lidsys\User\Service;
 
+use Lstr\Silex\Database\DatabaseService;
+
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -19,6 +21,9 @@ class Provider implements ServiceProviderInterface
     {
         $app['lidsys.user.authenticator'] = $app->share(function ($app) {
             return new AuthenticatorService($app);
+        });
+        $app['lidsys.user'] = $app->share(function ($app) {
+            return new UserService($app['db']);
         });
     }
 

@@ -98,9 +98,15 @@ class Provider implements ControllerProviderInterface
                 ));
             }
 
-            return $app->json(array(
-                'success' => 'This feature has not yet been implemented.',
-            ));
+            if ($app['lidsys.user']->updateUserColor($user_id, $request->get('background_color'))) {
+                return $app->json(array(
+                    'success' => 'Your new color has been saved.',
+                ));
+            } else {
+                return $app->json(array(
+                    'error' => 'An error occurred. Your color change was not saved.',
+                ));
+            }
         });
 
         $controllers->post('/authenticated-user/', function (Request $request, Application $app) {

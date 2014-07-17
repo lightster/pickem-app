@@ -12,6 +12,9 @@ window.ActiveService = class ActiveService
 
 window.User = class User
     constructor: ->
+        @clear()
+
+    clear: ->
         @userId          = null
         @username        = null
         @name            = null
@@ -25,6 +28,8 @@ window.User = class User
 
 
     setFromApi: (options) ->
+        return @clear() if options == null
+
         names     = options.name.split(' ')
         firstName = names[0] ? ''
         lastName  = names[1] ? ''

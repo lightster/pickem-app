@@ -180,7 +180,7 @@ module.controller('UserLogoutCtrl', ['$scope', '$location', '$http', '$window', 
     $http.post("/app/user/logout/")
         .success(function (data) {
             if (data.logged_out) {
-                active.getUser().setFromApi({})
+                active.getUser().setFromApi(null)
             }
             $window.history.back()
         })

@@ -42,7 +42,7 @@
                     0
                 </span>
                 <span ng-hide="game.away_score">
-                    <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.away_team.team_id}}" style="margin: 0; " />
+                    <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.away_team.team_id}}" style="margin: 0; " ng-change="pickChanged(game, game.away_team)" />
                 </span>
             </td>
             <td
@@ -64,7 +64,7 @@
                     0
                 </span>
                 <span ng-hide="game.away_score">
-                    <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home_team.team_id}}" style="margin: 0; " />
+                    <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home_team.team_id}}" style="margin: 0; " ng-change="pickChanged(game, game.home_team)" />
                 </span>
             </td>
             <td style="

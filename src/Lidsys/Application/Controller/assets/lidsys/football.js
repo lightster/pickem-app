@@ -205,6 +205,9 @@ module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPl
     $scope.games           = games
     $scope.prevGameTime    = null
     $scope.standings        = standings
+    $scope.pickChanged = function (game, team) {
+        console.log(game, team)
+    }
     $scope.headerExists = function (game) {
         if ($scope.prevGameTime === game.start_time) {
             return false

@@ -172,61 +172,76 @@ module.directive('ldsFootballWeekSelector', [function () {
     }
 }])
 
-module.controller('LidsysFootballPicksCtrl', ['$scope', 'lidsysFootballFantasyPlayer', 'lidsysFootballPick', 'lidsysFootballSchedule', 'lidsysFootballTeam', 'lidsysFootballTeamStanding', function ($scope, footballPlayer, footballPick, footballSchedule, footballTeam, footballTeamStanding) {
-    var season  = footballSchedule.getSelectedSeason(),
-        week    = footballSchedule.getSelectedWeek(),
-        picks   = footballPick.getPicks(season.year, week.week_number),
-        teams   = footballTeam.getTeams(),
-        games   = footballSchedule.getGames(),
-        players = footballPlayer.getPlayers(season.year),
-        game    = null,
-        game_id = null,
-        standing_id    = null,
-        standings      = {},
-        team_standing  = null,
-        team_standings = footballTeamStanding.getTeamStandings(
-            season.year,
-            week.week_number
-        )
-    for (game_id in games) {
-        game = games[game_id]
+module.controller('LidsysFootballPicksCtrl', [
+    '$scope',
+    'lidsysFootballFantasyPlayer',
+    'lidsysFootballPick',
+    'lidsysFootballSchedule',
+    'lidsysFootballTeam',
+    'lidsysFootballTeamStanding',
+    function (
+        $scope,
+        footballPlayer,
+        footballPick,
+        footballSchedule,
+        footballTeam,
+        footballTeamStanding
+    ) {
+        var season  = footballSchedule.getSelectedSeason(),
+            week    = footballSchedule.getSelectedWeek(),
+            picks   = footballPick.getPicks(season.year, week.week_number),
+            teams   = footballTeam.getTeams(),
+            games   = footballSchedule.getGames(),
+            players = footballPlayer.getPlayers(season.year),
+            game    = null,
+            game_id = null,
+            standing_id    = null,
+            standings      = {},
+            team_standing  = null,
+            team_standings = footballTeamStanding.getTeamStandings(
+                season.year,
+                week.week_number
+            )
+        for (game_id in games) {
+            game = games[game_id]
 
-        game.picks = picks[game.game_id]
-    }
-
-    for (standing_id in team_standings) {
-        team_standing = team_standings[standing_id]
-        standings[team_standing.team_id] = team_standing
-    }
-
-    $scope.currentPlayerId = 6
-    $scope.week            = week
-    $scope.currentPlayer   = players[$scope.currentPlayerId]
-    $scope.games           = games
-    $scope.prevGameTime    = null
-    $scope.standings        = standings
-    $scope.pickChanged = function (game, team) {
-        console.log(game, team)
-    }
-    $scope.headerExists = function (game) {
-        if ($scope.prevGameTime === game.start_time) {
-            return false
+            game.picks = picks[game.game_id]
         }
 
-        $scope.prevGameTime = game.start_time
-        return true
-    }
-    $scope.getPickedTeamStyle = function (game, team) {
-        if (game.picks[$scope.currentPlayer.player_id].team_id == team.team_id) {
-            return {
-                'background-color': '#' + $scope.currentPlayer.background_color,
-                'color':            '#' + $scope.currentPlayer.text_color
+        for (standing_id in team_standings) {
+            team_standing = team_standings[standing_id]
+            standings[team_standing.team_id] = team_standing
+        }
+
+        $scope.currentPlayerId = 6
+        $scope.week            = week
+        $scope.currentPlayer   = players[$scope.currentPlayerId]
+        $scope.games           = games
+        $scope.prevGameTime    = null
+        $scope.standings        = standings
+        $scope.pickChanged = function (game, team) {
+            console.log(game, team)
+        }
+        $scope.headerExists = function (game) {
+            if ($scope.prevGameTime === game.start_time) {
+                return false
             }
-        }
 
-        return ""
+            $scope.prevGameTime = game.start_time
+            return true
+        }
+        $scope.getPickedTeamStyle = function (game, team) {
+            if (game.picks[$scope.currentPlayer.player_id].team_id == team.team_id) {
+                return {
+                    'background-color': '#' + $scope.currentPlayer.background_color,
+                    'color':            '#' + $scope.currentPlayer.text_color
+                }
+            }
+
+            return ""
+        }
     }
-}])
+])
 
 module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballPlayer, footballSchedule, footballTeam) {
     var season  = footballSchedule.getSelectedSeason(),

@@ -174,6 +174,7 @@ module.directive('ldsFootballWeekSelector', [function () {
 
 module.controller('LidsysFootballPicksCtrl', [
     '$scope',
+    '$timeout',
     'lidsysFootballFantasyPlayer',
     'lidsysFootballPick',
     'lidsysFootballSchedule',
@@ -181,6 +182,7 @@ module.controller('LidsysFootballPicksCtrl', [
     'lidsysFootballTeamStanding',
     function (
         $scope,
+        $timeout,
         footballPlayer,
         footballPick,
         footballSchedule,
@@ -220,7 +222,13 @@ module.controller('LidsysFootballPicksCtrl', [
         $scope.prevGameTime    = null
         $scope.standings        = standings
         $scope.pickChanged = function (game, team) {
-            console.log(game, team)
+            $timeout(
+                function () {
+                    console.log(game, team)
+                },
+                1000,
+                true
+            )
         }
         $scope.headerExists = function (game) {
             if ($scope.prevGameTime === game.start_time) {

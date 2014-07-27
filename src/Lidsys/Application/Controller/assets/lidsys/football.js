@@ -222,6 +222,7 @@ module.controller('LidsysFootballPicksCtrl', [
         $scope.prevGameTime    = null
         $scope.standings        = standings
         $scope.pickChanged = function (game, team) {
+            footballPick.changePick(game, $scope.currentPlayer, team)
             $timeout(
                 function () {
                     console.log(game, team)

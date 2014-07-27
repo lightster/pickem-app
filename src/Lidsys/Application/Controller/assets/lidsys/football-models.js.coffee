@@ -202,6 +202,7 @@ window.FootballTeamStandingService = class FootballTeamService
 window.FootballPickService = class FootballPickService
     constructor: (@$http, @$q) ->
         @picks              = {}
+        @queuedPickChanges  = []
 
 
     load: (requestedYear, requestedWeek) ->
@@ -220,6 +221,16 @@ window.FootballPickService = class FootballPickService
     getPicks: (year, week_num) ->
         throw "Picks not yet loaded using 'loadPicks' for year #{year} week #{week_num}" if not @picks[year]? or not @picks[year][week_num]?
         @picks[year][week_num]
+
+
+    changePick: (game, player, team) ->
+        @queuedPickChanges.push({
+            gameId:   game.game_id,
+            playerId: player.player_id,
+            team:     team.team_id
+        })
+        console.log(@queuedPickChanges)
+
 
 
 

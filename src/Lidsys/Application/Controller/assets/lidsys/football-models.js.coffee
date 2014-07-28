@@ -200,7 +200,7 @@ window.FootballTeamStandingService = class FootballTeamService
 
 
 window.FootballPickService = class FootballPickService
-    constructor: (@$http, @$q) ->
+    constructor: (@$http, @$timeout, @$q) ->
         @picks              = {}
         @queuedPickChanges  = []
 

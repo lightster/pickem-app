@@ -203,6 +203,7 @@ window.FootballPickService = class FootballPickService
     constructor: (@$http, @$timeout, @$q) ->
         @picks              = {}
         @queuedPickChanges  = []
+        @queueTimeout       = null
 
 
     load: (requestedYear, requestedWeek) ->
@@ -229,7 +230,13 @@ window.FootballPickService = class FootballPickService
             playerId: player.player_id,
             team:     team.team_id
         })
-        console.log(@queuedPickChanges)
+        @$timeout.cancel(@queueTimeout) if @queueTimeout
+        @queueTimeout = @$timeout(
+            () =>
+                console.log(@queuedPickChanges)
+            1000,
+            true
+        )
 
 
 

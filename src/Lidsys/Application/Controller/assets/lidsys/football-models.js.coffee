@@ -229,7 +229,11 @@ window.FootballPickService = class FootballPickService
         @$timeout.cancel(@queueTimeout) if @queueTimeout
         @queueTimeout = @$timeout(
             () =>
-                data = {fantasy_picks: @queuedPickChanges}
+                picksArray = for game_id, team_id of @queuedPickChanges
+                    game_id: game_id
+                    team_id: team_id
+                data = {fantasy_picks: {}}
+                this.preparePick(data, picksArray) while (picksArray.length > 0)
                 @$http.post("/api/v1.0/football/fantasy-picks/", data)
                     .success((response) =>
                         console.log(response)
@@ -237,6 +241,10 @@ window.FootballPickService = class FootballPickService
             1000,
             true
         )
+
+    preparePick: (data, picksArray) ->
+        pick = picksArray.pop()
+        data.fantasy_picks[pick.game_id] = pick.team_id
 
 
 

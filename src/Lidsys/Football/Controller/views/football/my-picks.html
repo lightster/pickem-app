@@ -26,14 +26,7 @@
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
-                ng-class="
-                    {
-                        label: game.away_score,
-                        success: game.away_score &amp;&amp; game.away_score >= game.home_score,
-                        alert: game.away_score < game.home_score,
-                        'wrong-team': game.away_team.team_id != game.picks[currentPlayerId].team_id
-                    }
-                "
+                ng-class="getAwayPickCellClasses(game)""
             >
                 <span ng-show="game.away_score &amp;&amp; game.away_score >= game.home_score">
                     {{week.win_weight}}
@@ -48,14 +41,7 @@
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
-                ng-class="
-                    {
-                        label: game.away_score,
-                        success: game.away_score &amp;&amp; game.away_score <= game.home_score,
-                        alert: game.away_score > game.home_score,
-                        'wrong-team': game.home_team.team_id != game.picks[currentPlayerId].team_id
-                    }
-                "
+                ng-class="getHomePickCellClasses(game)"
             >
                 <span ng-show="game.away_score &amp;&amp; game.away_score <= game.home_score">
                     {{week.win_weight}}

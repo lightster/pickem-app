@@ -95,11 +95,10 @@ class FantasyPickService
                 SELECT
                     gameId AS game_id
                 FROM nflGame game
-                WHERE gameId IN (:game_ids)
+                WHERE gameId IN ({$game_ids_sql})
                     AND gameTime < :now
             ",
             array(
-                'game_ids' => $game_ids_sql,
                 'now'      => gmdate('Y-m-d H:i:s'),
             )
         );
@@ -109,11 +108,10 @@ class FantasyPickService
         $db->query(
             "
                 DELETE FROM nflFantPick
-                WHERE gameId IN (:game_ids)
+                WHERE gameId IN ($game_ids_sql)
                     AND playerId = :player_id
             ",
             array(
-                'game_ids'  => implode(',', $valid_game_ids),
                 'player_id' => $player_id,
             )
         );

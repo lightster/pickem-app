@@ -204,6 +204,7 @@ window.FootballPickService = class FootballPickService
         @picks              = {}
         @queuedPickChanges  = []
         @queueTimeout       = null
+        @isSaving           = false
 
 
     load: (requestedYear, requestedWeek) ->
@@ -228,9 +229,15 @@ window.FootballPickService = class FootballPickService
         @queuedPickChanges.push
             game_id: game.game_id
             team_id: team.team_id
+        @savePicks() if not @isSaving
+        true
+
+    savePicks: ->
         @$timeout.cancel(@queueTimeout) if @queueTimeout
         @queueTimeout = @$timeout(
             () =>
+                @isSaving = true
+
                 picksHash = {}
                 while @queuedPickChanges.length
                     pick = @queuedPickChanges.pop()
@@ -240,6 +247,11 @@ window.FootballPickService = class FootballPickService
                 @$http.post("/api/v1.0/football/fantasy-picks/", data)
                     .success((response) =>
                         console.log(response)
+                    )
+                    .finally(=>
+                        @isSaving = false
+                        @savePicks() if @queuedPickChanges.length
+                        true
                     )
             1000,
             true

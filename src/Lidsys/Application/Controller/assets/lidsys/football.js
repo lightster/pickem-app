@@ -241,20 +241,59 @@ module.controller('LidsysFootballPicksCtrl', [
             return ""
         }
         $scope.getAwayPickCellClasses = function (game) {
-            return {
-                'label':      game.away_score,
-                'success':    game.away_score && game.away_score >= game.home_score,
-                'alert':      game.away_score < game.home_score,
-                'wrong-team': game.away_team.team_id != game.picks[$scope.currentPlayerId].team_id
-            };
+            if (game.away_score) {
+                return {
+                    'label':      game.away_score,
+                    'success':    game.away_score && game.away_score >= game.home_score,
+                    'alert':      game.away_score < game.home_score,
+                    'wrong-team': game.away_team.team_id != game.picks[$scope.currentPlayerId].team_id
+                };
+            } else if (!$scope.isPickSaved(game)) {
+                return {
+                    'label':      true,
+                    'success':    false,
+                    'alert':      true,
+                    'wrong-team': false
+                };
+            } else {
+                return {
+                    'label':      true,
+                    'success':    true,
+                    'alert':      false,
+                    'wrong-team': false
+                };
+            }
         }
         $scope.getHomePickCellClasses = function (game) {
-            return {
-                'label':      game.home_score,
-                'success':    game.home_score && game.home_score >= game.away_score,
-                'alert':      game.home_score < game.away_score,
-                'wrong-team': game.home_team.team_id != game.picks[$scope.currentPlayerId].team_id
-            };
+            if (game.home_score) {
+                return {
+                    'label':      game.home_score,
+                    'success':    game.home_score && game.home_score >= game.away_score,
+                    'alert':      game.home_score < game.away_score,
+                    'wrong-team': game.home_team.team_id != game.picks[$scope.currentPlayerId].team_id
+                };
+            } else if (!$scope.isPickSaved(game)) {
+                return {
+                    'label':      true,
+                    'success':    false,
+                    'alert':      true,
+                    'wrong-team': false
+                };
+            } else {
+                return {
+                    'label':      true,
+                    'success':    true,
+                    'alert':      false,
+                    'wrong-team': false
+                };
+            }
+        }
+        $scope.isPickSaved = function (game) {
+            var isSavePending = footballPick.isPickSavePending(game, $scope.currentPlayer)
+            var isPicked      = typeof(game.picks) === "object"
+                && typeof(game.picks[$scope.currentPlayer.player_id]) === "object"
+
+            return !isSavePending && isPicked
         }
     }
 ])

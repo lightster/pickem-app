@@ -257,6 +257,11 @@ window.FootballPickService = class FootballPickService
             true
         )
 
+    isPickSavePending: (game, player) ->
+        for queuedPick in @queuedPickChanges
+            console.log queuedPick.game_id
+            return true if queuedPick.game_id == game.game_id
+        false
 
 
 

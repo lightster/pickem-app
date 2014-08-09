@@ -201,11 +201,23 @@ module.controller('LidsysFootballPicksCtrl', [
             team_standings = footballTeamStanding.getTeamStandings(
                 season.year,
                 week.week_number
-            )
+            ),
+            current_player_id = 6
         for (game_id in games) {
             game = games[game_id]
 
             game.picks = picks[game.game_id]
+
+            if (!game.picks) {
+                game.picks = {}
+            }
+            if (!game.picks[current_player_id]) {
+                game.picks[current_player_id] = {
+                    game_id:   game_id,
+                    player_id: current_player_id,
+                    team_id:   null
+                }
+            }
         }
 
         for (standing_id in team_standings) {
@@ -213,7 +225,7 @@ module.controller('LidsysFootballPicksCtrl', [
             standings[team_standing.team_id] = team_standing
         }
 
-        $scope.currentPlayerId = 6
+        $scope.currentPlayerId = current_player_id
         $scope.week            = week
         $scope.currentPlayer   = players[$scope.currentPlayerId]
         $scope.games           = games
@@ -290,8 +302,10 @@ module.controller('LidsysFootballPicksCtrl', [
         }
         $scope.isPickSaved = function (game) {
             var isSavePending = footballPick.isPickSavePending(game, $scope.currentPlayer)
-            var isPicked      = typeof(game.picks) === "object"
+            var isPicked
+                =  typeof(game.picks) === "object"
                 && typeof(game.picks[$scope.currentPlayer.player_id]) === "object"
+                && game.picks[$scope.currentPlayer.player_id].team_id
 
             return !isSavePending && isPicked
         }

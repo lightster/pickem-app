@@ -312,218 +312,242 @@ module.controller('LidsysFootballPicksCtrl', [
     }
 ])
 
-module.controller('LidsysFootballLeaguePicksCtrl', ['$scope', 'lidsysFootballPick', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballPick, footballPlayer, footballSchedule, footballTeam) {
-    var season  = footballSchedule.getSelectedSeason(),
-        week    = footballSchedule.getSelectedWeek(),
-        picks   = footballPick.getPicks(season.year, week.week_number),
-        teams   = footballTeam.getTeams(),
-        games   = footballSchedule.getGames(),
-        players = footballPlayer.getPlayers(season.year),
-        game    = null,
-        game_id = null
-    for (game_id in games) {
-        game = games[game_id]
+module.controller('LidsysFootballLeaguePicksCtrl', [
+    '$scope',
+    'lidsysFootballPick',
+    'lidsysFootballFantasyPlayer',
+    'lidsysFootballSchedule',
+    'lidsysFootballTeam',
+    function (
+        $scope,
+        footballPick,
+        footballPlayer,
+        footballSchedule,
+        footballTeam
+    ) {
+        var season  = footballSchedule.getSelectedSeason(),
+            week    = footballSchedule.getSelectedWeek(),
+            picks   = footballPick.getPicks(season.year, week.week_number),
+            teams   = footballTeam.getTeams(),
+            games   = footballSchedule.getGames(),
+            players = footballPlayer.getPlayers(season.year),
+            game    = null,
+            game_id = null
+        for (game_id in games) {
+            game = games[game_id]
 
-        game.picks = picks[game.game_id]
-    }
-
-    $scope.currentPlayerId  = 6
-    $scope.week             = week
-    $scope.games            = games
-    $scope.players          = players
-    $scope.playerCount      = 0
-    $scope.prevGame         = null
-    $scope.prevHeaderExists = null
-    $scope.prevGameTime     = null
-
-    var playerCount = 0
-    for (var player_id in players) {
-        var player = players[player_id]
-        if (player.player_id) {
-            ++playerCount
+            game.picks = picks[game.game_id]
         }
-    }
-    $scope.playerCount = playerCount
 
-    $scope.headerExists = function (game) {
-        if ($scope.prevGame === game) {
+        $scope.currentPlayerId  = 6
+        $scope.week             = week
+        $scope.games            = games
+        $scope.players          = players
+        $scope.playerCount      = 0
+        $scope.prevGame         = null
+        $scope.prevHeaderExists = null
+        $scope.prevGameTime     = null
+
+        var playerCount = 0
+        for (var player_id in players) {
+            var player = players[player_id]
+            if (player.player_id) {
+                ++playerCount
+            }
+        }
+        $scope.playerCount = playerCount
+
+        $scope.headerExists = function (game) {
+            if ($scope.prevGame === game) {
+                return $scope.prevHeaderExists
+            }
+
+            $scope.prevHeaderExists = ($scope.prevGameTime !== game.start_time)
+            $scope.prevGameTime     = game.start_time
+            $scope.prevGame         = game
+
             return $scope.prevHeaderExists
         }
-
-        $scope.prevHeaderExists = ($scope.prevGameTime !== game.start_time)
-        $scope.prevGameTime     = game.start_time
-        $scope.prevGame         = game
-
-        return $scope.prevHeaderExists
-    }
-    $scope.getPickedTeamStyle = function (pick, team) {
-        if (pick.team_id == team.team_id) {
-            return {
-                'background-color': '#' + $scope.players[pick.player_id].background_color,
-                'color':            '#' + $scope.players[pick.player_id].text_color
-            }
-        }
-        else {
-            return {
-                'color': '#' + $scope.players[pick.player_id].background_color
-            }
-        }
-    }
-}])
-
-module.controller('LidsysFootballFantasyStandingsCtrl', ['$scope', 'lidsysFootballFantasyPlayer', 'lidsysFootballSchedule', 'lidsysFootballFantasyStanding', function ($scope, footballPlayer, footballSchedule, footballFantasyStanding) {
-    var season           = footballSchedule.getSelectedSeason(),
-        selected_week    = footballSchedule.getSelectedWeek(),
-        all_weeks        = footballSchedule.getWeeks(season.year),
-        standings        = footballFantasyStanding.getStandings(season.year),
-        players          = footballPlayer.getPlayers(season.year),
-        weeks            = [],
-        player_standings = [],
-        rank             = 0,
-        minPointsPerWeek = {},
-        maxPointsPerWeek = {},
-        possiblePoints   = 0
-    for (var week_num in all_weeks) {
-        var week = all_weeks[week_num]
-        weeks.push({
-            week: week,
-            week_num: week_num
-        })
-        possiblePoints += week.game_count * week.win_weight
-
-        if (week == selected_week) {
-            break
-        }
-    }
-
-    for (var player_idx in players) {
-        var player = players[player_idx],
-            player_standing = {
-                player:           player,
-                standings:        [],
-                total_points:     0,
-                total_percent:    0,
-                potential_points: 0,
-                weighted_percent: 0,
-                rank:             0,
-                weeks_won:        0
-            }
-        for (var week_idx in weeks) {
-            var week     = weeks[week_idx],
-                standing = standings[week.week_num][player.player_id]
-
-            if (standing) {
-                player_standing.total_points     += parseInt(standing.points)
-                player_standing.potential_points += parseInt(standing.potential_points)
-                player_standing.standings.push({
-                    standing: standing,
-                    week:     week
-                })
-
-                var standing_points = parseInt(standing.points)
-
-                if (typeof minPointsPerWeek[week.week_num] == 'undefined') {
-                    minPointsPerWeek[week.week_num] = standing.points
-                }
-                else {
-                    minPointsPerWeek[week.week_num]
-                        = Math.min(standing.points, minPointsPerWeek[week.week_num])
-                }
-
-                if (typeof maxPointsPerWeek[week.week_num] == 'undefined') {
-                    maxPointsPerWeek[week.week_num] = standing.points
-                }
-                else {
-                    maxPointsPerWeek[week.week_num]
-                        = Math.max(standing.points, maxPointsPerWeek[week.week_num])
+        $scope.getPickedTeamStyle = function (pick, team) {
+            if (pick.team_id == team.team_id) {
+                return {
+                    'background-color': '#' + $scope.players[pick.player_id].background_color,
+                    'color':            '#' + $scope.players[pick.player_id].text_color
                 }
             }
             else {
-                player_standing.standings.push({
-                    standing: {},
-                    week:     week
-                })
-            }
-        }
-
-        player_standing.total_percent = player_standing.total_points / possiblePoints
-        player_standing.weighted_percent = player_standing.total_points / player_standing.potential_points
-
-        player_standings.push(player_standing)
-    }
-    player_standings.sort(function (a, b) {
-        return b.total_points - a.total_points
-    })
-    var lastPoints = 0
-    for (var player_standing_idx in player_standings) {
-        var player_standing = player_standings[player_standing_idx]
-        if (lastPoints != player_standing.total_points) {
-            rank++
-        }
-        player_standings[player_standing_idx].rank = rank
-        lastPoints = player_standing.total_points
-    }
-
-    for (var ps_idx = 0; ps_idx < player_standings.length; ps_idx++) {
-        var player_standing = player_standings[ps_idx],
-            standing_count  = player_standing.standings.length
-        for (var standing_idx = 0; standing_idx < standing_count; standing_idx++) {
-            var standing = player_standing.standings[standing_idx]
-            if (standing.standing.points == maxPointsPerWeek[standing.week.week_num]) {
-                player_standing.weeks_won++
+                return {
+                    'color': '#' + $scope.players[pick.player_id].background_color
+                }
             }
         }
     }
+])
 
-    $scope.currentPlayerId  = 6
-    $scope.week             = selected_week
-    $scope.weeks            = weeks
-    $scope.players          = players
-    $scope.standings        = player_standings
-    $scope.minPointsPerWeek = minPointsPerWeek
-    $scope.maxPointsPerWeek = maxPointsPerWeek
+module.controller('LidsysFootballFantasyStandingsCtrl', [
+    '$scope',
+    'lidsysFootballFantasyPlayer',
+    'lidsysFootballSchedule',
+    'lidsysFootballFantasyStanding',
+    function (
+        $scope,
+        footballPlayer,
+        footballSchedule,
+        footballFantasyStanding
+    ) {
+        var season           = footballSchedule.getSelectedSeason(),
+            selected_week    = footballSchedule.getSelectedWeek(),
+            all_weeks        = footballSchedule.getWeeks(season.year),
+            standings        = footballFantasyStanding.getStandings(season.year),
+            players          = footballPlayer.getPlayers(season.year),
+            weeks            = [],
+            player_standings = [],
+            rank             = 0,
+            minPointsPerWeek = {},
+            maxPointsPerWeek = {},
+            possiblePoints   = 0
+        for (var week_num in all_weeks) {
+            var week = all_weeks[week_num]
+            weeks.push({
+                week: week,
+                week_num: week_num
+            })
+            possiblePoints += week.game_count * week.win_weight
 
-    $scope.getDisplayNameStyle = function (player) {
-        return {
-            'background-color': '#' + player.background_color,
-            'color':            '#' + player.text_color
+            if (week == selected_week) {
+                break
+            }
+        }
+
+        for (var player_idx in players) {
+            var player = players[player_idx],
+                player_standing = {
+                    player:           player,
+                    standings:        [],
+                    total_points:     0,
+                    total_percent:    0,
+                    potential_points: 0,
+                    weighted_percent: 0,
+                    rank:             0,
+                    weeks_won:        0
+                }
+            for (var week_idx in weeks) {
+                var week     = weeks[week_idx],
+                    standing = standings[week.week_num][player.player_id]
+
+                if (standing) {
+                    player_standing.total_points     += parseInt(standing.points)
+                    player_standing.potential_points += parseInt(standing.potential_points)
+                    player_standing.standings.push({
+                        standing: standing,
+                        week:     week
+                    })
+
+                    var standing_points = parseInt(standing.points)
+
+                    if (typeof minPointsPerWeek[week.week_num] == 'undefined') {
+                        minPointsPerWeek[week.week_num] = standing.points
+                    }
+                    else {
+                        minPointsPerWeek[week.week_num]
+                            = Math.min(standing.points, minPointsPerWeek[week.week_num])
+                    }
+
+                    if (typeof maxPointsPerWeek[week.week_num] == 'undefined') {
+                        maxPointsPerWeek[week.week_num] = standing.points
+                    }
+                    else {
+                        maxPointsPerWeek[week.week_num]
+                            = Math.max(standing.points, maxPointsPerWeek[week.week_num])
+                    }
+                }
+                else {
+                    player_standing.standings.push({
+                        standing: {},
+                        week:     week
+                    })
+                }
+            }
+
+            player_standing.total_percent = player_standing.total_points / possiblePoints
+            player_standing.weighted_percent = player_standing.total_points / player_standing.potential_points
+
+            player_standings.push(player_standing)
+        }
+        player_standings.sort(function (a, b) {
+            return b.total_points - a.total_points
+        })
+        var lastPoints = 0
+        for (var player_standing_idx in player_standings) {
+            var player_standing = player_standings[player_standing_idx]
+            if (lastPoints != player_standing.total_points) {
+                rank++
+            }
+            player_standings[player_standing_idx].rank = rank
+            lastPoints = player_standing.total_points
+        }
+
+        for (var ps_idx = 0; ps_idx < player_standings.length; ps_idx++) {
+            var player_standing = player_standings[ps_idx],
+                standing_count  = player_standing.standings.length
+            for (var standing_idx = 0; standing_idx < standing_count; standing_idx++) {
+                var standing = player_standing.standings[standing_idx]
+                if (standing.standing.points == maxPointsPerWeek[standing.week.week_num]) {
+                    player_standing.weeks_won++
+                }
+            }
+        }
+
+        $scope.currentPlayerId  = 6
+        $scope.week             = selected_week
+        $scope.weeks            = weeks
+        $scope.players          = players
+        $scope.standings        = player_standings
+        $scope.minPointsPerWeek = minPointsPerWeek
+        $scope.maxPointsPerWeek = maxPointsPerWeek
+
+        $scope.getDisplayNameStyle = function (player) {
+            return {
+                'background-color': '#' + player.background_color,
+                'color':            '#' + player.text_color
+            }
+        }
+        $scope.getWeekPointsStyle = function (player_standing) {
+            var fontColor   = 192
+                week        = player_standing.week,
+                standing    = player_standing.standing,
+                minPoints   = minPointsPerWeek[week.week_num],
+                maxPoints   = maxPointsPerWeek[week.week_num],
+                pointsRange = maxPoints - minPoints,
+                pointsDiff  = 0
+            if(maxPoints - minPoints == 0) {
+                fontColor = 0
+            } else if (standing) {
+                pointsDiff = standing.points - minPoints
+                fontColor  = parseInt(Math.max(
+                    0,
+                    parseInt(fontColor * (1 - (pointsDiff / (pointsRange))))
+                ))
+            }
+
+            var style = {
+                'color': 'rgb('
+                    + fontColor
+                    + ','
+                    + fontColor
+                    + ','
+                    + fontColor
+                    + ')'
+            }
+
+            if (maxPoints != minPoints && maxPoints == standing.points) {
+                style['background-color'] = '#ffff99'
+            }
+
+            return style
         }
     }
-    $scope.getWeekPointsStyle = function (player_standing) {
-        var fontColor   = 192
-            week        = player_standing.week,
-            standing    = player_standing.standing,
-            minPoints   = minPointsPerWeek[week.week_num],
-            maxPoints   = maxPointsPerWeek[week.week_num],
-            pointsRange = maxPoints - minPoints,
-            pointsDiff  = 0
-        if(maxPoints - minPoints == 0) {
-            fontColor = 0
-        } else if (standing) {
-            pointsDiff = standing.points - minPoints
-            fontColor  = parseInt(Math.max(
-                0,
-                parseInt(fontColor * (1 - (pointsDiff / (pointsRange))))
-            ))
-        }
-
-        var style = {
-            'color': 'rgb('
-                + fontColor
-                + ','
-                + fontColor
-                + ','
-                + fontColor
-                + ')'
-        }
-
-        if (maxPoints != minPoints && maxPoints == standing.points) {
-            style['background-color'] = '#ffff99'
-        }
-
-        return style
-    }
-}])
+])
 
 module.controller('LidsysFootballScheduleCtrl', ['$scope', 'lidsysFootballSchedule', 'lidsysFootballTeam', function ($scope, footballSchedule, footballTeam) {
     var teams   = footballTeam.getTeams(),

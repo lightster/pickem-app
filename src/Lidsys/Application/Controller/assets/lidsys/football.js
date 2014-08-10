@@ -174,6 +174,7 @@ module.directive('ldsFootballWeekSelector', [function () {
 
 module.controller('LidsysFootballPicksCtrl', [
     '$scope',
+    'active',
     'lidsysFootballFantasyPlayer',
     'lidsysFootballPick',
     'lidsysFootballSchedule',
@@ -181,6 +182,7 @@ module.controller('LidsysFootballPicksCtrl', [
     'lidsysFootballTeamStanding',
     function (
         $scope,
+        active,
         footballPlayer,
         footballPick,
         footballSchedule,
@@ -202,7 +204,7 @@ module.controller('LidsysFootballPicksCtrl', [
                 season.year,
                 week.week_number
             ),
-            current_player_id = 6
+            current_player_id = active.getUser().playerId
         for (game_id in games) {
             game = games[game_id]
 
@@ -314,12 +316,14 @@ module.controller('LidsysFootballPicksCtrl', [
 
 module.controller('LidsysFootballLeaguePicksCtrl', [
     '$scope',
+    'active',
     'lidsysFootballPick',
     'lidsysFootballFantasyPlayer',
     'lidsysFootballSchedule',
     'lidsysFootballTeam',
     function (
         $scope,
+        active,
         footballPick,
         footballPlayer,
         footballSchedule,
@@ -339,7 +343,7 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
             game.picks = picks[game.game_id]
         }
 
-        $scope.currentPlayerId  = 6
+        $scope.currentPlayerId  = active.getUser().playerId
         $scope.week             = week
         $scope.games            = games
         $scope.players          = players
@@ -386,11 +390,13 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
 
 module.controller('LidsysFootballFantasyStandingsCtrl', [
     '$scope',
+    'active',
     'lidsysFootballFantasyPlayer',
     'lidsysFootballSchedule',
     'lidsysFootballFantasyStanding',
     function (
         $scope,
+        active,
         footballPlayer,
         footballSchedule,
         footballFantasyStanding
@@ -498,7 +504,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
             }
         }
 
-        $scope.currentPlayerId  = 6
+        $scope.currentPlayerId  = active.getUser().playerId
         $scope.week             = selected_week
         $scope.weeks            = weeks
         $scope.players          = players

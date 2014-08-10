@@ -21,6 +21,7 @@ window.User = class User
         @backgroundColor = null
         @displayName     = null
         @permissions     = {}
+        @playerId        = 6
 
 
     isAuthorized: (permission) ->

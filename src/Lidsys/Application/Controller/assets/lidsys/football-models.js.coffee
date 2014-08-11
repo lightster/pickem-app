@@ -253,7 +253,7 @@ window.FootballPickService = class FootballPickService
                         @savePicks() if @queuedPickChanges.length
                         true
                     )
-            1000,
+            500,
             true
         )
 

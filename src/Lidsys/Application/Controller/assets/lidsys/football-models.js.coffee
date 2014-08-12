@@ -205,6 +205,7 @@ window.FootballPickService = class FootballPickService
         @queuedPickChanges  = []
         @queueTimeout       = null
         @isSaving           = false
+        @errors             = []
 
 
     load: (requestedYear, requestedWeek) ->
@@ -243,10 +244,13 @@ window.FootballPickService = class FootballPickService
                     pick = @queuedPickChanges.pop()
                     picksHash[pick.game_id] = pick.team_id
 
-                data = {fantasy_picks: picksHash}
+                @errors.pop while @errors.length
+                data   = {fantasy_picks: picksHash}
                 @$http.post("/api/v1.0/football/fantasy-picks/", data)
                     .success((response) =>
-                        console.log(response)
+                    )
+                    .error((response) =>
+                        @errors.push("Your picks could not be saved. Please try again.")
                     )
                     .finally(=>
                         @isSaving = false

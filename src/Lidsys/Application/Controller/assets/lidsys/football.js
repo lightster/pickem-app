@@ -233,6 +233,7 @@ module.controller('LidsysFootballPicksCtrl', [
         $scope.games           = games
         $scope.prevGameTime    = null
         $scope.standings        = standings
+        $scope.errors          = footballPick.errors
         $scope.pickChanged = function (game, team) {
             footballPick.changePick(game, $scope.currentPlayer, team)
         }

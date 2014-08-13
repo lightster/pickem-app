@@ -10,7 +10,7 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
         })
         .when('/user/logout',
         {
-            template: "Logging you out...",
+            templateUrl: "/app/template/logout/index.html",
             controller: "UserLogoutCtrl",
             navigationLabel: "Logout"
         })

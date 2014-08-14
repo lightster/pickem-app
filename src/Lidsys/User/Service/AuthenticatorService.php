@@ -38,6 +38,7 @@ class AuthenticatorService
                     u.userId AS user_id,
                     u.username,
                     u.timeZone AS time_zone,
+                    p.playerId AS player_id,
                     p.name AS name,
                     p.bgcolor AS background_color
                 FROM user AS u
@@ -73,6 +74,7 @@ class AuthenticatorService
                     u.userId AS user_id,
                     u.username,
                     u.timeZone AS time_zone,
+                    p.playerId AS player_id,
                     p.name AS name,
                     p.bgcolor AS background_color
                 FROM user AS u
@@ -108,6 +110,7 @@ class AuthenticatorService
                     u.userId AS user_id,
                     u.username,
                     u.timeZone AS time_zone,
+                    p.playerId As player_id,
                     p.name AS name,
                     p.bgcolor AS background_color
                 FROM user AS u

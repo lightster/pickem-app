@@ -16,12 +16,12 @@ window.User = class User
 
     clear: ->
         @userId          = null
+        @playerId        = null
         @username        = null
         @name            = null
         @backgroundColor = null
         @displayName     = null
         @permissions     = {}
-        @playerId        = 6
 
 
     isAuthorized: (permission) ->
@@ -36,6 +36,7 @@ window.User = class User
         lastName  = names[1] ? ''
 
         @userId          = options.user_id
+        @playerId        = options.player_id
         @username        = options.username
         @name            = options.name
         @backgroundColor = options.background_color

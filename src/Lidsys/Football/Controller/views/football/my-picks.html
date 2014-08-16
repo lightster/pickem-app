@@ -37,7 +37,7 @@
                 <span ng-show="game.away_score &amp;&amp; game.away_score < game.home_score">
                     0
                 </span>
-                <span ng-hide="game.away_score">
+                <span lds-authenticated="true" ng-hide="game.away_score">
                     <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.away_team.team_id}}" style="margin: 0; " ng-change="pickChanged(game, game.away_team)" />
                 </span>
             </td>
@@ -52,7 +52,7 @@
                 <span ng-show="game.away_score &amp;&amp; game.away_score > game.home_score">
                     0
                 </span>
-                <span ng-hide="game.away_score">
+                <span lds-authenticated="true" ng-hide="game.away_score">
                     <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home_team.team_id}}" style="margin: 0; " ng-change="pickChanged(game, game.home_team)" />
                 </span>
             </td>

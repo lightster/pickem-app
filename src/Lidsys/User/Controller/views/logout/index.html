@@ -1,0 +1,58 @@
+<form ng-submit="processPasswordChange($event)">
+    <div class="row">
+        <div class="large-2 medium-2 columns">
+            &nbsp;
+        </div>
+        <div class="large-5 medium-6 columns">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h2>Change Password</h2>
+                </div>
+            </div>
+            <div class="row" ng-show="form.success.form">
+                <div class="large-12 columns">
+                    <div data-alert class="alert-box success">
+                        {{form.success.form}}
+                    </div>
+                </div>
+            </div>
+            <div lds-authenticated="true" ng-hide="form.success.form">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div data-alert class="alert-box warning" ng-show="form.error.form">
+                            {{form.error.form}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns" ng-class="{error: form.error.currentPassword}">
+                        <input type="password" placeholder="current password" ng-model="form.passwordChange.currentPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="form.error.currentPassword">{{form.error.currentPassword}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns" ng-class="{error: form.error.newPassword}">
+                        <input type="password" placeholder="new password" ng-model="form.passwordChange.newPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="form.error.newPassword">{{form.error.newPassword}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns" ng-class="{error: form.error.confirmPassword}">
+                        <input type="password" placeholder="confirm new password" ng-model="form.passwordChange.confirmPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="form.error.confirmPassword">{{form.error.confirmPassword}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-5 columns">
+                        <input type="submit" class="button small" value="Change It!" />
+                    </div>
+                </div>
+            </div>
+            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="false">
+                You must be logged in to view this page!
+            </div>
+        </div>
+        <div class="large-5 medium-4 columns">
+        </div>
+    </div>
+</form>

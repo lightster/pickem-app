@@ -263,6 +263,13 @@ module.controller('LidsysFootballPicksCtrl', [
                     'alert':      game.away_score < game.home_score,
                     'wrong-team': game.away_team.team_id != game.picks[$scope.currentPlayerId].team_id
                 };
+            } else if (!$scope.currentPlayer) {
+                return {
+                    'label':      false,
+                    'success':    false,
+                    'alert':      false,
+                    'wrong-team': false
+                };
             } else if (!$scope.isPickSaved(game)) {
                 return {
                     'label':      true,
@@ -286,6 +293,13 @@ module.controller('LidsysFootballPicksCtrl', [
                     'success':    game.home_score && game.home_score >= game.away_score,
                     'alert':      game.home_score < game.away_score,
                     'wrong-team': game.home_team.team_id != game.picks[$scope.currentPlayerId].team_id
+                };
+            } else if (!$scope.currentPlayer) {
+                return {
+                    'label':      false,
+                    'success':    false,
+                    'alert':      false,
+                    'wrong-team': false
                 };
             } else if (!$scope.isPickSaved(game)) {
                 return {

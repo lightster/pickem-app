@@ -150,4 +150,20 @@ class AuthenticatorService
 
         return true;
     }
+
+    public function resetPasswordForUsername($username)
+    {
+        $characters = '0123456789'
+            . 'abcdefghijklmnopqrstuvwxyz'
+            . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            . '!@#$%^&*';
+        $character_count = strlen($characters);
+
+        $random_string = '';
+        for ($i = 0; $i < 14; $i++) {
+            $random_string .= $characters[mt_rand(0, $character_count - 1)];
+        }
+
+        var_dump($random_string);
+    }
 }

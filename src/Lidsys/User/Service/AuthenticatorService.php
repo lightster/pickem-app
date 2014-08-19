@@ -159,11 +159,24 @@ class AuthenticatorService
             . '!@#$%^&*';
         $character_count = strlen($characters);
 
-        $random_string = '';
+        $new_password = '';
         for ($i = 0; $i < 14; $i++) {
-            $random_string .= $characters[mt_rand(0, $character_count - 1)];
+            $new_password .= $characters[mt_rand(0, $character_count - 1)];
         }
 
-        var_dump($random_string);
+        $db = $this->app['db'];
+        $db->query(
+            "
+                UPDATE user
+                SET password = md5(concat(:password, securityHash))
+                WHERE username = :username
+            ",
+            array(
+                'username'  => $username,
+                'password' => md5($new_password),
+            )
+        );
+
+        var_dump($new_password);
     }
 }

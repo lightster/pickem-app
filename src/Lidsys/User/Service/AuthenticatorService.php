@@ -177,6 +177,6 @@ class AuthenticatorService
             )
         );
 
-        var_dump($new_password);
+        return $new_password;
     }
 }

@@ -8,6 +8,11 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
             controller: "UserLoginCtrl",
             navigationLabel: "Login"
         })
+        .when('/user/login-help',
+        {
+            templateUrl: "/app/template/login/help.html",
+            controller: "UserLoginHelpCtrl"
+        })
         .when('/user/logout',
         {
             templateUrl: "/app/template/logout/index.html",
@@ -175,6 +180,16 @@ module.controller('UserLoginCtrl', ['$scope', '$location', '$http', '$window', '
         previousPassword: ''
     }
 }])
+
+module.controller('UserLoginHelpCtrl', [
+    '$scope',
+    '$location',
+    '$http',
+    '$window',
+    'active',
+    function ($scope, $location, $http, $window, active) {
+    }
+])
 
 module.controller('UserLogoutCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
     $http.post("/app/user/logout/")

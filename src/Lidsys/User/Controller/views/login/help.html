@@ -1,0 +1,42 @@
+<form ng-submit="processLogin($event)">
+    <div class="row">
+        <div class="large-2 medium-2 columns">
+            &nbsp;
+        </div>
+        <div class="large-5 medium-6 columns">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h2>Need help?</h2>
+                </div>
+            </div>
+            <div lds-authenticated="false">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div data-alert class="alert-box warning" ng-show="login.error.form">
+                            {{login_help.error.form}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns" ng-class="{error: login_help.error.email}">
+                        <p>
+                            Enter the email address associated with your account
+                        </p>
+                        <input type="text" placeholder="email" ng-model="login_help.email" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <small ng-show="login_help.error.email">{{login_help.error.email}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <input type="submit" class="button small" value="Help Me!" style="margin-right: 20px; " />
+                    </div>
+                </div>
+            </div>
+            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="true">
+                You are already logged in!
+            </div>
+        </div>
+        <div class="large-5 medium-4 columns">
+        </div>
+    </div>
+</form>

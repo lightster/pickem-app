@@ -133,6 +133,32 @@ class AuthenticatorService
         return $authenticated_user;
     }
 
+    public function getUserForEmail($email)
+    {
+        $db    = $this->app['db'];
+        $query = $db->query(
+            "
+                SELECT
+                    u.userId AS user_id,
+                    u.username,
+                    u.timeZone AS time_zone,
+                    p.playerId As player_id,
+                    p.name AS name,
+                    p.bgcolor AS background_color
+                FROM user AS u
+                JOIN player_user AS pu
+                    ON pu.userId = u.userId
+                JOIN player AS p
+                    ON p.playerId = pu.playerId
+                WHERE u.email = :email
+            ",
+            array(
+                'email' => $email,
+            )
+        );
+        return $query->fetch();
+    }
+
     public function updatePasswordForUser($user_id, $password)
     {
         $db = $this->app['db'];

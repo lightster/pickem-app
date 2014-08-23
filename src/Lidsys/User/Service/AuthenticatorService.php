@@ -29,23 +29,8 @@ class AuthenticatorService
 
     public function getUserForUsernameAndPassword($username, $password)
     {
-        $authenticated_user = false;
-
-        $db    = $this->app['db'];
-        $query = $db->query(
+        return $this->findUserWithWhereClause(
             "
-                SELECT
-                    u.userId AS user_id,
-                    u.username,
-                    u.timeZone AS time_zone,
-                    p.playerId AS player_id,
-                    p.name AS name,
-                    p.bgcolor AS background_color
-                FROM user AS u
-                JOIN player_user AS pu
-                    ON pu.userId = u.userId
-                JOIN player AS p
-                    ON p.playerId = pu.playerId
                 WHERE u.username = :username
                     AND u.password = md5(concat(:password, u.securityHash))
             ",
@@ -54,34 +39,12 @@ class AuthenticatorService
                 'password' => md5($password),
             )
         );
-        while ($row = $query->fetch()) {
-            if ($row['username'] === $username) {
-                $authenticated_user = $row;
-            }
-        }
-
-        return $authenticated_user;
     }
 
     public function getUserForUserIdAndPassword($user_id, $password)
     {
-        $authenticated_user = false;
-
-        $db    = $this->app['db'];
-        $query = $db->query(
+        return $this->findUserWithWhereClause(
             "
-                SELECT
-                    u.userId AS user_id,
-                    u.username,
-                    u.timeZone AS time_zone,
-                    p.playerId AS player_id,
-                    p.name AS name,
-                    p.bgcolor AS background_color
-                FROM user AS u
-                JOIN player_user AS pu
-                    ON pu.userId = u.userId
-                JOIN player AS p
-                    ON p.playerId = pu.playerId
                 WHERE u.userId = :user_id
                     AND u.password = md5(concat(:password, u.securityHash))
             ",
@@ -90,73 +53,30 @@ class AuthenticatorService
                 'password' => md5($password),
             )
         );
-        while ($row = $query->fetch()) {
-            if ($row['user_id'] === $user_id) {
-                $authenticated_user = $row;
-            }
-        }
-
-        return $authenticated_user;
     }
 
     public function getUserForUserId($user_id)
     {
-        $authenticated_user = false;
-
-        $db    = $this->app['db'];
-        $query = $db->query(
+        return $this->findUserWithWhereClause(
             "
-                SELECT
-                    u.userId AS user_id,
-                    u.username,
-                    u.timeZone AS time_zone,
-                    p.playerId As player_id,
-                    p.name AS name,
-                    p.bgcolor AS background_color
-                FROM user AS u
-                JOIN player_user AS pu
-                    ON pu.userId = u.userId
-                JOIN player AS p
-                    ON p.playerId = pu.playerId
                 WHERE u.userId = :user_id
             ",
             array(
                 'user_id' => $user_id,
             )
         );
-        while ($row = $query->fetch()) {
-            if ($row['user_id'] === $user_id) {
-                $authenticated_user = $row;
-            }
-        }
-
-        return $authenticated_user;
     }
 
     public function getUserForEmail($email)
     {
-        $db    = $this->app['db'];
-        $query = $db->query(
+        return $this->findUserWithWhereClause(
             "
-                SELECT
-                    u.userId AS user_id,
-                    u.username,
-                    u.timeZone AS time_zone,
-                    p.playerId As player_id,
-                    p.name AS name,
-                    p.bgcolor AS background_color
-                FROM user AS u
-                JOIN player_user AS pu
-                    ON pu.userId = u.userId
-                JOIN player AS p
-                    ON p.playerId = pu.playerId
                 WHERE u.email = :email
             ",
             array(
                 'email' => $email,
             )
         );
-        return $query->fetch();
     }
 
     public function updatePasswordForUser($user_id, $password)
@@ -204,5 +124,33 @@ class AuthenticatorService
         );
 
         return $new_password;
+    }
+
+    private function findUserWithWhereClause($where_sql, array $params)
+    {
+        $query = $this->app['db']->query(
+            $this->getUserFindSql() . $where_sql,
+            $params
+        );
+        return $query->fetch();
+    }
+
+    private function getUserFindSql()
+    {
+        return <<<'SQL'
+SELECT
+    u.userId AS user_id,
+    u.username,
+    u.timeZone AS time_zone,
+    p.playerId As player_id,
+    p.name AS name,
+    p.bgcolor AS background_color
+FROM user AS u
+JOIN player_user AS pu
+    ON pu.userId = u.userId
+JOIN player AS p
+    ON p.playerId = pu.playerId
+SQL
+        ;
     }
 }

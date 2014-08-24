@@ -18,14 +18,22 @@ class AuthenticatorService
 {
     private $app;
 
-
-
     public function __construct(Application $app)
     {
         $this->app    = $app;
     }
 
-
+    public function getUserForUsername($username)
+    {
+        return $this->findUserWithWhereClause(
+            "
+                WHERE u.username = :username
+            ",
+            array(
+                'username' => $username,
+            )
+        );
+    }
 
     public function getUserForUsernameAndPassword($username, $password)
     {

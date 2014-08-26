@@ -149,6 +149,7 @@ class AuthenticatorService
 SELECT
     u.userId AS user_id,
     u.username,
+    u.email,
     u.timeZone AS time_zone,
     p.playerId As player_id,
     p.name AS name,

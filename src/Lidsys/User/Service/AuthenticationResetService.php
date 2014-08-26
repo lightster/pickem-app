@@ -47,7 +47,7 @@ class AuthenticationResetService
 
         $this->mailer->sendMessage(
             array(
-                'to'      => 'Matt Light <lightster@gmail.com>',
+                'to'      => "{$user['name']} <{$user['email']}>",
                 'subject' => 'Lightdatasys Account Information',
                 'text'    => <<<TEXT
 Hi {$user['name']},

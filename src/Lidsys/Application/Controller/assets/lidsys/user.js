@@ -8,7 +8,7 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
             controller: "UserLoginCtrl",
             navigationLabel: "Login"
         })
-        .when('/user/login-help',
+        .when('/user/login/help',
         {
             templateUrl: "/app/template/login/help.html",
             controller: "UserLoginHelpCtrl"

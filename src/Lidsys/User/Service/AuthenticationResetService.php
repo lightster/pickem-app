@@ -39,6 +39,10 @@ class AuthenticationResetService
     {
         $user = $this->auth->getUserForEmail($email);
 
+        if (empty($user)) {
+            return false;
+        }
+
         $query_string = $this->createTokenQueryString($user['username']);
 
         $this->mailer->sendMessage(

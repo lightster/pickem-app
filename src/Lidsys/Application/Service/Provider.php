@@ -33,7 +33,10 @@ class Provider implements ServiceProviderInterface
             $config = $app['config']['mailer'];
             return new MailerService(
                 $config['key'],
-                $config['domain']
+                $config['domain'],
+                array(
+                    '{{BASE_URL}}' => $app['config']['app']['base_url'],
+                )
             );
         });
     }

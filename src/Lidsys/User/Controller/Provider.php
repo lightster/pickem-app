@@ -40,6 +40,17 @@ class Provider implements ControllerProviderInterface
             return $app->json($response);
         });
 
+        $controllers->get('/login/reset-info/', function (Request $request, Application $app) {
+            $user = $app['lidsys.user.auth-reset']->getUserFromTokenQueryString(
+                $request->query->all(),
+                60 * 60 * 12 // 12 hours
+            );
+
+            return $app->json(array(
+                'username' => $user['username'],
+            ));
+        });
+
         $controllers->post('/login/', function (Request $request, Application $app) {
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUsernameAndPassword(

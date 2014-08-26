@@ -24,7 +24,7 @@ class MailerService
 
     public function __construct($key, $domain, array $options = array())
     {
-        $substitutions = $defaults = array();
+        $substitutions = $defaults = $overrides = array();
         extract($options, EXTR_IF_EXISTS);
 
         $this->key           = $key;
@@ -32,6 +32,7 @@ class MailerService
 
         $this->substitutions = $substitutions;
         $this->defaults      = $defaults;
+        $this->overrides     = $overrides;
     }
 
     private function getMailgun()
@@ -49,7 +50,8 @@ class MailerService
     {
         $data = array_replace_recursive(
             $this->defaults,
-            $data
+            $data,
+            $this->overrides
         );
 
         $this->substituteString($data, 'text');

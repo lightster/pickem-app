@@ -33,6 +33,12 @@ class Provider implements ServiceProviderInterface
             $mailer_config  = $app['config']['mailer'];
             $app_config     = $app['config']['app'];
             $commish_config = $app_config['commissioner'];
+
+            $overrides = array();
+            if ($app['debug']) {
+                $overrides['to'] = $_SERVER['SERVER_ADMIN'];
+            }
+
             return new MailerService(
                 $mailer_config['key'],
                 $mailer_config['domain'],
@@ -43,6 +49,7 @@ class Provider implements ServiceProviderInterface
                     'defaults' => array(
                         'from' => "{$commish_config['name']} <{$commish_config['email']}>",
                     ),
+                    'overrides' => $overrides,
                 )
             );
         });

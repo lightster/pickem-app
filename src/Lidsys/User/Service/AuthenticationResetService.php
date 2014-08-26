@@ -91,7 +91,15 @@ HTML
 
     public function getUserFromTokenQueryString(array $params, $expiration)
     {
-        $this->validateTokenQueryString($params);
+        if (time() > $params['timestamp'] + $expiration) {
+            return false;
+        }
+
+        try {
+            $this->validateTokenQueryString($params);
+        } catch (Exception $exception) {
+            return false;
+        }
 
         return $this->auth->getUserForUsername($params['username']);
     }

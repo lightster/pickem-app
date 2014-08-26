@@ -47,7 +47,6 @@ class AuthenticationResetService
 
         $this->mailer->sendMessage(
             array(
-                'from'    => 'The Commissioner <commissioner@lightdatasys.com>',
                 'to'      => 'Matt Light <lightster@gmail.com>',
                 'subject' => 'Lightdatasys Account Information',
                 'text'    => <<<TEXT

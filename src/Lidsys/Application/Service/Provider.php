@@ -30,12 +30,19 @@ class Provider implements ServiceProviderInterface
         });
 
         $app['mailer'] = $app->share(function ($app) {
-            $config = $app['config']['mailer'];
+            $mailer_config  = $app['config']['mailer'];
+            $app_config     = $app['config']['app'];
+            $commish_config = $app_config['commissioner'];
             return new MailerService(
-                $config['key'],
-                $config['domain'],
+                $mailer_config['key'],
+                $mailer_config['domain'],
                 array(
-                    '{{BASE_URL}}' => $app['config']['app']['base_url'],
+                    'substitutions' => array(
+                        '{{BASE_URL}}' => $app_config['base_url'],
+                    ),
+                    'defaults' => array(
+                        'from' => "{$commish_config['name']} <{$commish_config['email']}>",
+                    ),
                 )
             );
         });

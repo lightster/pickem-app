@@ -25,6 +25,21 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
+        $controllers->get('/login/help/', function (Request $request, Application $app) {
+            $is_found = $app['lidsys.user.auth-reset']->sendResetEmail(
+                $request->get('email')
+            );
+
+            $response = array();
+            if ($is_found) {
+                $response['success'] = 'Your account information has been emailed to you.';
+            } else {
+                $response['error']   = 'The email address you provided is not registered with Lightdatasys.';
+            }
+
+            return $app->json($response);
+        });
+
         $controllers->post('/login/', function (Request $request, Application $app) {
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUsernameAndPassword(

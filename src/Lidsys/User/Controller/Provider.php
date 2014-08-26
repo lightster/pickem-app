@@ -25,7 +25,7 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/login/help/', function (Request $request, Application $app) {
+        $controllers->post('/login/help/', function (Request $request, Application $app) {
             $is_found = $app['lidsys.user.auth-reset']->sendResetEmail(
                 $request->get('email')
             );

@@ -188,6 +188,56 @@ module.controller('UserLoginHelpCtrl', [
     '$window',
     'active',
     function ($scope, $location, $http, $window, active) {
+        $scope.formChanged = function ($event) {
+            var login_help = $scope.login_help;
+
+            if (login_help.email != login_help.submittedEmail
+            ) {
+                login_help.error = '';
+            }
+        }
+        $scope.processLoginHelp = function ($event) {
+            var login_help = $scope.login_help;
+
+            login_help.error          = {};
+            login_help.submittedEmail = login_help.email;
+
+            if (!login_help.email) {
+                login_help.error.has_error = true;
+                login_help.error.email     = 'Please enter your email address.';
+            }
+
+            if (login_help.error.has_error) {
+                return false;
+            }
+
+            var postData = {
+                email: login_help.email
+            }
+
+            $http.post("/app/user/login/help/", postData)
+                .success(function (data) {
+                    if (data.success) {
+                        login_help.success.form = data.success;
+                    }
+                    else {
+                        login_help.error.form = data.error;
+                    }
+                })
+                .error(function (data) {
+                    login_help.error.form = 'There was an error processing your login help request. Please contact an administrator.';
+                })
+
+            return false;
+        }
+
+        $scope.login_help = {
+            submitEnabled:  false,
+            error:          {},
+            success:        {},
+            email:          '',
+            submittedEmail: ''
+        }
     }
 ])
 

@@ -1,4 +1,4 @@
-<form ng-submit="processLogin($event)">
+<form ng-submit="processLoginHelp($event)">
     <div class="row">
         <div class="large-2 medium-2 columns">
             &nbsp;
@@ -9,10 +9,19 @@
                     <h2>Need help?</h2>
                 </div>
             </div>
-            <div lds-authenticated="false">
+            <div lds-authenticated="false" ng-show="login_help.success.form">
                 <div class="row">
                     <div class="large-12 columns">
-                        <div data-alert class="alert-box warning" ng-show="login.error.form">
+                        <div data-alert class="alert-box" ng-show="login_help.success.form">
+                            {{login_help.success.form}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div lds-authenticated="false" ng-hide="login_help.success.form">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div data-alert class="alert-box warning" ng-show="login_help.error.form">
                             {{login_help.error.form}}
                         </div>
                     </div>

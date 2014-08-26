@@ -105,7 +105,7 @@ HTML
 
         ksort($private_params);
 
-        $public_params['token'] = sha1(http_build_query($private_params));
+        $public_params['token'] = $this->generateToken($private_params);
 
         return http_build_query($public_params);
     }
@@ -130,12 +130,17 @@ HTML
 
         ksort($private_params);
 
-        $correct_token = sha1(http_build_query($private_params));
+        $correct_token = $this->generateToken($private_params);
 
         if ($correct_token !== $params['token']) {
             throw new Exception("The provided token is invalid.");
         }
 
         return true;
+    }
+
+    private function generateToken(array $params)
+    {
+        return substr(base64_encode(sha1(http_build_query($params))), 0, 12);
     }
 }

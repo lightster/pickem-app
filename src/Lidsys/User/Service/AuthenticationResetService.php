@@ -39,7 +39,51 @@ class AuthenticationResetService
     {
         $user = $this->auth->getUserForEmail($email);
 
-        return $this->createTokenQueryString($user['username']);
+        $query_string = $this->createTokenQueryString($user['username']);
+
+        $this->mailer->sendMessage(
+            array(
+                'from'    => 'The Commissioner <commissioner@lightdatasys.com>',
+                'to'      => 'Matt Light <lightster@gmail.com>',
+                'subject' => 'Lightdatasys Account Information',
+                'text'    => <<<TEXT
+Hi {$user['name']},
+
+Your username for Lightdatasys is {$user['username']}.
+
+If you forgot your password, you may reset your password by visiting
+
+  {{BASE_URL}}/user/login-reset?{$query_string}
+
+Have a wonderful day,
+
+The Commissioner
+Lightdatasys
+http://lightdatasys.com
+TEXT
+                ,
+                'html'    => <<<HTML
+<p>Hi {$user['name']},</p>
+
+<p>Your username for Lightdatasys is {$user['username']}.</p>
+
+<p>
+    If you forgot your password, you may
+    <a href="{{BASE_URL}}/user/login-reset?{$query_string}">reset your password</a>.
+</p>
+
+<p>Have a wonderful day,</p>
+
+<p>
+    The Commissioner<br />
+    <a href="http://lightdatasys.com">Lightdatasys</a>
+</p>
+HTML
+                ,
+            )
+        );
+
+        return true;
     }
 
     public function getUserFromTokenQueryString(array $params, $expiration)

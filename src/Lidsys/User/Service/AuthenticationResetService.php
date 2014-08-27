@@ -56,7 +56,7 @@ Your username for Lightdatasys is {$user['username']}.
 
 If you forgot your password, you may reset your password by visiting
 
-  {{BASE_URL}}/user/login-reset?{$query_string}
+  {{BASE_URL}}/user/login/reset?{$query_string}
 
 Have a wonderful day,
 
@@ -72,7 +72,7 @@ TEXT
 
 <p>
     If you forgot your password, you may
-    <a href="{{BASE_URL}}/user/login-reset?{$query_string}">reset your password</a>.
+    <a href="{{BASE_URL}}/user/login/reset?{$query_string}">reset your password</a>.
 </p>
 
 <p>Have a wonderful day,</p>

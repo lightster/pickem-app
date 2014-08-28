@@ -163,7 +163,8 @@ module.controller('UserLoginCtrl', ['$scope', '$location', '$http', '$window', '
                 if (data.authenticated_user) {
                     active.getUser().setFromApi(data.authenticated_user)
                     login.error.form = 'Success!!';
-                    $window.history.back()
+                    //$window.history.back()
+                    $location.path('/')
                 }
                 else {
                     login.error.form = 'The provided username/password are incorrect.';
@@ -329,7 +330,8 @@ module.controller('UserLogoutCtrl', ['$scope', '$location', '$http', '$window', 
             if (data.logged_out) {
                 active.getUser().setFromApi(null)
             }
-            $window.history.back()
+            //$window.history.back()
+            $location.path('/')
         })
         .error(function (data) {
         })

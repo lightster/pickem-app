@@ -44,7 +44,6 @@ class Provider implements ControllerProviderInterface
             $user = $app['lidsys.user.auth-reset']->getUserFromTokenQueryString(
                 $request->request->all(),
                 60 * 60 * 24 // 24 hours
-                * 30
             );
 
             if ($user) {

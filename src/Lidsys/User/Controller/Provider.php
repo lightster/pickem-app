@@ -40,14 +40,46 @@ class Provider implements ControllerProviderInterface
             return $app->json($response);
         });
 
-        $controllers->get('/login/reset-info/', function (Request $request, Application $app) {
+        $controllers->post('/login/reset-info/', function (Request $request, Application $app) {
             $user = $app['lidsys.user.auth-reset']->getUserFromTokenQueryString(
-                $request->query->all(),
-                60 * 60 * 12 // 12 hours
+                $request->request->all(),
+                60 * 60 * 24 // 24 hours
+                * 30
             );
 
+            if ($user) {
+                $user_info = array(
+                    'username' => $user['username'],
+                );
+            } else {
+                $user_info = array(
+                    'error' => 'invalid_token',
+                );
+            }
+
+            return $app->json($user_info);
+        });
+
+        $controllers->post('/login/reset-password/', function (Request $request, Application $app) {
+            $authenticated_user = $app['lidsys.user.auth-reset']->getUserFromTokenQueryString(
+                $request->get('authParams'),
+                60 * 60 * 25 // 25 hours
+            );
+
+            if ($authenticated_user) {
+                $password_change = $app['lidsys.user.authenticator']->updatePasswordForUser(
+                    $authenticated_user['user_id'],
+                    $request->get('newPassword')
+                );
+                if ($password_change) {
+                    return $app->json(array(
+                        'success' => 'Your password has successfully been changed.',
+                    ));
+                }
+            }
+
             return $app->json(array(
-                'username' => $user['username'],
+                'error' => 'invalid_token',
             ));
         });
 

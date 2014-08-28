@@ -13,6 +13,11 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
             templateUrl: "/app/template/login/help.html",
             controller: "UserLoginHelpCtrl"
         })
+        .when('/user/login/reset',
+        {
+            templateUrl: "/app/template/login/reset.html",
+            controller: "UserLoginResetCtrl"
+        })
         .when('/user/logout',
         {
             templateUrl: "/app/template/logout/index.html",
@@ -237,6 +242,83 @@ module.controller('UserLoginHelpCtrl', [
             success:        {},
             email:          '',
             submittedEmail: ''
+        }
+    }
+])
+
+module.controller('UserLoginResetCtrl', [
+    '$scope',
+    '$location',
+    '$http',
+    '$window',
+    'active',
+    function ($scope, $location, $http, $window, active) {
+        $scope.auth_params = $location.search()
+        $scope.form        = {
+            loaded:        false,
+            show_form:     true,
+            error:         {},
+            success:       {},
+            passwordReset: new UserPasswordChange
+        }
+
+        var request_config = {
+            params: $scope.auth_params
+        }
+        $http.post("/app/user/login/reset-info/", request_config)
+            .success(function (data) {
+                $scope.form.loaded = true
+                if (data.error) {
+                    $scope.form.show_form = false
+                }
+            })
+            .error(function (data) {
+                $scope.form.loaded = true
+                $scope.form.show_form = false
+            })
+
+        $scope.processPasswordReset = function ($event) {
+            var form          = $scope.form
+            var passwordReset = form.passwordReset
+
+            form.error = {}
+
+            if (!passwordReset.newPassword) {
+                form.error.hasError = true;
+                form.error.newPassword = 'Please enter your new password.';
+            }
+            if (!passwordReset.confirmPassword) {
+                form.error.hasError = true;
+                form.error.confirmPassword = 'Please confirm your new password.';
+            }
+            if (passwordReset.newPassword != passwordReset.confirmPassword) {
+                form.error.hasError = true;
+                form.error.confirmPassword = 'The new passwords do not match.';
+            }
+
+            if (form.error.hasError) {
+                return false
+            }
+
+            var postData = {
+                authParams:  $scope.auth_params,
+                newPassword: passwordReset.newPassword
+            }
+
+            $http.post("/app/user/login/reset-password/", postData)
+                .success(function (data) {
+                    if (data.success) {
+                        form.success.form = data.success
+                    }
+                    else {
+                        form.show_form = false
+                    }
+                })
+                .error(function (data) {
+                    form.error.form = 'There was an error processing your password change request. Please contact an administrator.';
+                })
+
+            return false;
         }
     }
 ])

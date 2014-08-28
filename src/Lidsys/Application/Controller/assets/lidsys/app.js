@@ -35,7 +35,6 @@ app.controller('AppCtrl', ['$scope', '$http', '$location', 'active', function ($
             if (data.authenticated_user) {
                 active.getUser().setFromApi(data.authenticated_user)
             }
-            $location.path('/football/my-picks')
         })
         .error(function (data) {
         })

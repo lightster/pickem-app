@@ -4,7 +4,7 @@ app.config(['$injector', '$routeProvider', function ($injector, $routeProvider) 
     $routeProvider
         .when('/',
         {
-            template: "Main",
+            templateUrl: "/app/template/index/main.html",
             controller: "AppCtrl"
         })
         .otherwise({
@@ -29,12 +29,13 @@ app.run(['$rootScope', 'active', function ($rootScope, active) {
     active.setUser(new User())
 }])
 
-app.controller('AppCtrl', ['$scope', '$http', 'active', function ($scope, $http, active) {
+app.controller('AppCtrl', ['$scope', '$http', '$location', 'active', function ($scope, $http, $location, active) {
     $http.post("/app/user/authenticated-user/")
         .success(function (data) {
             if (data.authenticated_user) {
                 active.getUser().setFromApi(data.authenticated_user)
             }
+            $location.path('/football/my-picks')
         })
         .error(function (data) {
         })

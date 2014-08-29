@@ -263,10 +263,7 @@ module.controller('UserLoginResetCtrl', [
             passwordReset: new UserPasswordChange
         }
 
-        var request_config = {
-            params: $scope.auth_params
-        }
-        $http.post("/app/user/login/reset-info/", request_config)
+        $http.post("/app/user/login/reset-info/", $scope.auth_params)
             .success(function (data) {
                 $scope.form.loaded = true
                 if (data.error) {

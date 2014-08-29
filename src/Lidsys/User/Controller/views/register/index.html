@@ -1,0 +1,63 @@
+<form ng-submit="processRegister($event)">
+    <div class="row">
+        <div class="large-2 medium-2 columns">
+            &nbsp;
+        </div>
+        <div class="large-6 medium-6 columns">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h2>Create an Account</h2>
+                </div>
+            </div>
+            <div lds-authenticated="false">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div data-alert class="alert-box warning" ng-show="register.error.form">
+                            {{register.error.form}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-6 columns">
+                        <label>First Name
+                            <input type="text" placeholder="first name" ng-model="register.first_name" />
+                            <small ng-show="register.error.first_name">{{register.error.first_name}}</small>
+                        </label>
+                    </div>
+                    <div class="large-3 columns">
+                        <label>Last Initial
+                            <input type="text" placeholder="last initial" ng-model="register.last_name" />
+                            <small ng-show="register.error.last_name">{{register.error.last_name}}</small>
+                        </label>
+                    </div>
+                    <div class="large-1 columns">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-6 columns">
+                        <label>Email Address
+                            <input type="text" placeholder="email address" ng-model="register.email" />
+                            <small ng-show="register.error.email">{{register.error.email}}</small>
+                        </label>
+                    </div>
+                    <div class="large-6 columns">
+                        <label>Confirm Email Address
+                            <input type="text" placeholder="confirm email address" ng-model="register.confirm_email" />
+                            <small ng-show="register.error.confirm_email">{{register.error.confirm_email}}</small>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-12 columns">
+                        <input type="submit" class="button small" value="Register" style="margin-right: 20px; " />
+                    </div>
+                </div>
+            </div>
+            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="true">
+                You are already logged in!
+            </div>
+        </div>
+        <div class="large-5 medium-4 columns">
+        </div>
+    </div>
+</form>

@@ -36,6 +36,11 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
             controller: "UserProfileCtrl",
             navigationLabel: "Edit Profile"
         })
+        .when('/user/register',
+        {
+            templateUrl: "/app/template/register/index.html",
+            controller: "UserRegisterCtrl"
+        })
 }])
 
 module.factory('active', [function() {
@@ -439,3 +444,23 @@ module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window',
             })
     }
 }])
+
+module.controller('UserRegisterCtrl', [
+    '$scope',
+    '$location',
+    '$http',
+    '$window',
+    'active',
+    function (
+        $scope,
+        $location,
+        $http,
+        $window,
+        active
+    ) {
+        $scope.form = {
+            error: {},
+            success: {}
+        }
+    }
+])

@@ -152,7 +152,7 @@ SELECT
     u.username,
     u.email,
     u.timeZone AS time_zone,
-    u.passwordDate AS password_date,
+    u.passwordDate AS password_changed_at,
     p.playerId As player_id,
     p.name AS name,
     p.bgcolor AS background_color

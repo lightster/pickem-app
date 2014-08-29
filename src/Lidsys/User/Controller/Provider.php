@@ -89,18 +89,25 @@ class Provider implements ControllerProviderInterface
                     $request->get('password')
                 );
 
+            $response = array();
+
+            $app['session']->remove('user_id');
+
             if ($authenticated_user) {
-                $app['session']->set(
-                    'user_id',
-                    $authenticated_user['user_id']
-                );
+                if ($authenticated_user['password_changed_at']) {
+                    $response['authenticated_user'] = $authenticated_user;
+                    $app['session']->set(
+                        'user_id',
+                        $authenticated_user['user_id']
+                    );
+                } else {
+                    $response['error'] = 'passwordless_account';
+                }
             } else {
-                $app['session']->remove('user_id');
+                $response['error'] = 'incorrect_credentials';
             }
 
-            return $app->json(array(
-                'authenticated_user' => $authenticated_user,
-            ));
+            return $app->json($response);
         });
 
         $controllers->post('/password/', function (Request $request, Application $app) {

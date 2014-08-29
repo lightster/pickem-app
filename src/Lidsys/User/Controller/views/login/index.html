@@ -12,8 +12,12 @@
             <div lds-authenticated="false">
                 <div class="row">
                     <div class="large-12 columns">
-                        <div data-alert class="alert-box warning" ng-show="login.error.form">
-                            {{login.error.form}}
+                        <div data-alert class="alert-box warning" ng-show="login.error.form == 'passwordless_account'">
+                            Your account has not yet been activated.
+                            Please activate your account by <a href="#/user/login/help" style="color: #ccccff; ">requesting a password reset</a>.
+                        </div>
+                        <div data-alert class="alert-box warning" ng-show="login.error.form == 'incorrect_credentials'">
+                            The provided username/password are incorrect.
                         </div>
                     </div>
                 </div>

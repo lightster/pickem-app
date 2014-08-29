@@ -167,7 +167,7 @@ module.controller('UserLoginCtrl', ['$scope', '$location', '$http', '$window', '
                     $window.location = '/'
                 }
                 else {
-                    login.error.form = 'The provided username/password are incorrect.';
+                    login.error.form = data.error
                 }
             })
             .error(function (data) {

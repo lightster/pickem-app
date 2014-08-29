@@ -93,7 +93,8 @@ class AuthenticatorService
         $db->query(
             "
                 UPDATE user
-                SET password = md5(concat(:password, securityHash))
+                SET password = md5(concat(:password, securityHash)),
+                    passwordDate = NOW()
                 WHERE userId = :user_id
             ",
             array(

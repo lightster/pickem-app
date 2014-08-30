@@ -24,6 +24,7 @@ use Lidsys\Application\Service\Provider as AppServiceProvider;
 use Lidsys\User\Service\Provider as UserServiceProvider;
 
 use Silex\Provider\SessionServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 $app = new Application();
 $app['route_class'] = 'Lidsys\Application\Route';
@@ -39,6 +40,23 @@ $app->register(new UserServiceProvider());
 if (isset($app['config']['debug'])) {
     $app['debug'] = $app['config']['debug'];
 }
+
+$app->before(function (Request $request) use ($app) {
+    $user_id = $app['session']->get('user_id');
+
+    $authenticated_user = false;
+
+    if ($user_id) {
+        $authenticated_user =
+            $app['lidsys.user.authenticator']->getUserForUserId(
+                $user_id
+            );
+    }
+
+    if ($authenticated_user) {
+        $app['lidsys.user']->updateLastActive($authenticated_user['user_id']);
+    }
+});
 
 $app->mount('/api/v1.0/football', new FootballControllerProvider());
 $app->mount('/app/user', new UserControllerProvider());

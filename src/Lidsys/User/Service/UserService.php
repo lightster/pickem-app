@@ -137,4 +137,19 @@ class UserService
 
         return true;
     }
+
+    public function updateLastActive($user_id)
+    {
+        $db = $this->db;
+        $db->query(
+            "
+                UPDATE user
+                SET lastActive = NOW()
+                WHERE userId = :user_id
+            ",
+            array(
+                'user_id' => $user_id,
+            )
+        );
+    }
 }

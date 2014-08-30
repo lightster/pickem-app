@@ -16,7 +16,10 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
         .when('/user/login/reset',
         {
             templateUrl: "/app/template/login/reset.html",
-            controller: "UserLoginResetCtrl"
+            controller: "UserLoginResetCtrl",
+            tokenCheckUrl: "/app/user/login/reset-info/",
+            passwordChangeUrl: "/app/user/login/reset-password/",
+            formTitle: "Reset Password"
         })
         .when('/user/logout',
         {
@@ -256,11 +259,13 @@ module.controller('UserLoginResetCtrl', [
     '$scope',
     '$location',
     '$http',
+    '$route',
     '$window',
     'active',
-    function ($scope, $location, $http, $window, active) {
+    function ($scope, $location, $http, $route, $window, active) {
         $scope.auth_params = $location.search()
         $scope.form        = {
+            title:         $route.current.formTitle,
             loaded:        false,
             show_form:     true,
             error:         {},
@@ -268,7 +273,7 @@ module.controller('UserLoginResetCtrl', [
             passwordReset: new UserPasswordChange
         }
 
-        $http.post("/app/user/login/reset-info/", $scope.auth_params)
+        $http.post($route.current.tokenCheckUrl, $scope.auth_params)
             .success(function (data) {
                 $scope.form.loaded = true
                 if (data.error) {
@@ -308,7 +313,7 @@ module.controller('UserLoginResetCtrl', [
                 newPassword: passwordReset.newPassword
             }
 
-            $http.post("/app/user/login/reset-password/", postData)
+            $http.post($route.current.passwordChangeUrl, postData)
                 .success(function (data) {
                     if (data.success) {
                         form.success.form = data.success

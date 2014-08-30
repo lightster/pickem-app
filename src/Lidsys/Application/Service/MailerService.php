@@ -41,7 +41,7 @@ class MailerService
             return $this->mailgun;
         }
 
-        $this->mailgun = new Mailgun($this->key);
+        $this->mailgun = new Mailgun($this->key, 'bourne.r34d.me', 'v2', false);
 
         return $this->mailgun;
     }

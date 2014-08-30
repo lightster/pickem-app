@@ -96,7 +96,7 @@ class FantasyPickService
                     gameId AS game_id
                 FROM nflGame game
                 WHERE gameId IN ({$game_ids_sql})
-                    AND gameTime < :now
+                    AND gameTime >= :now
             ",
             array(
                 'now'      => gmdate('Y-m-d H:i:s'),

@@ -25,7 +25,7 @@ class FantasyPlayerService
 
 
 
-    public function getPlayersForYear($year)
+    public function getPlayersForYear($year, $player_id)
     {
         $players = array();
 
@@ -37,14 +37,15 @@ class FantasyPlayerService
                     name AS name,
                     bgcolor AS background_color
                 FROM player
-                JOIN nflFantPick pick USING (playerId)
-                JOIN nflGame game USING (gameId)
-                JOIN nflWeek week USING (weekId)
-                JOIN nflSeason season USING (seasonId)
-                WHERE year = :year
+                LEFT JOIN nflFantPick pick USING (playerId)
+                LEFT JOIN nflGame game USING (gameId)
+                LEFT JOIN nflWeek week USING (weekId)
+                LEFT JOIN nflSeason season USING (seasonId)
+                WHERE (year = :year OR playerId = :player_id)
             ",
             array(
-                'year' => $year,
+                'year'      => $year,
+                'player_id' => $player_id,
             )
         );
         while ($player = $query->fetch()) {

@@ -190,7 +190,19 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->get('/fantasy-players/{year}', function ($year, Application $app) {
-            $players = $app['lidsys.football.fantasy-player']->getPlayersForYear($year);
+            $user_id = $app['session']->get('user_id');
+
+            $authenticated_user =
+                $app['lidsys.user.authenticator']->getUserForUserId($user_id);
+
+            $player_id = $authenticated_user
+                ? $authenticated_user['player_id']
+                : null;
+
+            $players = $app['lidsys.football.fantasy-player']->getPlayersForYear(
+                $year,
+                $player_id
+            );
 
             return $app->json(array(
                 'fantasy_players' => $players,

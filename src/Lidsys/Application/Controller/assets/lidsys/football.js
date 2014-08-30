@@ -208,6 +208,7 @@ module.controller('LidsysFootballPicksCtrl', [
         for (game_id in games) {
             game = games[game_id]
 
+            game.is_started = moment(game.start_time).isBefore(moment())
             game.picks = picks[game.game_id]
 
             if (!game.picks) {

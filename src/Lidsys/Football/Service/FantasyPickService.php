@@ -105,10 +105,16 @@ class FantasyPickService
         while ($game = $query->fetch()) {
             $valid_game_ids[] = $game['game_id'];
         }
+
+        if (!count($valid_game_ids)) {
+            return;
+        }
+
+        $valid_game_ids_sql = implode(',', $valid_game_ids);
         $db->query(
             "
                 DELETE FROM nflFantPick
-                WHERE gameId IN ($game_ids_sql)
+                WHERE gameId IN ($valid_game_ids_sql)
                     AND playerId = :player_id
             ",
             array(

@@ -166,8 +166,8 @@ module.controller('UserLoginCtrl', ['$scope', '$location', '$http', '$window', '
         $http.post("/app/user/login/", postData)
             .success(function (data) {
                 if (data.authenticated_user) {
+                    login.error.form = 'Success!!'
                     active.getUser().setFromApi(data.authenticated_user)
-                    login.error.form = 'Success!!';
                     //$window.history.back()
                     $window.location = '/'
                 }

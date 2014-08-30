@@ -5,8 +5,11 @@
         </div>
         <div class="large-5 medium-6 columns">
             <div class="row">
-                <div class="large-12 columns">
+                <div class="large-12 columns" ng-hide="login.error.form == 'Success!!'">
                     <h2>Login</h2>
+                </div>
+                <div class="large-12 columns" ng-show="login.error.form == 'Success!!'">
+                    <h2>Logging you in...</h2>
                 </div>
             </div>
             <div lds-authenticated="false">
@@ -40,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="true">
+            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="true" ng-hide="login.error.form == 'Success!!'">
                 You are already logged in!
             </div>
         </div>

@@ -89,6 +89,64 @@ HTML
         return true;
     }
 
+    public function sendAccountSetupEmail($user_id)
+    {
+        $user = $this->auth->getUserForUserId($user_id);
+
+        if (empty($user)) {
+            return false;
+        }
+
+        $query_string = $this->createTokenQueryString($user['username']);
+
+        $this->mailer->sendMessage(
+            array(
+                'to'      => "{$user['name']} <{$user['email']}>",
+                'subject' => 'Lightdatasys Account Information',
+                'text'    => <<<TEXT
+Hi {$user['name']},
+
+Thank you for joining Lightdatasys!
+
+Your username for Lightdatasys is {$user['username']}.
+
+Please setup a password by visiting
+
+  {{BASE_URL}}/user/register/password?{$query_string}
+
+Have a wonderful day,
+
+The Commissioner
+Lightdatasys
+http://lightdatasys.com
+TEXT
+                ,
+                'html'    => <<<HTML
+<p>Hi {$user['name']},</p>
+
+<p>Thank you for joining Lightdatasys!</p>
+
+<p>Your username for Lightdatasys is {$user['username']}.</p>
+
+<p>
+    Please
+    <a href="{{BASE_URL}}/user/register/password?{$query_string}">setup a password</a>.
+</p>
+
+<p>Have a wonderful day,</p>
+
+<p>
+    The Commissioner<br />
+    <a href="http://lightdatasys.com">Lightdatasys</a>
+</p>
+HTML
+                ,
+            )
+        );
+
+        return true;
+    }
+
     public function getUserFromTokenQueryString(array $params, $expiration)
     {
         if (time() > $params['timestamp'] + $expiration) {

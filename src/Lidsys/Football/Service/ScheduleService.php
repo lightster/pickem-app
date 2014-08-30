@@ -45,7 +45,13 @@ class ScheduleService
                 SELECT
                     seasonId AS season_id,
                     year AS year
-                FROM nflSeason
+                FROM nflSeason AS season
+                WHERE EXISTS (
+                    SELECT 1
+                    FROM nflWeek AS week
+                    JOIN nflGame AS game USING (weekId)
+                    WHERE season.seasonId = week.seasonId
+                )
                 ORDER BY year
             "
         );

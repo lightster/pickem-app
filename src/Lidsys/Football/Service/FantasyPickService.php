@@ -31,7 +31,7 @@ class FantasyPickService
 
 
 
-    public function getPicksForWeek($year, $week_number)
+    public function getPicksForWeek($year, $week_number, $player_id)
     {
         $weeks = $this->schedule->getWeeksForYear($year);
 
@@ -53,11 +53,12 @@ class FantasyPickService
                 FROM nflFantPick pick
                 JOIN nflGame game USING (gameId)
                 WHERE weekId = :week_id
-                    AND gameTime < :now
+                     AND (gameTime < :now OR playerId = :player_id)
             ",
             array(
-                'week_id' => $week['week_id'],
-                'now'     => gmdate('Y-m-d H:i:s'),
+                'week_id'   => $week['week_id'],
+                'now'       => gmdate('Y-m-d H:i:s'),
+                'player_id' => $player_id,
             )
         );
         while ($pick = $query->fetch()) {

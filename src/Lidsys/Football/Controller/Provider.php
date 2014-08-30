@@ -149,7 +149,20 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->get('/fantasy-picks/{year}/{week}', function ($year, $week, Application $app) {
-            $picks = $app['lidsys.football.fantasy-pick']->getPicksForWeek($year, $week);
+            $user_id = $app['session']->get('user_id');
+
+            $authenticated_user =
+                $app['lidsys.user.authenticator']->getUserForUserId($user_id);
+
+            $player_id = $authenticated_user
+                ? $authenticated_user['player_id']
+                : null;
+
+            $picks = $app['lidsys.football.fantasy-pick']->getPicksForWeek(
+                $year,
+                $week,
+                $player_id
+            );
 
             return $app->json(array(
                 'fantasy_picks' => $picks,

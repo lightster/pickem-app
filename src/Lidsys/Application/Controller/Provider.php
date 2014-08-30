@@ -45,6 +45,9 @@ class Provider implements ControllerProviderInterface
             );
         })->assert('name', '.*');
 
+        $controllers->post('/build-number/', function (Application $app) {
+            return $app->json(array('version' => 1));
+        });
 
         $controllers->get('/', function (Application $app) {
             return $app['lstr.template']->render('index/index.phtml');

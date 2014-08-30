@@ -25,8 +25,42 @@ app.directive('dropdownParent', ['$rootScope', 'active', function ($rootScope, a
     }
 }])
 
-app.run(['$rootScope', 'active', function ($rootScope, active) {
+app.factory('versionChecker', ['$http', '$timeout', '$window', function($http, $timeout, $window) {
+    var versionChecker = {}
+
+    versionChecker.version = null
+    versionChecker.checker = function () {
+        $http.post("/app/build-number/")
+            .success(function (response) {
+                if (versionChecker.version
+                    && response.version != versionChecker.version
+                ) {
+                    $window.location = '/'
+                }
+
+                versionChecker.version = response.version
+            })
+            .error(function (response) {
+                // :-/
+            })
+            .finally(function() {
+                versionChecker.start()
+            })
+    }
+    versionChecker.start = function () {
+        $timeout(
+            versionChecker.checker,
+            60000,
+            false // do not run apply
+        )
+    }
+
+    return versionChecker;
+}])
+
+app.run(['$rootScope', 'active', 'versionChecker', function ($rootScope, active, versionChecker) {
     active.setUser(new User())
+    versionChecker.start()
 }])
 
 app.controller('AppCtrl', ['$scope', '$http', '$location', 'active', function ($scope, $http, $location, active) {

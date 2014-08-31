@@ -46,7 +46,7 @@ class Provider implements ControllerProviderInterface
         })->assert('name', '.*');
 
         $controllers->post('/build-number/', function (Application $app) {
-            return $app->json(array('version' => 2));
+            return $app->json(array('version' => 3));
         });
 
         $controllers->get('/', function (Application $app) {

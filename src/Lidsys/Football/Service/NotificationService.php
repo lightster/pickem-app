@@ -44,8 +44,8 @@ The rules for this season of fantasy football are the same as last year:
 - For every winning team chosen, the player earns one point. Losses
   result in zero points for that game. A tie between two teams results in
   one point being awarded to any player who chose for that game.
-- If a player does not choose a team for one or more games, zero points
-  will be awarded to the player for those games.
+- If a player does not choose a team for a game, zero points
+  will be awarded to the player for the respective game.
 - During the playoffs, each win is worth progressively more points:
         Wild Card Weekend games = 2 points
         Divisional Playoff games = 4 points
@@ -53,7 +53,8 @@ The rules for this season of fantasy football are the same as last year:
         "The Big Game" = 16 points
 
 To make your picks, visit the "My Picks" <{{BASE_URL}}/football/my-picks>
-page and check one checkbox per game. The box around the checkbox will
+page and check one checkbox per game. Notice that this year there is no
+save button—picks save automatically. The box around the checkbox will
 change from red to green once your pick is automatically saved. Picks may
 be changed anytime, up to the due date and time, by returning to the
 "My Picks" <{{BASE_URL}}/football/my-picks> page. Also note that you may
@@ -100,8 +101,8 @@ TEXT
             one point being awarded to any player who chose for that game.
         </li>
         <li>
-            If a player does not choose a team for one or more games, zero points
-            will be awarded to the player for those games.
+            If a player does not choose a team for a game, zero points
+            will be awarded to the player for the respective game.
         </li>
         <li>
             During the playoffs, each win is worth progressively more points:
@@ -117,8 +118,9 @@ TEXT
 
 <p>
     To make your picks, visit the <a href="{{BASE_URL}}/football/my-picks">My Picks</a>
-    page and check one checkbox per game. The box around the checkbox will
-    change from red to green once your pick is automatically saved. Picks may
+    page and check one checkbox per game. Notice that this year there is no
+    save button—picks save automatically. The box around the checkbox will change
+    from red to green once your pick is automatically saved. Picks may
     be changed anytime, up to the due date and time, by returning to the
     <a href="{{BASE_URL}}/football/my-picks">My Picks</a> page. Also note that you may
     view previous picks and choose picks for upcoming weeks by using the "Week"

@@ -209,6 +209,7 @@ window.FootballPickService = class FootballPickService
 
 
     load: (requestedYear, requestedWeek) ->
+        @picks = {}
         @$q.when(@loadPicks(requestedYear, requestedWeek))
 
 

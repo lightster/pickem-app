@@ -9,7 +9,16 @@
                     <h2>Create an Account</h2>
                 </div>
             </div>
-            <div lds-authenticated="false">
+            <div lds-authenticated="false" ng-show="register.success.form">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <div data-alert class="alert-box" ng-show="register.success.form">
+                            {{register.success.form}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div lds-authenticated="false" ng-hide="register.success.form">
                 <div class="row">
                     <div class="large-12 columns">
                         <div data-alert class="alert-box warning" ng-show="register.error.form">
@@ -18,33 +27,27 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="large-6 columns">
-                        <label>First Name
-                            <input type="text" placeholder="first name" ng-model="register.first_name" />
-                            <small ng-show="register.error.first_name">{{register.error.first_name}}</small>
-                        </label>
+                    <div class="large-6 columns" ng-class="{error: register.error.first_name}">
+                        First Name
+                        <input type="text" placeholder="first name" ng-model="register.first_name" />
+                        <small ng-show="register.error.first_name">{{register.error.first_name}}</small>
                     </div>
-                    <div class="large-3 columns">
-                        <label>Last Initial
-                            <input type="text" placeholder="last initial" ng-model="register.last_name" />
-                            <small ng-show="register.error.last_name">{{register.error.last_name}}</small>
-                        </label>
-                    </div>
-                    <div class="large-1 columns">
+                    <div class="large-6 columns" ng-class="{error: register.error.last_name}">
+                        Last Initial
+                        <input type="text" placeholder="last initial" ng-model="register.last_name" />
+                        <small ng-show="register.error.last_name">{{register.error.last_name}}</small>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="large-6 columns">
-                        <label>Email Address
-                            <input type="text" placeholder="email address" ng-model="register.email" />
-                            <small ng-show="register.error.email">{{register.error.email}}</small>
-                        </label>
+                    <div class="large-6 columns" ng-class="{error: register.error.email}">
+                        Email Address
+                        <input type="text" placeholder="email address" ng-model="register.email" />
+                        <small ng-show="register.error.email">{{register.error.email}}</small>
                     </div>
-                    <div class="large-6 columns">
-                        <label>Confirm Email Address
-                            <input type="text" placeholder="confirm email address" ng-model="register.confirm_email" />
-                            <small ng-show="register.error.confirm_email">{{register.error.confirm_email}}</small>
-                        </label>
+                    <div class="large-6 columns" ng-class="{error: register.error.confirm_email}">
+                        Confirm Email Address
+                        <input type="text" placeholder="confirm email address" ng-model="register.confirm_email" />
+                        <small ng-show="register.error.confirm_email">{{register.error.confirm_email}}</small>
                     </div>
                 </div>
                 <div class="row">

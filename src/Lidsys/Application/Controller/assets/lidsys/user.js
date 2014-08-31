@@ -471,9 +471,53 @@ module.controller('UserRegisterCtrl', [
         $window,
         active
     ) {
-        $scope.form = {
+        $scope.register = {
             error: {},
-            success: {}
+            success: {},
+            first_name: null,
+            last_name: null,
+            email: null,
+            confirm_email: null
+        }
+
+        $scope.processRegister = function ($event) {
+            var register = $scope.register
+
+            register.error = {}
+
+            if (!register.email) {
+                register.error.hasError = true;
+                register.error.email = 'Please enter your email address.';
+            }
+            if (!register.confirm_email) {
+                register.error.hasError = true;
+                register.error.confirm_email = 'Please confirm your email address.';
+            } else if (register.email != register.confirm_email) {
+                register.error.hasError = true;
+                register.error.confirm_email = 'The email addresses do not match.';
+            }
+
+            if (register.error.hasError) {
+                return false
+            }
+
+            var postData = {
+                first_name: register.first_name,
+                last_name:  register.last_name,
+                email:      register.email
+            }
+
+            $http.post("/app/user/register/", postData)
+                .success(function (data) {
+                    if (data.success) {
+                        register.success = data.success
+                    } else {
+                        register.error = data.error
+                    }
+                })
+                .error(function (data) {
+                    register.error.form = 'There was an error creating your account. Please contact an administrator.';
+                })
         }
     }
 ])

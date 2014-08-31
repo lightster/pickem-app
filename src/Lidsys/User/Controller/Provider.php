@@ -198,6 +198,35 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->post('/register/', function (Request $request, Application $app) {
+            $new_user_id = $app['lidsys.user']->createUser(array(
+                'email'      => $request->get('email'),
+                'first_name' => $request->get('first_name'),
+                'last_name'  => $request->get('last_name'),
+            ));
+
+            if (!empty($new_user_id['error'])) {
+                return $app->json($new_user_id);
+            }
+
+            $is_found = $app['lidsys.user.auth-reset']->sendAccountSetupEmail(
+                $new_user_id
+            );
+
+            $response = array();
+            if ($is_found) {
+                $response['success'] = array(
+                    'form' => 'Your account verification email has been emailed to you.',
+                );
+            } else {
+                $response['error']   = array(
+                    'form' => 'There was an error creating your account. Please contact an administrator.',
+                );
+            }
+
+            return $app->json($response);
+        });
+
         $controllers->post('/register/token-verification/', function (Request $request, Application $app) {
             $user = $app['lidsys.user.auth-reset']->getUserFromTokenQueryString(
                 $request->request->all(),

@@ -60,6 +60,7 @@ If you forgot your password, you may reset your password by visiting
 
 Have a wonderful day,
 
+Matt Light
 The Commissioner
 Lightdatasys
 http://lightdatasys.com
@@ -78,6 +79,7 @@ TEXT
 <p>Have a wonderful day,</p>
 
 <p>
+    Matt Light<br />
     The Commissioner<br />
     <a href="http://lightdatasys.com">Lightdatasys</a>
 </p>

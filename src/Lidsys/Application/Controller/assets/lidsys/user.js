@@ -44,6 +44,14 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
             templateUrl: "/app/template/register/index.html",
             controller: "UserRegisterCtrl"
         })
+        .when('/user/register/password',
+        {
+            templateUrl: "/app/template/login/reset.html",
+            controller: "UserLoginResetCtrl",
+            tokenCheckUrl: "/app/user/register/token-verification/",
+            passwordChangeUrl: "/app/user/register/password/",
+            formTitle: "Setup Password"
+        })
 }])
 
 module.factory('active', [function() {

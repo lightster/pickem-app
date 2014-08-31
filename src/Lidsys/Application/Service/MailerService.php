@@ -46,7 +46,7 @@ class MailerService
         return $this->mailgun;
     }
 
-    public function sendMessage(array $data)
+    public function sendMessage(array $data, array $local_subs = array())
     {
         $data = array_replace_recursive(
             $this->defaults,
@@ -54,18 +54,23 @@ class MailerService
             $this->overrides
         );
 
-        $this->substituteString($data, 'text');
-        $this->substituteString($data, 'html');
+        $substitutions = array_replace_recursive(
+            $this->substitutions,
+            $local_subs
+        );
+
+        $this->substituteString($data, 'text', $substitutions);
+        $this->substituteString($data, 'html', $substitutions);
 
         return $this->getMailgun()->sendMessage($this->domain, $data);
     }
 
-    private function substituteString(array & $data, $field)
+    private function substituteString(array & $data, $field, $substitutions)
     {
         if (!empty($data[$field])) {
             $data[$field] = str_replace(
-                array_keys($this->substitutions),
-                array_values($this->substitutions),
+                array_keys($substitutions),
+                array_values($substitutions),
                 $data[$field]
             );
         }

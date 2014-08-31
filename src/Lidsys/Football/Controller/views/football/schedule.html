@@ -11,17 +11,17 @@
             </th>
         </tr>
         <tr ng-repeat-end>
-            <td style="
-                color: {{game.away_team.font_color}};
-                background-color: {{game.away_team.background_color}};
-                width: 40%;
-            " class="text-right">
+            <td ng-style="{
+                'color': game.away_team.font_color,
+                'background-color': game.away_team.background_color,
+                'width': '40%'
+            }" class="text-right">
                 {{game.away_team.location}} {{game.away_team.mascot}}
             </td>
-            <td style="
-                background-color: {{game.away_team.border_color}};
-                width: 4%;
-            ">&nbsp;</td>
+            <td ng-style="{
+                'background-color': game.away_team.border_color,
+                'width': '4%'
+            }">&nbsp;</td>
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
@@ -45,15 +45,15 @@
             ">
                 {{game.home_score}}
             </td>
-            <td style="
-                background-color: {{game.home_team.border_color}};
-                width: 4%;
-            ">&nbsp;</td>
-            <td style="
-                color: {{game.home_team.font_color}};
-                background-color: {{game.home_team.background_color}};
-                width: 40%;
-            ">
+            <td ng-style="{
+                'background-color': game.home_team.border_color,
+                'width': '4%'
+            }">&nbsp;</td>
+            <td ng-style="{
+                'color': game.home_team.font_color,
+                'background-color': game.home_team.background_color,
+                'width': '40%'
+            }">
                 {{game.home_team.location}} {{game.home_team.mascot}}
             </td>
         </tr>

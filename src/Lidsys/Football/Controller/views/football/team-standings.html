@@ -14,15 +14,15 @@
             <th>Ties</th>
         </tr>
         <tr ng-repeat="standing in standings">
-            <td style="
-                background-color: {{standing.team.border_color}};
-                width: 4%;
-            ">&nbsp;</td>
-            <td style="
-                color: {{standing.team.font_color}};
-                background-color: {{standing.team.background_color}};
-                width: 40%;
-            ">
+            <td ng-style="{
+                'background-color': standing.team.border_color,
+                'width': '4%'
+            }">&nbsp;</td>
+            <td ng-style="{
+                'color': standing.team.font_color,
+                'background-color': standing.team.background_color,
+                'width': '40%'
+            }">
                 {{standing.team.location}} {{standing.team.mascot}}
             </td>
             <td class="text-center">{{standing.win_count}}</td>

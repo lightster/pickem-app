@@ -91,14 +91,8 @@ HTML
         return true;
     }
 
-    public function sendAccountSetupEmail($user_id)
+    public function sendAccountSetupEmail($user)
     {
-        $user = $this->auth->getUserForUserId($user_id);
-
-        if (empty($user)) {
-            return false;
-        }
-
         $query_string = $this->createTokenQueryString($user['username']);
 
         $this->mailer->sendMessage(

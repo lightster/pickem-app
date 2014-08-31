@@ -31,7 +31,10 @@ class Provider implements ServiceProviderInterface
             );
         });
         $app['lidsys.user'] = $app->share(function ($app) {
-            return new UserService($app['db']);
+            return new UserService(
+                $app['lidsys.user.authenticator'],
+                $app['db']
+            );
         });
     }
 

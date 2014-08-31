@@ -199,18 +199,18 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->post('/register/', function (Request $request, Application $app) {
-            $new_user_id = $app['lidsys.user']->createUser(array(
+            $new_user = $app['lidsys.user']->createUser(array(
                 'email'      => $request->get('email'),
                 'first_name' => $request->get('first_name'),
                 'last_name'  => $request->get('last_name'),
             ));
 
-            if (!empty($new_user_id['error'])) {
-                return $app->json($new_user_id);
+            if (!empty($new_user['error'])) {
+                return $app->json($new_user);
             }
 
             $is_found = $app['lidsys.user.auth-reset']->sendAccountSetupEmail(
-                $new_user_id
+                $new_user
             );
 
             $response = array();

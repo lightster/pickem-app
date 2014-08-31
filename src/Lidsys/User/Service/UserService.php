@@ -18,12 +18,16 @@ use Silex\Application;
 
 class UserService
 {
+    private $auth;
     private $db;
 
 
 
-    public function __construct(DatabaseService $db)
-    {
+    public function __construct(
+        AuthenticatorService $auth,
+        DatabaseService $db
+    ) {
+        $this->auth  = $auth;
         $this->db    = $db;
     }
 
@@ -113,7 +117,7 @@ class UserService
             )
         );
 
-        return $user_id;
+        return $this->auth->getUserForUserId($user_id);
     }
 
     public function updateUserColor($user_id, $color)

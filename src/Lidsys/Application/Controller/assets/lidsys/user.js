@@ -16,7 +16,10 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
         .when('/user/login/reset',
         {
             templateUrl: "/app/template/login/reset.html",
-            controller: "UserLoginResetCtrl"
+            controller: "UserLoginResetCtrl",
+            tokenCheckUrl: "/app/user/login/reset-info/",
+            passwordChangeUrl: "/app/user/login/reset-password/",
+            formTitle: "Reset Password"
         })
         .when('/user/logout',
         {
@@ -40,6 +43,14 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
         {
             templateUrl: "/app/template/register/index.html",
             controller: "UserRegisterCtrl"
+        })
+        .when('/user/register/password',
+        {
+            templateUrl: "/app/template/login/reset.html",
+            controller: "UserLoginResetCtrl",
+            tokenCheckUrl: "/app/user/register/token-verification/",
+            passwordChangeUrl: "/app/user/register/password/",
+            formTitle: "Setup Password"
         })
 }])
 
@@ -256,11 +267,13 @@ module.controller('UserLoginResetCtrl', [
     '$scope',
     '$location',
     '$http',
+    '$route',
     '$window',
     'active',
-    function ($scope, $location, $http, $window, active) {
+    function ($scope, $location, $http, $route, $window, active) {
         $scope.auth_params = $location.search()
         $scope.form        = {
+            title:         $route.current.formTitle,
             loaded:        false,
             show_form:     true,
             error:         {},
@@ -268,7 +281,7 @@ module.controller('UserLoginResetCtrl', [
             passwordReset: new UserPasswordChange
         }
 
-        $http.post("/app/user/login/reset-info/", $scope.auth_params)
+        $http.post($route.current.tokenCheckUrl, $scope.auth_params)
             .success(function (data) {
                 $scope.form.loaded = true
                 if (data.error) {
@@ -308,7 +321,7 @@ module.controller('UserLoginResetCtrl', [
                 newPassword: passwordReset.newPassword
             }
 
-            $http.post("/app/user/login/reset-password/", postData)
+            $http.post($route.current.passwordChangeUrl, postData)
                 .success(function (data) {
                     if (data.success) {
                         form.success.form = data.success
@@ -458,9 +471,53 @@ module.controller('UserRegisterCtrl', [
         $window,
         active
     ) {
-        $scope.form = {
+        $scope.register = {
             error: {},
-            success: {}
+            success: {},
+            first_name: null,
+            last_name: null,
+            email: null,
+            confirm_email: null
+        }
+
+        $scope.processRegister = function ($event) {
+            var register = $scope.register
+
+            register.error = {}
+
+            if (!register.email) {
+                register.error.hasError = true;
+                register.error.email = 'Please enter your email address.';
+            }
+            if (!register.confirm_email) {
+                register.error.hasError = true;
+                register.error.confirm_email = 'Please confirm your email address.';
+            } else if (register.email != register.confirm_email) {
+                register.error.hasError = true;
+                register.error.confirm_email = 'The email addresses do not match.';
+            }
+
+            if (register.error.hasError) {
+                return false
+            }
+
+            var postData = {
+                first_name: register.first_name,
+                last_name:  register.last_name,
+                email:      register.email
+            }
+
+            $http.post("/app/user/register/", postData)
+                .success(function (data) {
+                    if (data.success) {
+                        register.success = data.success
+                    } else {
+                        register.error = data.error
+                    }
+                })
+                .error(function (data) {
+                    register.error.form = 'There was an error creating your account. Please contact an administrator.';
+                })
         }
     }
 ])

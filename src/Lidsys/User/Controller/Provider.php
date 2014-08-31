@@ -198,6 +198,77 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->post('/register/', function (Request $request, Application $app) {
+            $new_user_id = $app['lidsys.user']->createUser(array(
+                'email'      => $request->get('email'),
+                'first_name' => $request->get('first_name'),
+                'last_name'  => $request->get('last_name'),
+            ));
+
+            if (!empty($new_user_id['error'])) {
+                return $app->json($new_user_id);
+            }
+
+            $is_found = $app['lidsys.user.auth-reset']->sendAccountSetupEmail(
+                $new_user_id
+            );
+
+            $response = array();
+            if ($is_found) {
+                $response['success'] = array(
+                    'form' => 'Your account verification email has been emailed to you.',
+                );
+            } else {
+                $response['error']   = array(
+                    'form' => 'There was an error creating your account. Please contact an administrator.',
+                );
+            }
+
+            return $app->json($response);
+        });
+
+        $controllers->post('/register/token-verification/', function (Request $request, Application $app) {
+            $user = $app['lidsys.user.auth-reset']->getUserFromTokenQueryString(
+                $request->request->all(),
+                60 * 60 * 24 * 7 // 7 days
+            );
+
+            if ($user && empty($user['password_changed_at'])) {
+                $user_info = array(
+                    'username' => $user['username'],
+                );
+            } else {
+                $user_info = array(
+                    'error' => 'invalid_token',
+                );
+            }
+
+            return $app->json($user_info);
+        });
+
+        $controllers->post('/register/password/', function (Request $request, Application $app) {
+            $user = $app['lidsys.user.auth-reset']->getUserFromTokenQueryString(
+                $request->get('authParams'),
+                60 * 60 * ((24 * 7) + 1) // 7 days plus an hour
+            );
+
+            if ($user && empty($user['password_changed_at'])) {
+                $password_change = $app['lidsys.user.authenticator']->updatePasswordForUser(
+                    $user['user_id'],
+                    $request->get('newPassword')
+                );
+                if ($password_change) {
+                    return $app->json(array(
+                        'success' => 'Your password has successfully been saved.',
+                    ));
+                }
+            }
+
+            return $app->json(array(
+                'error' => 'invalid_token',
+            ));
+        });
+
         $controllers->before(new JsonRequestMiddlewareService());
 
         return $controllers;

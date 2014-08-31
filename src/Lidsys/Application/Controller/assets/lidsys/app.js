@@ -35,7 +35,7 @@ app.factory('versionChecker', ['$http', '$timeout', '$window', function($http, $
                 if (versionChecker.version
                     && response.version != versionChecker.version
                 ) {
-                    $window.location = '/'
+                    $window.location.reload()
                 }
 
                 versionChecker.version = response.version

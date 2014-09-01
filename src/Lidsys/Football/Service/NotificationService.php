@@ -64,6 +64,9 @@ selection menu near the top of the page.
 If you forgot your account information, use the
 "Need help logging in?" <{{BASE_URL}}/user/login/help> link on the login page.
 
+If you know of anyone who wants to play,
+send them a link to create an account <{{BASE_URL}}/user/register>.
+
 Be sure to follow @LidsysFootball on Twitter <https://twitter.com/LidsysFootball>.
 
 Please report any technical issues or other concerns to the Commissioner.
@@ -130,6 +133,11 @@ TEXT
 <p>
     If you forgot your account information, use the
     <a href="{{BASE_URL}}/user/login/help">Need help logging in?</a> link on the login page.
+</p>
+
+<p>
+    If you know of anyone who wants to play, send them a link to
+    <a href="{{BASE_URL}}/user/register">create an account</a>.
 </p>
 
 <p>Be sure to follow <a href="https://twitter.com/LidsysFootball">@LidsysFootball</a> on Twitter.</p>

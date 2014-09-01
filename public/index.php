@@ -21,6 +21,7 @@ use Lstr\Silex\Database\DatabaseServiceProvider;
 use Lstr\Silex\Template\TemplateServiceProvider;
 
 use Lidsys\Application\Service\Provider as AppServiceProvider;
+use Lidsys\Football\Service\Provider as FootballServiceProvider;
 use Lidsys\User\Service\Provider as UserServiceProvider;
 
 use Silex\Provider\SessionServiceProvider;
@@ -33,6 +34,7 @@ $app->register(new AppServiceProvider());
 $app->register(new AssetServiceProvider());
 $app->register(new ConfigServiceProvider());
 $app->register(new DatabaseServiceProvider());
+$app->register(new FootballServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new TemplateServiceProvider());
 $app->register(new UserServiceProvider());

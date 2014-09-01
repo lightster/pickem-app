@@ -16,8 +16,6 @@ use DateTimeZone;
 use Lstr\Silex\Template\Exception\TemplateNotFound;
 use Lstr\Silex\Controller\JsonRequestMiddlewareService;
 
-use Lidsys\Football\Service\Provider as FootballServiceProvider;
-
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -218,9 +216,6 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->before(new JsonRequestMiddlewareService());
-        $controllers->before(function (Request $request, Application $app) {
-            $app->register(new FootballServiceProvider());
-        });
 
         return $controllers;
     }

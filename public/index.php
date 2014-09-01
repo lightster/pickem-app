@@ -44,6 +44,10 @@ if (isset($app['config']['debug'])) {
 }
 
 $app->before(function (Request $request) use ($app) {
+    if (strpos($request->getPathInfo(), '/app/build-number') === 0) {
+        return;
+    }
+
     $user_id = $app['session']->get('user_id');
 
     $authenticated_user = false;

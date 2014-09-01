@@ -212,6 +212,7 @@ class Provider implements ControllerProviderInterface
             $is_found = $app['lidsys.user.auth-reset']->sendAccountSetupEmail(
                 $new_user
             );
+            $app['lidsys.football.notification']->sendWelcomeEmail($new_user);
 
             $response = array();
             if ($is_found) {

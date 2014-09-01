@@ -29,6 +29,25 @@ class Provider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
+        $controllers->get('/notification', function (Application $app) {
+            $user_id = $app['session']->get('user_id');
+
+            $authenticated_user =
+                $app['lidsys.user.authenticator']->getUserForUserId($user_id);
+
+            if ('lightster' === $authenticated_user['username']) {
+                $count = 0;
+                $user_results = $app['lidsys.user.authenticator']->findUsersActiveSince('2013-09-01');
+                while ($user = $user_results->fetch()) {
+                    $app['lidsys.football.notification']->sendWelcomeEmail($user);
+                    ++$count;
+                }
+                return $app->json("done {$count}");
+            }
+
+            return $app->json('nada');
+        });
+
         $controllers->get('/seasons', function (Application $app) {
             $seasons = $app['lidsys.football.schedule']->getSeasons();
 

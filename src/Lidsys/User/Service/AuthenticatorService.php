@@ -135,6 +135,21 @@ class AuthenticatorService
         return $new_password;
     }
 
+    public function findUsersActiveSince($last_active)
+    {
+        $sql = <<<SQL
+{$this->getUserFindSql()}
+WHERE lastActive >= :last_active
+SQL;
+        $query = $this->app['db']->query(
+            $sql,
+            array(
+                'last_active' => $last_active,
+            )
+        );
+        return $query;
+    }
+
     private function findUserWithWhereClause($where_sql, array $params)
     {
         $query = $this->app['db']->query(

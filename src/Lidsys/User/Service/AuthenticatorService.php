@@ -140,6 +140,7 @@ class AuthenticatorService
         $sql = <<<SQL
 {$this->getUserFindSql()}
 WHERE lastActive >= :last_active
+    AND email IS NOT NULL
 SQL;
         $query = $this->app['db']->query(
             $sql,

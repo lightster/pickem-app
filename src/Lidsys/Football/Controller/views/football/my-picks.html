@@ -18,18 +18,19 @@
                 'color': game.away_team.font_color,
                 'background-color': game.away_team.background_color,
                 'width': '40%'
-            }" class="text-right">
+            }" class="text-right" ng-click="pickChanged(game, game.away_team)">
                 ({{standings[game.away_team_id].win_count}}-{{standings[game.away_team_id].loss_count}}-{{standings[game.away_team_id].tie_count}})
                 {{game.away_team.location}} {{game.away_team.mascot}}
             </td>
             <td ng-style="{
                 'background-color': game.away_team.border_color,
                 'width': '4%'
-            }">&nbsp;</td>
+            }" ng-click="pickChanged(game, game.away_team)">&nbsp;</td>
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
                 ng-class="getAwayPickCellClasses(game)"
+                ng-click="pickChanged(game, game.away_team)"
             >
                 <span ng-show="game.away_score &amp;&amp; game.away_score >= game.home_score">
                     {{week.win_weight}}
@@ -48,6 +49,7 @@
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
                 ng-class="getHomePickCellClasses(game)"
+                ng-click="pickChanged(game, game.home_team)"
             >
                 <span ng-show="game.away_score &amp;&amp; game.away_score <= game.home_score">
                     {{week.win_weight}}
@@ -65,12 +67,12 @@
             <td ng-style="{
                 'background-color': game.home_team.border_color,
                 'width': '4%'
-            }">&nbsp;</td>
+            }" ng-click="pickChanged(game, game.home_team)">&nbsp;</td>
             <td ng-style="{
                 'color': game.home_team.font_color,
                 'background-color': game.home_team.background_color,
                 'width': '40%'
-            }">
+            }" ng-click="pickChanged(game, game.home_team)">
                 {{game.home_team.location}} {{game.home_team.mascot}}
                 ({{standings[game.home_team_id].win_count}}-{{standings[game.home_team_id].loss_count}}-{{standings[game.home_team_id].tie_count}})
             </td>

@@ -4,6 +4,9 @@
         <div ng-include="'/app/template/football/navigation.html'"></div>
         <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
     </div>
+    <div data-alert class="large-12 columns alert-box warning text-center" lds-authenticated="false">
+        You must login in to make your picks!
+    </div>
     <div class="small-12 columns alert-box alert" ng-show="errors.length">
         <span ng-repeat="error in errors">{{error}}<br /></span>
     </div>

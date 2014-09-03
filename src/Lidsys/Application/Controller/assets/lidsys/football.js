@@ -458,7 +458,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
                 }
             for (var week_idx in weeks) {
                 var week     = weeks[week_idx],
-                    standing = standings[week.week_num][player.player_id]
+                    standing = standings[week.week_num] ? standings[week.week_num][player.player_id] : null
 
                 if (standing) {
                     player_standing.total_points     += parseInt(standing.points)

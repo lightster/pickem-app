@@ -236,6 +236,9 @@ module.controller('LidsysFootballPicksCtrl', [
         $scope.standings        = standings
         $scope.errors          = footballPick.errors
         $scope.pickChanged = function (game, team) {
+            if (game.is_started) {
+                return
+            }
             if (game.picks[current_player_id].team_id != team.team_id) {
                 game.picks[current_player_id].team_id = team.team_id
             }

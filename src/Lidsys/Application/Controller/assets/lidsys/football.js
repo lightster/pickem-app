@@ -503,7 +503,13 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
             player_standings.push(player_standing)
         }
         player_standings.sort(function (a, b) {
-            return b.total_points - a.total_points
+            var point_diff = b.total_points - a.total_points
+
+            if (point_diff) {
+                return point_diff
+            } else {
+                return a.player.name.localeCompare(b.player.name)
+            }
         })
         var lastPoints = 0
         for (var player_standing_idx in player_standings) {

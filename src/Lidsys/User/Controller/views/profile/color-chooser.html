@@ -5,8 +5,10 @@
             style="
                 width: 15px;
                 padding: 0px;
-                background-color: rgb({{color.r}}, {{color.g}}, {{color.b}}
             "
+            ng-style="{
+                'background-color': 'rgb(' + color.r + ', ' + color.g + ', ' + color.b + ')'
+            }"
             ng-click="ldsUserChooseColor($event)"
             data-color="{{color}}">
         </td>

@@ -358,17 +358,35 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
             games   = footballSchedule.getGames(),
             players = footballPlayer.getPlayers(season.year),
             game    = null,
-            game_id = null
+            game_id = null,
+            pick_id = null,
+            pick    = null,
+            players_with_picks_hash = {},
+            players_with_picks = [],
+            player_id = null,
+            player = null
         for (game_id in games) {
             game = games[game_id]
 
             game.picks = picks[game.game_id]
+            for (pick_id in game.picks) {
+                pick = game.picks[pick_id]
+                players_with_picks_hash[pick.player_id] = players[pick.player_id]
+            }
         }
+
+        for (player_id in players_with_picks_hash) {
+            players_with_picks.push(players_with_picks_hash[player_id])
+        }
+        players_with_picks.sort(function (a, b) {
+            return a.name.localeCompare(b.name)
+        })
 
         $scope.currentPlayerId  = active.getUser().playerId
         $scope.week             = week
         $scope.games            = games
         $scope.players          = players
+        $scope.players_with_picks = players_with_picks
         $scope.playerCount      = 0
         $scope.prevGame         = null
         $scope.prevHeaderExists = null
@@ -394,16 +412,17 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
 
             return $scope.prevHeaderExists
         }
-        $scope.getPickedTeamStyle = function (pick, team) {
-            if (pick.team_id == team.team_id) {
+        $scope.getPickedTeamStyle = function (player, game, team) {
+            var pick = game.picks ? game.picks[player.player_id] : null
+            if (pick && pick.team_id == team.team_id) {
                 return {
-                    'background-color': '#' + $scope.players[pick.player_id].background_color,
-                    'color':            '#' + $scope.players[pick.player_id].text_color
+                    'background-color': '#' + $scope.players[player.player_id].background_color,
+                    'color':            '#' + $scope.players[player.player_id].text_color
                 }
             }
             else {
                 return {
-                    'color': '#' + $scope.players[pick.player_id].background_color
+                    'color': '#' + $scope.players[player.player_id].background_color
                 }
             }
         }

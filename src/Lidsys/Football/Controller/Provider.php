@@ -149,6 +149,15 @@ class Provider implements ControllerProviderInterface
             ));
         });
 
+        $controllers->get('/update-scores/', function (Application $app) {
+            $sched_service = $app['lidsys.football.schedule'];
+            $sched_service->updateScores();
+
+            return $app->json(array(
+                'success' => 'done',
+            ));
+        });
+
         $controllers->get('/teams', function (Application $app) {
             $teams = $app['lidsys.football.team']->getTeams();
 

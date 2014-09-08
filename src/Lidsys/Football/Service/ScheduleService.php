@@ -10,6 +10,8 @@
 
 namespace Lidsys\Football\Service;
 
+use DOMDocument;
+use DOMXPath;
 use Pdo;
 
 use Lstr\Silex\Database\DatabaseService;
@@ -188,5 +190,60 @@ class ScheduleService
         }
 
         return $games;
+    }
+
+    public function updateScores()
+    {
+        $html = file_get_contents(
+            'http://www.nfl.com/liveupdate/scorestrip/ss.xml?random=' . microtime(true)
+            //'http://www.nfl.com/liveupdate/scorestrip/postseason/ss.xml?random=' . microtime(true)
+        );
+        $dom            = new DOMDocument();
+        libxml_use_internal_errors(true);
+
+        $dom->loadXML($html);
+
+        $xpath  = new DOMXPath($dom);
+
+        $query  = '//ss/gms/g';
+        $games  = $xpath->query($query);
+
+        foreach ($games as $game) {
+            $game_date = $game->getAttribute('eid');
+            $date_sql  = substr($game_date, 0, 4)
+                . '-' . substr($game_date, 4, 2)
+                . '-' . substr($game_date, 6, 2);
+            $time      = $game->getAttribute('q');
+
+            $home_score     = $game->getAttribute('hs');
+            $home_abbr      = $game->getAttribute('h');
+            $away_score     = $game->getAttribute('vs');
+            $away_abbr      = $game->getAttribute('v');
+
+            if ($time === 'F' || $time === 'FO') {
+                $this->db->query(
+                    "
+                        UPDATE nflGame AS game
+                        JOIN nflWeek AS week USING (weekId)
+                        JOIN nflTeam AS away
+                            ON game.awayId = away.teamId
+                        JOIN nflTeam AS home
+                            ON game.homeId = home.teamId
+                        SET awayScore = :away_score,
+                            homeScore = :home_score
+                        WHERE away.abbreviation = :away_team
+                            AND home.abbreviation = :home_team
+                            AND :game_date BETWEEN week.weekStart AND week.weekEnd
+                    ",
+                    array(
+                        'away_score' => $away_score,
+                        'home_score' => $home_score,
+                        'away_team'  => $away_abbr,
+                        'home_team'  => $home_abbr,
+                        'game_date'  => $date_sql,
+                    )
+                );
+            }
+        }
     }
 }

@@ -48,10 +48,10 @@
             >
                 {{game.away_team.location}} {{game.away_team.mascot}}
             </td>
-            <td ng-repeat="pick in game.picks"
-                ng-style="getPickedTeamStyle(pick, game.away_team)"
+            <td ng-repeat="player in players_with_picks"
+                ng-style="getPickedTeamStyle(player, game, game.away_team)"
             >
-                {{players[pick.player_id].displayName}}
+                {{player.displayName}}
             </td>
         </tr>
         <tr ng-repeat-end>
@@ -87,10 +87,10 @@
             >
                 {{game.home_team.location}} {{game.home_team.mascot}}
             </td>
-            <td ng-repeat="pick in game.picks"
-                ng-style="getPickedTeamStyle(pick, game.home_team)"
+            <td ng-repeat="player in players_with_picks"
+                ng-style="getPickedTeamStyle(player, game, game.home_team)"
             >
-                {{players[pick.player_id].displayName}}
+                {{player.displayName}}
             </td>
         </tr>
     </table>

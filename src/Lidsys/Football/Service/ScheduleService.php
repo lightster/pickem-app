@@ -186,6 +186,10 @@ class ScheduleService
             )
         );
         while ($game = $query->fetch()) {
+            if ($game['away_score'] || $game['home_score']) {
+                $game['away_score'] = intval($game['away_score']);
+                $game['home_score'] = intval($game['home_score']);
+            }
             $games[] = $game;
         }
 

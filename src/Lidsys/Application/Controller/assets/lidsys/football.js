@@ -413,14 +413,25 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
             return $scope.prevHeaderExists
         }
         $scope.getPickedTeamStyle = function (player, game, team) {
+            var losing_team_id = null
+            if (game.home_score != game.away_score) {
+                losing_team_id = game.home_score > game.away_score
+                    ? game.away_team.team_id
+                    : game.home_team.team_id
+            }
             var pick = game.picks ? game.picks[player.player_id] : null
-            if (pick && pick.team_id == team.team_id) {
+            if (pick
+                && (
+                    pick.team_id == team.team_id
+                    && (moment(game.start_time).isAfter(moment())
+                        || losing_team_id != pick.team_id)
+                )
+            ) {
                 return {
                     'background-color': '#' + $scope.players[player.player_id].background_color,
                     'color':            '#' + $scope.players[player.player_id].text_color
                 }
-            }
-            else {
+            } else {
                 return {
                     'color': '#' + $scope.players[player.player_id].background_color
                 }

@@ -111,6 +111,40 @@ class ScheduleService
         return $this->weeks[$year];
     }
 
+    public function getWeekForDate($date)
+    {
+        $sql = <<<SQL
+SELECT
+    weekId AS week_id,
+    seasonId AS season_id,
+    weekStart AS start_date,
+    weekEnd AS end_date,
+    winWeight AS win_weight,
+    year,
+    COUNT(DISTINCT game.gameId) AS game_count
+FROM nflWeek AS week
+JOIN nflSeason AS season USING (seasonId)
+JOIN nflGame AS game USING (weekId)
+WHERE :date BETWEEN weekStart AND weekEnd
+LIMIT 1
+SQL;
+
+        $db    = $this->db;
+        $query = $db->query(
+            $sql,
+            array(
+                'date' => $date,
+            )
+        );
+        $week = $query->fetch();
+
+        if ($week) {
+            $week['week_number'] = $this->getWeekNumberForWeekId($week['week_id']);
+        }
+
+        return $week;
+    }
+
 
 
     private function getYearForWeekId($week_id)

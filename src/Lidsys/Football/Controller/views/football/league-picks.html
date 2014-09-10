@@ -51,7 +51,9 @@
             <td ng-repeat="player in players_with_picks"
                 ng-style="getPickedTeamStyle(player, game, game.away_team)"
             >
-                {{player.displayName}}
+                <span ng-show="game.picks[player.player_id].team_id == game.away_team.team_id">
+                    {{player.displayName}}
+                </span>
             </td>
         </tr>
         <tr ng-repeat-end>
@@ -90,7 +92,9 @@
             <td ng-repeat="player in players_with_picks"
                 ng-style="getPickedTeamStyle(player, game, game.home_team)"
             >
-                {{player.displayName}}
+                <span ng-show="game.picks[player.player_id].team_id == game.home_team.team_id">
+                    {{player.displayName}}
+                </span>
             </td>
         </tr>
     </table>

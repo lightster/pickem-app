@@ -10,6 +10,8 @@
 
 namespace Lidsys\Football\Service;
 
+use DateTime;
+use DateTimeZone;
 use Exception;
 
 use Lidsys\Application\Service\MailerService;
@@ -157,6 +159,70 @@ HTML
             ),
             array(
                 '{{PLAYER_NAME}}' => $user['name'],
+            )
+        );
+
+        return true;
+    }
+
+    public function sendReminderEmail($user, $week, $first_game)
+    {
+        $week_number     = $week['week_number'];
+        $year            = $week['year'];
+
+        $utc_timezone    = new DateTimeZone('UTC');
+        $first_game_time = new DateTime($first_game['start_time'], $utc_timezone);
+        $pt_timezone     = new DateTimeZone('America/Los_Angeles');
+        $first_game_time->setTimezone($pt_timezone);
+        $first_game_day  = $first_game_time->format('l');
+
+        $this->mailer->sendMessage(
+            array(
+                'to'      => "{$user['name']} <{$user['email']}>",
+                'subject' => "Fantasy Football {$year} - Week {$week_number} starts {$first_game_day}",
+                'text'    => <<<TEXT
+Hello {{PLAYER_NAME}},
+
+Remember to make your fantasy football picks for week {{WEEK_NUMBER}}. Each game has its
+own individual due date and time, but the first game is {{FIRST_GAME_DAY}}.
+
+If you already submitted your picks for week {{WEEK_NUMBER}}, you are good to go.
+
+Good luck,
+
+Matt Light
+The Commissioner
+Lightdatasys <http://lightdatasys.com>
+@LidsysFootball <https://twitter.com/LidsysFootball>
+TEXT
+                ,
+                'html'    => <<<HTML
+<p>Hello {{PLAYER_NAME}},</p>
+
+<p>
+    Remember to make your fantasy football picks for week {{WEEK_NUMBER}}. Each game has its
+    own individual due date and time, but the first game is {{FIRST_GAME_DAY}}.
+</p>
+
+<p>
+    If you already submitted your picks for week {{WEEK_NUMBER}}, you are good to go.
+</p>
+
+<p>Good luck,</p>
+
+<p>
+    Matt Light<br />
+    The Commissioner<br />
+    <a href="http://lightdatasys.com">Lightdatasys</a><br />
+    <a href="https://twitter.com/LidsysFootball">@LidsysFootball</a>
+</p>
+HTML
+                ,
+            ),
+            array(
+                '{{PLAYER_NAME}}'    => $user['name'],
+                '{{WEEK_NUMBER}}'    => $week_number,
+                '{{FIRST_GAME_DAY}}' => $first_game_day,
             )
         );
 

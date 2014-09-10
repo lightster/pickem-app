@@ -60,7 +60,7 @@ window.FootballScheduleService = class FootballScheduleService
                 if not weeks[week]?
                     week = 0
                     for own week_num, a_week of weeks
-                        week = week_num if a_week.start_date < today or not week
+                        week = week_num if a_week.start_date <= today or not week
 
                 if requestedYear isnt year or requestedWeek isnt week
                     @$q.reject({

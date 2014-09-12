@@ -26,7 +26,7 @@
                 </div>
                 <div class="row">
                     <div class="large-12 columns" ng-class="{error: login.error.username}">
-                        <input type="text" placeholder="username" ng-model="login.username" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+                        <input type="text" placeholder="username" ng-model="login.username" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" autocorrect="off" autocapitalize="off" />
                         <small ng-show="login.error.username">{{login.error.username}}</small>
                     </div>
                 </div>

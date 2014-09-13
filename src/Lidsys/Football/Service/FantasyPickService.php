@@ -128,6 +128,7 @@ class FantasyPickService
         $values     = array(
             'player_id' => $player_id,
         );
+        $saved_picks = array();
         foreach ($valid_game_ids as $valid_game_id) {
             $value_sets[] = "
                 (
@@ -138,6 +139,11 @@ class FantasyPickService
             ";
             $values["game_id_{$row_num}"] = $valid_game_id;
             $values["team_id_{$row_num}"] = $picks[$valid_game_id];
+            $saved_picks[] = array(
+                'player_id' => $player_id,
+                'game_id'   => $valid_game_id,
+                'team_id'   => $picks[$valid_game_id],
+            );
             ++$row_num;
         }
 
@@ -157,5 +163,7 @@ class FantasyPickService
                 $values
             );
         }
+
+        return $saved_picks;
     }
 }

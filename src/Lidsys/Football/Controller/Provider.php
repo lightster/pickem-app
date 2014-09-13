@@ -242,9 +242,10 @@ class Provider implements ControllerProviderInterface
 
             $picks = $request->get('fantasy_picks');
 
-            $app['lidsys.football.fantasy-pick']->savePicks($user_id, $picks);
+            $saved_picks = $app['lidsys.football.fantasy-pick']->savePicks($user_id, $picks);
 
             return $app->json(array(
+                'saved_picks' => $saved_picks,
             ));
         });
 

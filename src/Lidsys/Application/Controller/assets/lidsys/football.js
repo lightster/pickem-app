@@ -132,8 +132,8 @@ module.factory('lidsysFootballFantasyStanding', ['$http', '$q', function($http, 
     return new FootballFantasyStandingService($http, $q)
 }])
 
-module.factory('lidsysFootballPick', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
-    return new FootballPickService($http, $timeout, $q)
+module.factory('lidsysFootballPick', ['$http', '$timeout', '$q', '$window', function($http, $timeout, $q, $window) {
+    return new FootballPickService($http, $timeout, $q, $window)
 }])
 
 module.factory('lidsysFootballSchedule', ['$http', '$q', 'lidsysFootballTeam', function($http, $q, footballTeam) {

@@ -494,6 +494,8 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
                     standing = standings[week.week_num] ? standings[week.week_num][player.player_id] : null
 
                 if (standing) {
+                    standing.percent = parseFloat(standing.points) / parseFloat(week.week.game_count)
+
                     player_standing.total_points     += parseInt(standing.points)
                     player_standing.potential_points += parseInt(standing.potential_points)
                     player_standing.standings.push({

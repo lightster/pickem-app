@@ -33,6 +33,7 @@
                 ng-repeat="week_standing in player_standing.standings"
                 ng-style="getWeekPointsStyle(week_standing)"
                 style="text-align: right; "
+                ng-attr-title="{{week_standing.standing.percent * 100 | number:1}}%"
             >
                 {{week_standing.standing.points}}
             </td>

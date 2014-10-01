@@ -656,7 +656,9 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
                 standing_count  = player_standing.standings.length
             for (var standing_idx = 0; standing_idx < standing_count; standing_idx++) {
                 var standing = player_standing.standings[standing_idx]
-                if (standing.standing.points == maxPointsPerWeek[standing.week.week_num]) {
+                if (standing.standing.points == maxPointsPerWeek[standing.week.week_num]
+                    && maxPointsPerWeek[standing.week.week_num]
+                ) {
                     player_standing.weeks_won++
                 }
             }

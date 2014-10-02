@@ -795,7 +795,7 @@ module.controller('LidsysFootballTeamStandingsCtrl', [
             standing,
             team,
             filteredStandings = []
-        for (standing_idx in standings) {
+        for (standing_idx = 0; standing_idx < standings.length; standing_idx++) {
             standing = standings[standing_idx]
             if (standing.team_id) {
                 team          = teams[standing.team_id]

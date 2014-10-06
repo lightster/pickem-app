@@ -642,10 +642,14 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
             }
         })
         var lastPoints = 0
+        var rankTies = 1
         for (var player_standing_idx in player_standings) {
             var player_standing = player_standings[player_standing_idx]
             if (lastPoints != player_standing.total_points) {
-                rank++
+                rank += rankTies
+                rankTies = 1
+            } else {
+                ++rankTies
             }
             player_standings[player_standing_idx].rank = rank
             lastPoints = player_standing.total_points

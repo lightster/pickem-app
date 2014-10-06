@@ -139,69 +139,82 @@ module.directive('ldsUserColorChooser', ['$rootScope', 'active', function ($root
     }
 }])
 
-module.controller('UserLoginCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
-    $scope.formChanged = function ($event) {
-        var login = $scope.login;
+module.controller('UserLoginCtrl', [
+    '$scope',
+    '$location',
+    '$http',
+    '$window',
+    'active',
+    function (
+        $scope,
+        $location,
+        $http,
+        $window,
+        active
+    ) {
+        $scope.formChanged = function ($event) {
+            var login = $scope.login;
 
-        if (login.username != login.submittedUsername ||
-            login.password != login.submittedPassword
-        ) {
-            login.error = '';
+            if (login.username != login.submittedUsername ||
+                login.password != login.submittedPassword
+            ) {
+                login.error = '';
+            }
         }
-    }
-    $scope.processLogin = function ($event) {
-        var login = $scope.login;
+        $scope.processLogin = function ($event) {
+            var login = $scope.login;
 
-        login.error             = {};
-        login.submittedUsername = login.username;
-        login.submittedPassword = login.password;
+            login.error             = {};
+            login.submittedUsername = login.username;
+            login.submittedPassword = login.password;
 
-        if (!login.username) {
-            login.error.hasError = true;
-            login.error.username = 'Please enter your username.';
-        }
-        if (!login.password) {
-            login.error.hasError = true;
-            login.error.password = 'Please enter your password.';
-        }
+            if (!login.username) {
+                login.error.hasError = true;
+                login.error.username = 'Please enter your username.';
+            }
+            if (!login.password) {
+                login.error.hasError = true;
+                login.error.password = 'Please enter your password.';
+            }
 
-        if (login.error.hasError) {
+            if (login.error.hasError) {
+                return false;
+            }
+
+            var postData = {
+                username: login.username,
+                password: login.password
+            }
+
+            $http.post("/app/user/login/", postData)
+                .success(function (data) {
+                    if (data.authenticated_user) {
+                        login.error.form = 'Success!!'
+                        active.getUser().setFromApi(data.authenticated_user)
+                        //$window.history.back()
+                        $window.location = '/'
+                    }
+                    else {
+                        login.error.form = data.error
+                    }
+                })
+                .error(function (data) {
+                    login.error.form = 'There was an error processing your login request. Please contact an administrator.';
+                })
+
             return false;
         }
 
-        var postData = {
-            username: login.username,
-            password: login.password
+        $scope.login = {
+            submitEnabled: false,
+            error: {},
+            username: '',
+            password: '',
+            previousUsername: '',
+            previousPassword: ''
         }
-
-        $http.post("/app/user/login/", postData)
-            .success(function (data) {
-                if (data.authenticated_user) {
-                    login.error.form = 'Success!!'
-                    active.getUser().setFromApi(data.authenticated_user)
-                    //$window.history.back()
-                    $window.location = '/'
-                }
-                else {
-                    login.error.form = data.error
-                }
-            })
-            .error(function (data) {
-                login.error.form = 'There was an error processing your login request. Please contact an administrator.';
-            })
-
-        return false;
     }
-
-    $scope.login = {
-        submitEnabled: false,
-        error: {},
-        username: '',
-        password: '',
-        previousUsername: '',
-        previousPassword: ''
-    }
-}])
+])
 
 module.controller('UserLoginHelpCtrl', [
     '$scope',
@@ -209,7 +222,13 @@ module.controller('UserLoginHelpCtrl', [
     '$http',
     '$window',
     'active',
-    function ($scope, $location, $http, $window, active) {
+    function (
+        $scope,
+        $location,
+        $http,
+        $window,
+        active
+    ) {
         $scope.formChanged = function ($event) {
             var login_help = $scope.login_help;
 
@@ -270,7 +289,14 @@ module.controller('UserLoginResetCtrl', [
     '$route',
     '$window',
     'active',
-    function ($scope, $location, $http, $route, $window, active) {
+    function (
+        $scope,
+        $location,
+        $http,
+        $route,
+        $window,
+        active
+    ) {
         $scope.auth_params = $location.search()
         $scope.form        = {
             title:         $route.current.formTitle,
@@ -339,124 +365,163 @@ module.controller('UserLoginResetCtrl', [
     }
 ])
 
-module.controller('UserLogoutCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
-    $http.post("/app/user/logout/")
-        .success(function (data) {
-            if (data.logged_out) {
-                active.getUser().setFromApi(null)
+module.controller('UserLogoutCtrl', [
+    '$scope',
+    '$location',
+    '$http',
+    '$window',
+    'active',
+    function (
+        $scope,
+        $location,
+        $http,
+        $window,
+        active
+    ) {
+        $http.post("/app/user/logout/")
+            .success(function (data) {
+                if (data.logged_out) {
+                    active.getUser().setFromApi(null)
+                }
+                //$window.history.back()
+                $window.location = '/'
+            })
+            .error(function (data) {
+            })
+    }
+])
+
+module.controller('UserPasswordCtrl', [
+    '$scope',
+    '$location',
+    '$http',
+    '$window',
+    'active',
+    function (
+        $scope,
+        $location,
+        $http,
+        $window,
+        active
+    ) {
+        $scope.form = {
+            error: {},
+            success: {},
+            passwordChange: new UserPasswordChange,
+            shadowPasswordChange: new UserPasswordChange
+        }
+
+        $scope.processPasswordChange = function ($event) {
+            var form           = $scope.form
+            var passwordChange = form.passwordChange
+
+            form.error = {}
+
+            if (!passwordChange.currentPassword) {
+                form.error.hasError = true;
+                form.error.currentPassword = 'Please enter your current password.';
             }
-            //$window.history.back()
-            $window.location = '/'
-        })
-        .error(function (data) {
-        })
-}])
+            if (!passwordChange.newPassword) {
+                form.error.hasError = true;
+                form.error.newPassword = 'Please enter your new password.';
+            }
+            if (!passwordChange.confirmPassword) {
+                form.error.hasError = true;
+                form.error.confirmPassword = 'Please confirm your new password.';
+            }
+            if (passwordChange.newPassword != passwordChange.confirmPassword) {
+                form.error.hasError = true;
+                form.error.confirmPassword = 'The new passwords do not match.';
+            }
 
-module.controller('UserPasswordCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
-    $scope.form = {
-        error: {},
-        success: {},
-        passwordChange: new UserPasswordChange,
-        shadowPasswordChange: new UserPasswordChange
+            if (form.error.hasError) {
+                return false
+            }
+
+            var postData = {
+                currentPassword: passwordChange.currentPassword,
+                newPassword:     passwordChange.newPassword
+            }
+
+            $http.post("/app/user/password/", postData)
+                .success(function (data) {
+                    if (data.success) {
+                        form.success.form = data.success
+                    }
+                    else {
+                        form.error.form = data.error
+                    }
+                })
+                .error(function (data) {
+                    form.error.form = 'There was an error processing your password change request. Please contact an administrator.';
+                })
+
+            return false;
+        }
     }
+])
 
-    $scope.processPasswordChange = function ($event) {
-        var form           = $scope.form
-        var passwordChange = form.passwordChange
-
-        form.error = {}
-
-        if (!passwordChange.currentPassword) {
-            form.error.hasError = true;
-            form.error.currentPassword = 'Please enter your current password.';
-        }
-        if (!passwordChange.newPassword) {
-            form.error.hasError = true;
-            form.error.newPassword = 'Please enter your new password.';
-        }
-        if (!passwordChange.confirmPassword) {
-            form.error.hasError = true;
-            form.error.confirmPassword = 'Please confirm your new password.';
-        }
-        if (passwordChange.newPassword != passwordChange.confirmPassword) {
-            form.error.hasError = true;
-            form.error.confirmPassword = 'The new passwords do not match.';
+module.controller('UserProfileCtrl', [
+    '$scope',
+    '$location',
+    '$http',
+    '$window',
+    'active',
+    function (
+        $scope,
+        $location,
+        $http,
+        $window,
+        active
+    ) {
+        $scope.form = {
+            error: {},
+            success: {}
         }
 
-        if (form.error.hasError) {
-            return false
+        $scope.dec2hex = function(dec, minDigits) {
+            var hex = dec.toString(16)
+            if (!minDigits) {
+                minDigits = 0
+            }
+            for (var i = hex.length; i < minDigits; i++) {
+                hex = '0' + hex
+            }
+            return hex
         }
 
-        var postData = {
-            currentPassword: passwordChange.currentPassword,
-            newPassword:     passwordChange.newPassword
+        $scope.selectColor = function($element)
+        {
+            var user = active.getUser(),
+                color = $element.data('color'),
+                form = $scope.form,
+                hex,
+                postData
+
+            hex = $scope.dec2hex(color.r, 2)
+                + $scope.dec2hex(color.g, 2)
+                + $scope.dec2hex(color.b, 2)
+
+            postData = {
+                background_color: hex
+            }
+
+            $http.post("/app/user/user-profile/color/", postData)
+                .success(function (data) {
+                    if (data.success) {
+                        user.backgroundColor = hex
+                        form.success.form = data.success
+                    }
+                    else {
+                        form.error.form = data.error
+                    }
+                })
+                .error(function (data) {
+                    form.error.form = 'There was an error processing your profile change request. Please contact an administrator.';
+                })
         }
-
-        $http.post("/app/user/password/", postData)
-            .success(function (data) {
-                if (data.success) {
-                    form.success.form = data.success
-                }
-                else {
-                    form.error.form = data.error
-                }
-            })
-            .error(function (data) {
-                form.error.form = 'There was an error processing your password change request. Please contact an administrator.';
-            })
-
-        return false;
     }
-}])
-
-module.controller('UserProfileCtrl', ['$scope', '$location', '$http', '$window', 'active', function ($scope, $location, $http, $window, active) {
-    $scope.form = {
-        error: {},
-        success: {}
-    }
-
-    $scope.dec2hex = function(dec, minDigits) {
-        var hex = dec.toString(16)
-        if (!minDigits) {
-            minDigits = 0
-        }
-        for (var i = hex.length; i < minDigits; i++) {
-            hex = '0' + hex
-        }
-        return hex
-    }
-
-    $scope.selectColor = function($element)
-    {
-        var user = active.getUser(),
-            color = $element.data('color'),
-            form = $scope.form,
-            hex,
-            postData
-
-        hex = $scope.dec2hex(color.r, 2)
-            + $scope.dec2hex(color.g, 2)
-            + $scope.dec2hex(color.b, 2)
-
-        postData = {
-            background_color: hex
-        }
-
-        $http.post("/app/user/user-profile/color/", postData)
-            .success(function (data) {
-                if (data.success) {
-                    user.backgroundColor = hex
-                    form.success.form = data.success
-                }
-                else {
-                    form.error.form = data.error
-                }
-            })
-            .error(function (data) {
-                form.error.form = 'There was an error processing your profile change request. Please contact an administrator.';
-            })
-    }
-}])
+])
 
 module.controller('UserRegisterCtrl', [
     '$scope',

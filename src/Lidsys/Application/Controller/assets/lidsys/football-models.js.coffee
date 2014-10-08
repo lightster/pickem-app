@@ -90,12 +90,14 @@ window.FootballScheduleService = class FootballScheduleService
         return @games[year][week] if @games[year]? and @games[year][week]?
         @$http.get("/api/v1.0/football/schedule/#{year}/#{week}")
             .success((response) =>
-                teams = @teamService.getTeams()
-                games = response.games
-                for own game_id, game of games
-                    game.away_team = teams[game.away_team_id]
-                    game.home_team = teams[game.home_team_id]
-                    game.isStarted = moment().isAfter(game.start_time)
+                teams      = @teamService.getTeams()
+                games_data = response.games
+                games      = {}
+                for own game_id, game_data of games_data
+                    game_data.away_team = teams[game_data.away_team_id]
+                    game_data.home_team = teams[game_data.home_team_id]
+                    game = new FootballGame game_data
+                    games[game_id] = game
 
                 @games[year]       = {}
                 @games[year][week] = games
@@ -135,6 +137,25 @@ window.FootballScheduleService = class FootballScheduleService
 
         throw "Games not yet loaded using 'loadGames' for year #{year} week #{week_num}" if not @games[year]? or not @games[year][week_num]?
         @games[year][week_num]
+
+
+
+window.FootballGame = class FootballGame
+    constructor: (game_data) ->
+        @game_id      = game_data.game_id
+        @away_team_id = game_data.away_team_id
+        @home_team_id = game_data.home_team_id
+        @away_team    = game_data.away_team
+        @home_team    = game_data.home_team
+        @away_score   = game_data.away_score
+        @home_score   = game_data.home_score
+        @start_time   = game_data.start_time
+
+    isStarted: ->
+        moment().isAfter(@start_time)
+
+    isFinal: ->
+        @away_score != null || @home_score != null
 
 
 

@@ -21,17 +21,17 @@
                 style="vertical-align: middle; width: 4%; "
                 ng-class="
                     {
-                        label: game.away_score,
-                        success: game.away_score &amp;&amp; game.away_score >= game.home_score,
+                        label: game.isFinal(),
+                        success: game.isFinal() &amp;&amp; game.away_score >= game.home_score,
                         alert: game.away_score < game.home_score,
                         'wrong-team': game.away_team.team_id != game.picks[currentPlayerId].team_id
                     }
                 "
             >
-                <span ng-show="game.away_score &amp;&amp; game.away_score >= game.home_score">
+                <span ng-show="game.isFinal() &amp;&amp; game.away_score >= game.home_score">
                     {{week.win_weight}}
                 </span>
-                <span ng-show="game.away_score &amp;&amp; game.away_score < game.home_score">
+                <span ng-show="game.isFinal() &amp;&amp; game.away_score < game.home_score">
                     0
                 </span>
             </td>
@@ -63,17 +63,17 @@
                 style="vertical-align: middle; width: 4%; "
                 ng-class="
                     {
-                        label: game.away_score,
-                        success: game.away_score &amp;&amp; game.away_score <= game.home_score,
+                        label: game.isFinal(),
+                        success: game.isFinal() &amp;&amp; game.away_score <= game.home_score,
                         alert: game.away_score > game.home_score,
                         'wrong-team': game.home_team.team_id != game.picks[currentPlayerId].team_id
                     }
                 "
             >
-                <span ng-show="game.away_score &amp;&amp; game.away_score <= game.home_score">
+                <span ng-show="game.isFinal() &amp;&amp; game.away_score <= game.home_score">
                     {{week.win_weight}}
                 </span>
-                <span ng-show="game.away_score &amp;&amp; game.away_score > game.home_score">
+                <span ng-show="game.isFinal() &amp;&amp; game.away_score > game.home_score">
                     0
                 </span>
             </td>

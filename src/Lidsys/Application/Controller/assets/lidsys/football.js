@@ -361,10 +361,10 @@ module.controller('LidsysFootballPicksCtrl', [
             return ""
         }
         $scope.getAwayPickCellClasses = function (game) {
-            if (game.away_score) {
+            if (game.isFinal()) {
                 return {
-                    'label':      game.away_score,
-                    'success':    game.away_score && game.away_score >= game.home_score,
+                    'label':      game.isFinal(),
+                    'success':    game.isFinal() && game.away_score >= game.home_score,
                     'alert':      game.away_score < game.home_score,
                     'wrong-team': game.away_team.team_id != game.picks[$scope.currentPlayerId].team_id
                 };
@@ -392,10 +392,10 @@ module.controller('LidsysFootballPicksCtrl', [
             }
         }
         $scope.getHomePickCellClasses = function (game) {
-            if (game.home_score) {
+            if (game.isFinal()) {
                 return {
-                    'label':      game.home_score,
-                    'success':    game.home_score && game.home_score >= game.away_score,
+                    'label':      game.isFinal(),
+                    'success':    game.isFinal() && game.home_score >= game.away_score,
                     'alert':      game.home_score < game.away_score,
                     'wrong-team': game.home_team.team_id != game.picks[$scope.currentPlayerId].team_id
                 };

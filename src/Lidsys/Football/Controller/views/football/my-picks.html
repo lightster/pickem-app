@@ -35,10 +35,10 @@
                 ng-class="getAwayPickCellClasses(game)"
                 ng-click="pickChanged(game, game.away_team)"
             >
-                <span ng-show="game.away_score &amp;&amp; game.away_score >= game.home_score">
+                <span ng-show="game.isFinal() &amp;&amp; game.away_score >= game.home_score">
                     {{week.win_weight}}
                 </span>
-                <span ng-show="game.away_score &amp;&amp; game.away_score < game.home_score">
+                <span ng-show="game.isFinal() &amp;&amp; game.away_score < game.home_score">
                     0
                 </span>
                 <span lds-authenticated="true" ng-show="game.is_started &amp;&amp; game.picks[currentPlayerId].team_id == game.away_team.team_id &amp;&amp; !game.away_score &amp;&amp; !game.home_score">
@@ -54,10 +54,10 @@
                 ng-class="getHomePickCellClasses(game)"
                 ng-click="pickChanged(game, game.home_team)"
             >
-                <span ng-show="game.away_score &amp;&amp; game.away_score <= game.home_score">
+                <span ng-show="game.isFinal() &amp;&amp; game.away_score <= game.home_score">
                     {{week.win_weight}}
                 </span>
-                <span ng-show="game.away_score &amp;&amp; game.away_score > game.home_score">
+                <span ng-show="game.isFinal() &amp;&amp; game.away_score > game.home_score">
                     0
                 </span>
                 <span lds-authenticated="true" ng-show="game.is_started &amp;&amp; game.picks[currentPlayerId].team_id == game.home_team.team_id &amp;&amp; !game.away_score &amp;&amp; !game.home_score">

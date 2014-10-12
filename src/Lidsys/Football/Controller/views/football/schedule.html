@@ -27,8 +27,8 @@
                 style="vertical-align: middle; width: 4%; "
                 ng-class="
                     {
-                        winning_team: game.away_score &amp;&amp; game.away_score >= game.home_score,
-                        losing_team: game.away_score < game.home_score
+                        winning_team: game.isFinal() &amp;&amp; game.away_score >= game.home_score,
+                        losing_team: game.isFinal() &amp;&amp; game.away_score < game.home_score
                     }
                 "
             >
@@ -39,8 +39,8 @@
                 style="vertical-align: middle; width: 4%; "
                 ng-class="
                     {
-                        winning_team: game.away_score &amp;&amp; game.away_score <= game.home_score,
-                        losing_team: game.away_score > game.home_score
+                        winning_team: game.isFinal() &amp;&amp; game.away_score <= game.home_score,
+                        losing_team: game.isFinal() &amp;&amp; game.away_score > game.home_score
                     }
             ">
                 {{game.home_score}}

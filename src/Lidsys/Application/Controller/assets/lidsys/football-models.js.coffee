@@ -150,6 +150,12 @@ window.FootballGame = class FootballGame
         @away_score   = game_data.away_score
         @home_score   = game_data.home_score
         @start_time   = game_data.start_time
+        @away =
+            team:  @away_team
+            score: @away_score
+        @home =
+            team:  @home_team
+            score: @home_score
 
     isStarted: ->
         moment().isAfter(@start_time)

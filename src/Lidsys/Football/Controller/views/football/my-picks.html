@@ -32,7 +32,7 @@
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
-                ng-class="getAwayPickCellClasses(game)"
+                ng-class="getPickCellClasses(game, game.away, game.home)"
                 ng-click="pickChanged(game, game.away_team)"
             >
                 <span ng-show="game.isFinal() &amp;&amp; game.away_score >= game.home_score">
@@ -51,7 +51,7 @@
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
-                ng-class="getHomePickCellClasses(game)"
+                ng-class="getPickCellClasses(game, game.home, game.away)"
                 ng-click="pickChanged(game, game.home_team)"
             >
                 <span ng-show="game.isFinal() &amp;&amp; game.away_score <= game.home_score">

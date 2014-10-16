@@ -360,44 +360,13 @@ module.controller('LidsysFootballPicksCtrl', [
 
             return ""
         }
-        $scope.getAwayPickCellClasses = function (game) {
+        $scope.getPickCellClasses = function (game, side, opp_side) {
             if (game.isFinal()) {
                 return {
                     'label':      game.isFinal(),
-                    'success':    game.isFinal() && game.away_score >= game.home_score,
-                    'alert':      game.away_score < game.home_score,
-                    'wrong-team': game.away_team.team_id != game.picks[$scope.currentPlayerId].team_id
-                };
-            } else if (!$scope.currentPlayer) {
-                return {
-                    'label':      false,
-                    'success':    false,
-                    'alert':      false,
-                    'wrong-team': false
-                };
-            } else if (!$scope.isPickSaved(game)) {
-                return {
-                    'label':      true,
-                    'success':    false,
-                    'alert':      true,
-                    'wrong-team': false
-                };
-            } else {
-                return {
-                    'label':      true,
-                    'success':    true,
-                    'alert':      false,
-                    'wrong-team': false
-                };
-            }
-        }
-        $scope.getHomePickCellClasses = function (game) {
-            if (game.isFinal()) {
-                return {
-                    'label':      game.isFinal(),
-                    'success':    game.isFinal() && game.home_score >= game.away_score,
-                    'alert':      game.home_score < game.away_score,
-                    'wrong-team': game.home_team.team_id != game.picks[$scope.currentPlayerId].team_id
+                    'success':    game.isFinal() && side.score >= opp_side.score,
+                    'alert':      side.score < opp_side.score,
+                    'wrong-team': side.team.team_id != game.picks[$scope.currentPlayerId].team_id
                 };
             } else if (!$scope.currentPlayer) {
                 return {

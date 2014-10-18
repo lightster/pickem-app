@@ -711,6 +711,12 @@ module.controller('LidsysFootballScheduleCtrl', [
             $scope.prevGameTime = game.start_time
             return true
         }
+        $scope.getTeamScoreCellClasses = function (game, side, opp_side) {
+            return {
+                'winning_team': game.isFinal() && side.score >= opp_side.score,
+                'losing_team': game.isFinal() && side.score < opp_side.score
+            }
+        }
     }
 ])
 

@@ -235,6 +235,26 @@ module.factory('lidsysFootballTeamStanding', ['$http', '$q', function($http, $q)
     return new FootballTeamStandingService($http, $q)
 }])
 
+module.factory('lidsysFootballTeamStylist', [function() {
+    var service = {}
+
+    service.getTeamNameBoxStyle = function(team) {
+        return {
+            'color':            team.font_color,
+            'background-color': team.background_color,
+            'width':            '40%'
+        }
+    }
+    service.getTeamAccessoryBoxStyle = function(team) {
+        return {
+            'background-color': team.border_color,
+            'width':            '4%'
+        }
+    }
+
+    return service
+}])
+
 module.directive('ldsFootballWeekSelector', [function () {
     return {
         restrict: "E",
@@ -692,10 +712,12 @@ module.controller('LidsysFootballScheduleCtrl', [
     '$scope',
     'lidsysFootballSchedule',
     'lidsysFootballTeam',
+    'lidsysFootballTeamStylist',
     function (
         $scope,
         footballSchedule,
-        footballTeam
+        footballTeam,
+        footballTeamStylist
     ) {
         var teams   = footballTeam.getTeams(),
             games   = footballSchedule.getGames(),
@@ -717,6 +739,8 @@ module.controller('LidsysFootballScheduleCtrl', [
                 'losing_team': game.isFinal() && side.score < opp_side.score
             }
         }
+        $scope.getTeamNameBoxStyle      = footballTeamStylist.getTeamNameBoxStyle
+        $scope.getTeamAccessoryBoxStyle = footballTeamStylist.getTeamAccessoryBoxStyle
     }
 ])
 

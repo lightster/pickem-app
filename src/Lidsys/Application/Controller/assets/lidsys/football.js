@@ -664,6 +664,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
         $scope.standings        = player_standings
         $scope.minPointsPerWeek = minPointsPerWeek
         $scope.maxPointsPerWeek = maxPointsPerWeek
+        $scope.possiblePoints   = possiblePoints
 
         $scope.getDisplayNameStyle = function (player) {
             return {

@@ -550,7 +550,8 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
             rank             = 0,
             minPointsPerWeek = {},
             maxPointsPerWeek = {},
-            possiblePoints   = 0
+            possiblePoints   = 0,
+            playedPoints = 0
         for (var week_num in all_weeks) {
             var week = all_weeks[week_num]
             weeks.push({
@@ -558,6 +559,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
                 week_num: week_num
             })
             possiblePoints += week.game_count * week.win_weight
+            playedPoints += week.games_played * week.win_weight
 
             if (week == selected_week) {
                 break
@@ -665,6 +667,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
         $scope.minPointsPerWeek = minPointsPerWeek
         $scope.maxPointsPerWeek = maxPointsPerWeek
         $scope.possiblePoints   = possiblePoints
+        $scope.playedPoints     = playedPoints
 
         $scope.getDisplayNameStyle = function (player) {
             return {

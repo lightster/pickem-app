@@ -17,18 +17,20 @@
             </th>
         </tr>
         <tr ng-repeat-end>
-            <td ng-style="{
-                'color': game.away_team.font_color,
-                'background-color': game.away_team.background_color,
-                'width': '40%'
-            }" class="text-right" ng-click="pickChanged(game, game.away_team)">
+            <td
+                ng-style="getTeamNameBoxStyle(game.away.team)"
+                class="text-right"
+                ng-click="pickChanged(game, game.away.team)"
+            >
                 ({{standings[game.away_team_id].win_count}}-{{standings[game.away_team_id].loss_count}}-{{standings[game.away_team_id].tie_count}})
                 {{game.away_team.location}} {{game.away_team.mascot}}
             </td>
-            <td ng-style="{
-                'background-color': game.away_team.border_color,
-                'width': '4%'
-            }" ng-click="pickChanged(game, game.away_team)">&nbsp;</td>
+            <td
+                ng-style="getTeamAccessoryBoxStyle(game.away.team)"
+                ng-click="pickChanged(game, game.away.team)"
+            >
+                &nbsp;
+            </td>
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
@@ -67,15 +69,16 @@
                     <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home_team.team_id}}" style="margin: 0; " ng-change="pickChanged(game, game.home_team)" />
                 </span>
             </td>
-            <td ng-style="{
-                'background-color': game.home_team.border_color,
-                'width': '4%'
-            }" ng-click="pickChanged(game, game.home_team)">&nbsp;</td>
-            <td ng-style="{
-                'color': game.home_team.font_color,
-                'background-color': game.home_team.background_color,
-                'width': '40%'
-            }" ng-click="pickChanged(game, game.home_team)">
+            <td
+                ng-style="getTeamAccessoryBoxStyle(game.home.team)"
+                ng-click="pickChanged(game, game.home.team)"
+            >
+                &nbsp;
+            </td>
+            <td
+                ng-style="getTeamNameBoxStyle(game.home.team)"
+                ng-click="pickChanged(game, game.home.team)"
+            >
                 {{game.home_team.location}} {{game.home_team.mascot}}
                 ({{standings[game.home_team_id].win_count}}-{{standings[game.home_team_id].loss_count}}-{{standings[game.home_team_id].tie_count}})
             </td>

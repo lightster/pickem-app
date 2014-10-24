@@ -298,6 +298,7 @@ module.controller('LidsysFootballPicksCtrl', [
     'lidsysFootballSchedule',
     'lidsysFootballTeam',
     'lidsysFootballTeamStanding',
+    'lidsysFootballTeamStylist',
     function (
         $scope,
         active,
@@ -305,7 +306,8 @@ module.controller('LidsysFootballPicksCtrl', [
         footballPick,
         footballSchedule,
         footballTeam,
-        footballTeamStanding
+        footballTeamStanding,
+        footballTeamStylist
     ) {
         var season  = footballSchedule.getSelectedSeason(),
             week    = footballSchedule.getSelectedWeek(),
@@ -420,6 +422,9 @@ module.controller('LidsysFootballPicksCtrl', [
 
             return !isSavePending && isPicked
         }
+
+        $scope.getTeamNameBoxStyle      = footballTeamStylist.getTeamNameBoxStyle
+        $scope.getTeamAccessoryBoxStyle = footballTeamStylist.getTeamAccessoryBoxStyle
     }
 ])
 

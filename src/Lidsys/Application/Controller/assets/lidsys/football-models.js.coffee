@@ -24,6 +24,20 @@ window.FootballTeam = class FootballTeam
 
 
 
+window.FootballSeason = class FootballSeason
+    constructor: (season_data) ->
+        @year = null
+        @setFromApi(season_data) if season_data
+
+    getYear: ->
+        @year
+
+    setFromApi: (options) ->
+        @year = options.year
+
+
+
+
 window.FootballScheduleService = class FootballScheduleService
     constructor: (@$http, @$q, @teamService) ->
         @seasons = null
@@ -77,7 +91,12 @@ window.FootballScheduleService = class FootballScheduleService
     loadSeasons: ->
         return @seasons if @seasons?
         @$http.get("/api/v1.0/football/seasons")
-            .success((response) => @seasons = response.seasons)
+            .success((response) =>
+                @seasons = {}
+                for own year, season_data of response.seasons
+                    season = new FootballSeason(season_data)
+                    @seasons[year] = season
+            )
 
 
     loadWeeks: (year) ->

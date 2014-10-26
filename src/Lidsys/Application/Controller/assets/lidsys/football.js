@@ -24,7 +24,7 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
                         resolvePicks: $injector.invoke(resolvers.resolvePicks)
                     }).then(function () {
                         return footballTeamStanding.load(
-                            footballSchedule.getSelectedSeason().year,
+                            footballSchedule.getSelectedSeason().getYear(),
                             footballSchedule.getSelectedWeek().week_number
                         )
                     })
@@ -80,7 +80,7 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
                         resolveTeams:     $injector.invoke(resolvers.resolveTeams)
                     }).then(function () {
                         return footballTeamStanding.load(
-                            footballSchedule.getSelectedSeason().year,
+                            footballSchedule.getSelectedSeason().getYear(),
                             footballSchedule.getSelectedWeek().week_number
                         )
                     })
@@ -146,12 +146,12 @@ module.constant('lidsysFootballPicksRouteResolver', {
                 resolveTeams:     $injector.invoke(resolvers.resolveTeams)
             }).then(function () {
                 return footballPick.load(
-                    footballSchedule.getSelectedSeason().year,
+                    footballSchedule.getSelectedSeason().getYear(),
                     footballSchedule.getSelectedWeek().week_number
                 )
             }).then(function () {
                 return footballFantasyPlayer.load(
-                    footballSchedule.getSelectedSeason().year
+                    footballSchedule.getSelectedSeason().getYear()
                 )
             })
         }
@@ -180,11 +180,11 @@ module.constant('lidsysFootballFantasyStandingsRouteResolver', {
                 resolveTeams:     $injector.invoke(resolvers.resolveTeams)
             }).then(function () {
                 return footballFantasyPlayer.load(
-                    footballSchedule.getSelectedSeason().year
+                    footballSchedule.getSelectedSeason().getYear()
                 )
             }).then(function () {
                 return footballFantasyStanding.load(
-                    footballSchedule.getSelectedSeason().year
+                    footballSchedule.getSelectedSeason().getYear()
                 )
             })
         }
@@ -275,12 +275,12 @@ module.directive('ldsFootballWeekSelector', [function () {
                     season:  season,
                     week:    week,
                     seasons: footballSchedule.getSeasons(),
-                    weeks:   footballSchedule.getWeeksArray(season.year)
+                    weeks:   footballSchedule.getWeeksArray(season.getYear())
                 };
                 $scope.changeSelectedWeek = function() {
                     $location.path(
                         $route.current.originalPath
-                            .replace(":year?", $scope.week_selector.season.year)
+                            .replace(":year?", $scope.week_selector.season.getYear())
                             .replace(":week?", $scope.week_selector.week.week_number)
                     )
                 }
@@ -311,17 +311,17 @@ module.controller('LidsysFootballPicksCtrl', [
     ) {
         var season  = footballSchedule.getSelectedSeason(),
             week    = footballSchedule.getSelectedWeek(),
-            picks   = footballPick.getPicks(season.year, week.week_number),
+            picks   = footballPick.getPicks(season.getYear(), week.week_number),
             teams   = footballTeam.getTeams(),
             games   = footballSchedule.getGames(),
-            players = footballPlayer.getPlayers(season.year),
+            players = footballPlayer.getPlayers(season.getYear()),
             game    = null,
             game_id = null,
             standing_id    = null,
             standings      = {},
             team_standing  = null,
             team_standings = footballTeamStanding.getTeamStandings(
-                season.year,
+                season.getYear(),
                 week.week_number
             ),
             current_player_id = active.getUser().playerId
@@ -445,10 +445,10 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
     ) {
         var season  = footballSchedule.getSelectedSeason(),
             week    = footballSchedule.getSelectedWeek(),
-            picks   = footballPick.getPicks(season.year, week.week_number),
+            picks   = footballPick.getPicks(season.getYear(), week.week_number),
             teams   = footballTeam.getTeams(),
             games   = footballSchedule.getGames(),
-            players = footballPlayer.getPlayers(season.year),
+            players = footballPlayer.getPlayers(season.getYear()),
             game    = null,
             game_id = null,
             pick_id = null,
@@ -547,9 +547,9 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
     ) {
         var season           = footballSchedule.getSelectedSeason(),
             selected_week    = footballSchedule.getSelectedWeek(),
-            all_weeks        = footballSchedule.getWeeks(season.year),
-            standings        = footballFantasyStanding.getStandings(season.year),
-            players          = footballPlayer.getPlayers(season.year),
+            all_weeks        = footballSchedule.getWeeks(season.getYear()),
+            standings        = footballFantasyStanding.getStandings(season.getYear()),
+            players          = footballPlayer.getPlayers(season.getYear()),
             weeks            = [],
             player_standings = [],
             rank             = 0,
@@ -800,7 +800,7 @@ module.controller('LidsysFootballTeamStandingsCtrl', [
             division   = footballTeamStanding.getSelectedDivision()
         var teams               = footballTeam.getTeams(),
             standings           = footballTeamStanding.getTeamStandings(
-                season.year,
+                season.getYear(),
                 week.week_number
             ),
             standing_idx,

@@ -37,6 +37,30 @@ window.FootballSeason = class FootballSeason
 
 
 
+window.FootballWeek = class FootballWeek
+    constructor: (week_data) ->
+        @end_date     = null
+        @game_count   = null
+        @games_played = null
+        @season_id    = null
+        @start_date   = null
+        @week_number  = null
+        @win_weight   = null
+        @year         = null
+        @setFromApi(week_data) if week_data
+
+    setFromApi: (options) ->
+        @end_date     = options.end_date
+        @game_count   = options.game_count
+        @games_played = options.games_played
+        @season_id    = options.season_id
+        @start_date   = options.start_date
+        @week_number  = options.week_number
+        @win_weight   = options.win_weight
+        @year         = options.year
+
+
+
 
 window.FootballScheduleService = class FootballScheduleService
     constructor: (@$http, @$q, @teamService) ->
@@ -102,7 +126,12 @@ window.FootballScheduleService = class FootballScheduleService
     loadWeeks: (year) ->
         return @weeks[year] if @weeks[year]?
         @$http.get("/api/v1.0/football/weeks/#{year}")
-            .success((response) => @weeks[year] = response.weeks)
+            .success((response) =>
+                @weeks[year] = {}
+                for own week_num, week_data of response.weeks
+                    week = new FootballWeek(week_data)
+                    @weeks[year][week_num] = week
+        )
 
 
     loadGames: (year, week) ->

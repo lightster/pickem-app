@@ -12,15 +12,15 @@ namespace Lidsys\User\Service;
 
 use Pdo;
 
-use Silex\Application;
+use Lstr\Silex\Database\DatabaseService;
 
 class AuthenticatorService
 {
-    private $app;
+    private $db;
 
-    public function __construct(Application $app)
+    public function __construct(DatabaseService $db)
     {
-        $this->app    = $app;
+        $this->db    = $db;
     }
 
     public function getUserForUsername($username)
@@ -89,7 +89,7 @@ class AuthenticatorService
 
     public function updatePasswordForUser($user_id, $password)
     {
-        $db = $this->app['db'];
+        $db = $this->db;
         $db->query(
             "
                 UPDATE user
@@ -119,7 +119,7 @@ class AuthenticatorService
             $new_password .= $characters[mt_rand(0, $character_count - 1)];
         }
 
-        $db = $this->app['db'];
+        $db = $this->db;
         $db->query(
             "
                 UPDATE user
@@ -142,7 +142,7 @@ class AuthenticatorService
 WHERE lastActive >= :last_active
     AND email IS NOT NULL
 SQL;
-        $query = $this->app['db']->query(
+        $query = $this->db->query(
             $sql,
             array(
                 'last_active' => $last_active,
@@ -153,7 +153,7 @@ SQL;
 
     private function findUserWithWhereClause($where_sql, array $params)
     {
-        $query = $this->app['db']->query(
+        $query = $this->db->query(
             $this->getUserFindSql() . $where_sql,
             $params
         );

@@ -24,7 +24,7 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
                         resolvePicks: $injector.invoke(resolvers.resolvePicks)
                     }).then(function () {
                         return footballTeamStanding.load(
-                            footballSchedule.getSelectedSeason().year,
+                            footballSchedule.getSelectedSeason().getYear(),
                             footballSchedule.getSelectedWeek().week_number
                         )
                     })
@@ -80,7 +80,7 @@ module.config(['$injector', '$routeProvider', function ($injector, $routeProvide
                         resolveTeams:     $injector.invoke(resolvers.resolveTeams)
                     }).then(function () {
                         return footballTeamStanding.load(
-                            footballSchedule.getSelectedSeason().year,
+                            footballSchedule.getSelectedSeason().getYear(),
                             footballSchedule.getSelectedWeek().week_number
                         )
                     })
@@ -146,12 +146,12 @@ module.constant('lidsysFootballPicksRouteResolver', {
                 resolveTeams:     $injector.invoke(resolvers.resolveTeams)
             }).then(function () {
                 return footballPick.load(
-                    footballSchedule.getSelectedSeason().year,
+                    footballSchedule.getSelectedSeason().getYear(),
                     footballSchedule.getSelectedWeek().week_number
                 )
             }).then(function () {
                 return footballFantasyPlayer.load(
-                    footballSchedule.getSelectedSeason().year
+                    footballSchedule.getSelectedSeason().getYear()
                 )
             })
         }
@@ -180,11 +180,11 @@ module.constant('lidsysFootballFantasyStandingsRouteResolver', {
                 resolveTeams:     $injector.invoke(resolvers.resolveTeams)
             }).then(function () {
                 return footballFantasyPlayer.load(
-                    footballSchedule.getSelectedSeason().year
+                    footballSchedule.getSelectedSeason().getYear()
                 )
             }).then(function () {
                 return footballFantasyStanding.load(
-                    footballSchedule.getSelectedSeason().year
+                    footballSchedule.getSelectedSeason().getYear()
                 )
             })
         }
@@ -235,6 +235,26 @@ module.factory('lidsysFootballTeamStanding', ['$http', '$q', function($http, $q)
     return new FootballTeamStandingService($http, $q)
 }])
 
+module.factory('lidsysFootballTeamStylist', [function() {
+    var service = {}
+
+    service.getTeamNameBoxStyle = function(team) {
+        return {
+            'color':            team.font_color,
+            'background-color': team.background_color,
+            'width':            '40%'
+        }
+    }
+    service.getTeamAccessoryBoxStyle = function(team) {
+        return {
+            'background-color': team.border_color,
+            'width':            '4%'
+        }
+    }
+
+    return service
+}])
+
 module.directive('ldsFootballWeekSelector', [function () {
     return {
         restrict: "E",
@@ -255,12 +275,12 @@ module.directive('ldsFootballWeekSelector', [function () {
                     season:  season,
                     week:    week,
                     seasons: footballSchedule.getSeasons(),
-                    weeks:   footballSchedule.getWeeksArray(season.year)
+                    weeks:   footballSchedule.getWeeksArray(season.getYear())
                 };
                 $scope.changeSelectedWeek = function() {
                     $location.path(
                         $route.current.originalPath
-                            .replace(":year?", $scope.week_selector.season.year)
+                            .replace(":year?", $scope.week_selector.season.getYear())
                             .replace(":week?", $scope.week_selector.week.week_number)
                     )
                 }
@@ -278,6 +298,7 @@ module.controller('LidsysFootballPicksCtrl', [
     'lidsysFootballSchedule',
     'lidsysFootballTeam',
     'lidsysFootballTeamStanding',
+    'lidsysFootballTeamStylist',
     function (
         $scope,
         active,
@@ -285,21 +306,22 @@ module.controller('LidsysFootballPicksCtrl', [
         footballPick,
         footballSchedule,
         footballTeam,
-        footballTeamStanding
+        footballTeamStanding,
+        footballTeamStylist
     ) {
         var season  = footballSchedule.getSelectedSeason(),
             week    = footballSchedule.getSelectedWeek(),
-            picks   = footballPick.getPicks(season.year, week.week_number),
+            picks   = footballPick.getPicks(season.getYear(), week.week_number),
             teams   = footballTeam.getTeams(),
             games   = footballSchedule.getGames(),
-            players = footballPlayer.getPlayers(season.year),
+            players = footballPlayer.getPlayers(season.getYear()),
             game    = null,
             game_id = null,
             standing_id    = null,
             standings      = {},
             team_standing  = null,
             team_standings = footballTeamStanding.getTeamStandings(
-                season.year,
+                season.getYear(),
                 week.week_number
             ),
             current_player_id = active.getUser().playerId
@@ -360,44 +382,13 @@ module.controller('LidsysFootballPicksCtrl', [
 
             return ""
         }
-        $scope.getAwayPickCellClasses = function (game) {
-            if (game.away_score) {
+        $scope.getPickCellClasses = function (game, side, opp_side) {
+            if (game.isFinal()) {
                 return {
-                    'label':      game.away_score,
-                    'success':    game.away_score && game.away_score >= game.home_score,
-                    'alert':      game.away_score < game.home_score,
-                    'wrong-team': game.away_team.team_id != game.picks[$scope.currentPlayerId].team_id
-                };
-            } else if (!$scope.currentPlayer) {
-                return {
-                    'label':      false,
-                    'success':    false,
-                    'alert':      false,
-                    'wrong-team': false
-                };
-            } else if (!$scope.isPickSaved(game)) {
-                return {
-                    'label':      true,
-                    'success':    false,
-                    'alert':      true,
-                    'wrong-team': false
-                };
-            } else {
-                return {
-                    'label':      true,
-                    'success':    true,
-                    'alert':      false,
-                    'wrong-team': false
-                };
-            }
-        }
-        $scope.getHomePickCellClasses = function (game) {
-            if (game.home_score) {
-                return {
-                    'label':      game.home_score,
-                    'success':    game.home_score && game.home_score >= game.away_score,
-                    'alert':      game.home_score < game.away_score,
-                    'wrong-team': game.home_team.team_id != game.picks[$scope.currentPlayerId].team_id
+                    'label':      game.isFinal(),
+                    'success':    game.isFinal() && side.score >= opp_side.score,
+                    'alert':      side.score < opp_side.score,
+                    'wrong-team': side.team.team_id != game.picks[$scope.currentPlayerId].team_id
                 };
             } else if (!$scope.currentPlayer) {
                 return {
@@ -431,6 +422,9 @@ module.controller('LidsysFootballPicksCtrl', [
 
             return !isSavePending && isPicked
         }
+
+        $scope.getTeamNameBoxStyle      = footballTeamStylist.getTeamNameBoxStyle
+        $scope.getTeamAccessoryBoxStyle = footballTeamStylist.getTeamAccessoryBoxStyle
     }
 ])
 
@@ -451,10 +445,10 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
     ) {
         var season  = footballSchedule.getSelectedSeason(),
             week    = footballSchedule.getSelectedWeek(),
-            picks   = footballPick.getPicks(season.year, week.week_number),
+            picks   = footballPick.getPicks(season.getYear(), week.week_number),
             teams   = footballTeam.getTeams(),
             games   = footballSchedule.getGames(),
-            players = footballPlayer.getPlayers(season.year),
+            players = footballPlayer.getPlayers(season.getYear()),
             game    = null,
             game_id = null,
             pick_id = null,
@@ -553,15 +547,16 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
     ) {
         var season           = footballSchedule.getSelectedSeason(),
             selected_week    = footballSchedule.getSelectedWeek(),
-            all_weeks        = footballSchedule.getWeeks(season.year),
-            standings        = footballFantasyStanding.getStandings(season.year),
-            players          = footballPlayer.getPlayers(season.year),
+            all_weeks        = footballSchedule.getWeeks(season.getYear()),
+            standings        = footballFantasyStanding.getStandings(season.getYear()),
+            players          = footballPlayer.getPlayers(season.getYear()),
             weeks            = [],
             player_standings = [],
             rank             = 0,
             minPointsPerWeek = {},
             maxPointsPerWeek = {},
-            possiblePoints   = 0
+            possiblePoints   = 0,
+            playedPoints = 0
         for (var week_num in all_weeks) {
             var week = all_weeks[week_num]
             weeks.push({
@@ -569,6 +564,7 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
                 week_num: week_num
             })
             possiblePoints += week.game_count * week.win_weight
+            playedPoints += week.games_played * week.win_weight
 
             if (week == selected_week) {
                 break
@@ -642,10 +638,14 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
             }
         })
         var lastPoints = 0
+        var rankTies = 1
         for (var player_standing_idx in player_standings) {
             var player_standing = player_standings[player_standing_idx]
             if (lastPoints != player_standing.total_points) {
-                rank++
+                rank += rankTies
+                rankTies = 1
+            } else {
+                ++rankTies
             }
             player_standings[player_standing_idx].rank = rank
             lastPoints = player_standing.total_points
@@ -671,6 +671,8 @@ module.controller('LidsysFootballFantasyStandingsCtrl', [
         $scope.standings        = player_standings
         $scope.minPointsPerWeek = minPointsPerWeek
         $scope.maxPointsPerWeek = maxPointsPerWeek
+        $scope.possiblePoints   = possiblePoints
+        $scope.playedPoints     = playedPoints
 
         $scope.getDisplayNameStyle = function (player) {
             return {
@@ -719,10 +721,12 @@ module.controller('LidsysFootballScheduleCtrl', [
     '$scope',
     'lidsysFootballSchedule',
     'lidsysFootballTeam',
+    'lidsysFootballTeamStylist',
     function (
         $scope,
         footballSchedule,
-        footballTeam
+        footballTeam,
+        footballTeamStylist
     ) {
         var teams   = footballTeam.getTeams(),
             games   = footballSchedule.getGames(),
@@ -738,6 +742,14 @@ module.controller('LidsysFootballScheduleCtrl', [
             $scope.prevGameTime = game.start_time
             return true
         }
+        $scope.getTeamScoreCellClasses = function (game, side, opp_side) {
+            return {
+                'winning_team': game.isFinal() && side.score >= opp_side.score,
+                'losing_team': game.isFinal() && side.score < opp_side.score
+            }
+        }
+        $scope.getTeamNameBoxStyle      = footballTeamStylist.getTeamNameBoxStyle
+        $scope.getTeamAccessoryBoxStyle = footballTeamStylist.getTeamAccessoryBoxStyle
     }
 ])
 
@@ -788,14 +800,14 @@ module.controller('LidsysFootballTeamStandingsCtrl', [
             division   = footballTeamStanding.getSelectedDivision()
         var teams               = footballTeam.getTeams(),
             standings           = footballTeamStanding.getTeamStandings(
-                season.year,
+                season.getYear(),
                 week.week_number
             ),
             standing_idx,
             standing,
             team,
             filteredStandings = []
-        for (standing_idx in standings) {
+        for (standing_idx = 0; standing_idx < standings.length; standing_idx++) {
             standing = standings[standing_idx]
             if (standing.team_id) {
                 team          = teams[standing.team_id]

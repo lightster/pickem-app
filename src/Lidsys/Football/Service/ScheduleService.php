@@ -87,7 +87,12 @@ class ScheduleService
                     weekEnd AS end_date,
                     winWeight AS win_weight,
                     year,
-                    COUNT(DISTINCT game.gameId) AS game_count
+                    COUNT(DISTINCT game.gameId) AS game_count,
+                    SUM(IF(
+                        COALESCE(game.awayScore, game.homeScore) IS NOT NULL,
+                        1,
+                        0
+                    )) AS games_played
                 FROM nflWeek AS week
                 JOIN nflSeason AS season USING (seasonId)
                 JOIN nflGame AS game USING (weekId)

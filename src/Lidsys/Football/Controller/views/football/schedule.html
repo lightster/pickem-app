@@ -11,49 +11,31 @@
             </th>
         </tr>
         <tr ng-repeat-end>
-            <td ng-style="{
-                'color': game.away_team.font_color,
-                'background-color': game.away_team.background_color,
-                'width': '40%'
-            }" class="text-right">
+            <td
+                ng-style="getTeamNameBoxStyle(game.away.team)"
+                class="text-right"
+            >
                 {{game.away_team.location}} {{game.away_team.mascot}}
             </td>
-            <td ng-style="{
-                'background-color': game.away_team.border_color,
-                'width': '4%'
-            }">&nbsp;</td>
+            <td ng-style="getTeamAccessoryBoxStyle(game.away.team)">&nbsp;</td>
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
-                ng-class="
-                    {
-                        winning_team: game.away_score &amp;&amp; game.away_score >= game.home_score,
-                        losing_team: game.away_score < game.home_score
-                    }
-                "
+                ng-class="getTeamScoreCellClasses(game, game.away, game.home)"
             >
                 {{game.away_score}}
             </td>
             <td
                 class="text-center"
                 style="vertical-align: middle; width: 4%; "
-                ng-class="
-                    {
-                        winning_team: game.away_score &amp;&amp; game.away_score <= game.home_score,
-                        losing_team: game.away_score > game.home_score
-                    }
-            ">
+                ng-class="getTeamScoreCellClasses(game, game.home, game.away)"
+            >
                 {{game.home_score}}
             </td>
-            <td ng-style="{
-                'background-color': game.home_team.border_color,
-                'width': '4%'
-            }">&nbsp;</td>
-            <td ng-style="{
-                'color': game.home_team.font_color,
-                'background-color': game.home_team.background_color,
-                'width': '40%'
-            }">
+            <td ng-style="getTeamAccessoryBoxStyle(game.home.team)">&nbsp;</td>
+            <td
+                ng-style="getTeamNameBoxStyle(game.home.team)"
+            >
                 {{game.home_team.location}} {{game.home_team.mascot}}
             </td>
         </tr>

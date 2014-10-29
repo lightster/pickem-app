@@ -140,12 +140,11 @@ window.FootballScheduleService = class FootballScheduleService
             .success((response) =>
                 teams      = @teamService.getTeams()
                 games_data = response.games
-                games      = {}
-                for own game_id, game_data of games_data
+                games      = []
+                games = for game_data in games_data
                     game_data.away_team = teams[game_data.away_team_id]
                     game_data.home_team = teams[game_data.home_team_id]
-                    game = new FootballGame game_data
-                    games[game_id] = game
+                    new FootballGame game_data
 
                 @games[year]       = {}
                 @games[year][week] = games

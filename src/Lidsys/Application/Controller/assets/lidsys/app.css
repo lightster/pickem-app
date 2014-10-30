@@ -1,3 +1,7 @@
+#canvas {
+    padding-bottom: 15px;
+}
+
 nav.top-bar .title-area h1 {
     
     background: url("images/logo.png") no-repeat scroll 10px 5px transparent;

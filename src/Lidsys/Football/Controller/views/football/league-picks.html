@@ -6,7 +6,7 @@
     </div>
 </div>
 <div class="row full-width">
-    <table class="small-12" style="margin: 0 auto; ">
+    <table class="small-12" style="margin: inherit auto; ">
         <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
             <th colspan="{{playerCount + 3}}" style="background-color: #f2f2f2;">
                 {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}

@@ -10,7 +10,7 @@
     <div class="small-12 columns alert-box alert" ng-show="errors.length">
         <span ng-repeat="error in errors">{{error}}<br /></span>
     </div>
-    <table class="small-12" style="margin: 0 auto; ">
+    <table class="small-12" style="margin: inherit auto; ">
         <tr ng-repeat-start="game in games" ng-show="headerExists(game)" class="week-header">
             <th colspan="8">
                 {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}

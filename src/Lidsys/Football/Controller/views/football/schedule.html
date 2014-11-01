@@ -19,15 +19,13 @@
             </td>
             <td ng-style="getTeamAccessoryBoxStyle(game.away.team)">&nbsp;</td>
             <td
-                class="text-center"
-                style="vertical-align: middle; width: 4%; "
+                class="fantasy-pick-box"
                 ng-class="getTeamScoreCellClasses(game, game.away, game.home)"
             >
                 {{game.away_score}}
             </td>
             <td
-                class="text-center"
-                style="vertical-align: middle; width: 4%; "
+                class="fantasy-pick-box"
                 ng-class="getTeamScoreCellClasses(game, game.home, game.away)"
             >
                 {{game.home_score}}

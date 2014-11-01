@@ -21,6 +21,12 @@ nav.top-bar .title-area h1 {
     color: #999999;
 }
 
+.fantasy-pick-box {
+    text-align: center;
+    vertical-align: middle;
+    width: 4%;
+}
+
 .label.success.wrong-team {
     color: #43ac6a;
     background-color: inherit;

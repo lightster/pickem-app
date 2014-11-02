@@ -59,7 +59,7 @@
                 {{week.week.games_played * week.week.win_weight}}
             </th>
             <th style="text-align: right; ">{{playedPoints}}</th>
-            <th>&nbsp;</th>
+            <th style="text-align: right; ">{{playedPoints / possiblePoints * 100 | number:1}}%</th>
             <th rowspan="{{standings.length + 1}}"></th>
             <th>&nbsp;</th>
             <th rowspan="{{standings.length + 1}}"></th>

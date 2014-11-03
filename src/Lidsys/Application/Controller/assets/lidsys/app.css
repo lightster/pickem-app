@@ -49,3 +49,7 @@ nav.top-bar .title-area h1 {
 table tr.week-header th {
     text-align: center;
 }
+
+#fantasy-standings .number {
+    text-align: right;
+}

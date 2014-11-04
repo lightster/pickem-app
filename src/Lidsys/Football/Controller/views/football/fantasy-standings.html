@@ -22,11 +22,11 @@
             <th>Weighted %</th>
         </tr>
         <tr ng-repeat="player_standing in standings">
-            <td style="width: 35px; text-align: right; ">
+            <td class="rank">
                 {{player_standing.rank}}
             </td>
-            <td class="number">{{player_standing.player.name}}</td>
-            <td ng-style="getDisplayNameStyle(player_standing.player)" style="width: 70px; text-align: center; ">
+            <td class="player-name">{{player_standing.player.name}}</td>
+            <td ng-style="getDisplayNameStyle(player_standing.player)" class="player-icon">
                 {{player_standing.player.displayName}}
             </td>
             <td

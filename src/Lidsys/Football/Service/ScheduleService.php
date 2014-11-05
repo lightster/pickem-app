@@ -41,22 +41,22 @@ class ScheduleService
 
         $seasons       = array();
 
+        $sql = <<<SQL
+SELECT
+    seasonId AS season_id,
+    year AS year
+FROM nflSeason AS season
+WHERE EXISTS (
+    SELECT 1
+    FROM nflWeek AS week
+    JOIN nflGame AS game USING (weekId)
+    WHERE season.seasonId = week.seasonId
+)
+ORDER BY year
+SQL;
+
         $db    = $this->db;
-        $query = $db->query(
-            "
-                SELECT
-                    seasonId AS season_id,
-                    year AS year
-                FROM nflSeason AS season
-                WHERE EXISTS (
-                    SELECT 1
-                    FROM nflWeek AS week
-                    JOIN nflGame AS game USING (weekId)
-                    WHERE season.seasonId = week.seasonId
-                )
-                ORDER BY year
-            "
-        );
+        $query = $db->query($sql);
         while ($season = $query->fetch()) {
             $seasons[$season['year']] = $season;
         }
@@ -77,29 +77,31 @@ class ScheduleService
         $weeks       = array();
         $week_number = 0;
 
+        $sql = <<<SQL
+SELECT
+    weekId AS week_id,
+    seasonId AS season_id,
+    weekStart AS start_date,
+    weekEnd AS end_date,
+    winWeight AS win_weight,
+    year,
+    COUNT(DISTINCT game.gameId) AS game_count,
+    SUM(IF(
+        COALESCE(game.awayScore, game.homeScore) IS NOT NULL,
+        1,
+        0
+    )) AS games_played
+FROM nflWeek AS week
+JOIN nflSeason AS season USING (seasonId)
+JOIN nflGame AS game USING (weekId)
+WHERE year = :year
+GROUP BY weekId
+ORDER BY weekStart
+SQL;
+
         $db    = $this->db;
         $query = $db->query(
-            "
-                SELECT
-                    weekId AS week_id,
-                    seasonId AS season_id,
-                    weekStart AS start_date,
-                    weekEnd AS end_date,
-                    winWeight AS win_weight,
-                    year,
-                    COUNT(DISTINCT game.gameId) AS game_count,
-                    SUM(IF(
-                        COALESCE(game.awayScore, game.homeScore) IS NOT NULL,
-                        1,
-                        0
-                    )) AS games_played
-                FROM nflWeek AS week
-                JOIN nflSeason AS season USING (seasonId)
-                JOIN nflGame AS game USING (weekId)
-                WHERE year = :year
-                GROUP BY weekId
-                ORDER BY weekStart
-            ",
+            $sql,
             array(
                 'year' => $year,
             )
@@ -154,14 +156,16 @@ SQL;
 
     private function getYearForWeekId($week_id)
     {
+        $sql = <<<SQL
+SELECT year
+FROM nflWeek AS week
+JOIN nflSeason AS season USING (seasonId)
+WHERE weekId = :week_id
+SQL;
+
         $db    = $this->db;
         $query = $db->query(
-            "
-                SELECT year
-                FROM nflWeek AS week
-                JOIN nflSeason AS season USING (seasonId)
-                WHERE weekId = :week_id
-            ",
+            $sql,
             array(
                 'week_id' => $week_id,
             )
@@ -205,20 +209,22 @@ SQL;
 
         $games = array();
 
+        $sql = <<<SQL
+SELECT
+    gameId AS game_id,
+    gameTime AS start_time,
+    awayId AS away_team_id,
+    homeId AS home_team_id,
+    awayScore AS away_score,
+    homeScore AS home_score
+FROM nflGame
+WHERE DATE(gameTime) BETWEEN :start_date AND :end_date
+ORDER BY gameTime, gameId
+SQL;
+
         $db    = $this->db;
         $query = $db->query(
-            "
-                SELECT
-                    gameId AS game_id,
-                    gameTime AS start_time,
-                    awayId AS away_team_id,
-                    homeId AS home_team_id,
-                    awayScore AS away_score,
-                    homeScore AS home_score
-                FROM nflGame
-                WHERE DATE(gameTime) BETWEEN :start_date AND :end_date
-                ORDER BY gameTime, gameId
-            ",
+            $sql,
             array(
                 'start_date' => $week['start_date'],
                 'end_date'   => $week['end_date'],
@@ -251,6 +257,20 @@ SQL;
         $query  = '//ss/gms/g';
         $games  = $xpath->query($query);
 
+        $sql = <<<SQL
+UPDATE nflGame AS game
+JOIN nflWeek AS week USING (weekId)
+JOIN nflTeam AS away
+    ON game.awayId = away.teamId
+JOIN nflTeam AS home
+    ON game.homeId = home.teamId
+SET awayScore = :away_score,
+    homeScore = :home_score
+WHERE away.abbreviation = :away_team
+    AND home.abbreviation = :home_team
+    AND :game_date BETWEEN week.weekStart AND week.weekEnd
+SQL;
+
         foreach ($games as $game) {
             $game_date = $game->getAttribute('eid');
             $date_sql  = substr($game_date, 0, 4)
@@ -265,19 +285,7 @@ SQL;
 
             if ($time === 'F' || $time === 'FO') {
                 $this->db->query(
-                    "
-                        UPDATE nflGame AS game
-                        JOIN nflWeek AS week USING (weekId)
-                        JOIN nflTeam AS away
-                            ON game.awayId = away.teamId
-                        JOIN nflTeam AS home
-                            ON game.homeId = home.teamId
-                        SET awayScore = :away_score,
-                            homeScore = :home_score
-                        WHERE away.abbreviation = :away_team
-                            AND home.abbreviation = :home_team
-                            AND :game_date BETWEEN week.weekStart AND week.weekEnd
-                    ",
+                    $sql,
                     array(
                         'away_score' => $away_score,
                         'home_score' => $home_score,

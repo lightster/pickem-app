@@ -194,8 +194,6 @@ window.FootballGame = class FootballGame
         @home_team_id = game_data.home_team_id
         @away_team    = game_data.away_team
         @home_team    = game_data.home_team
-        @away_score   = game_data.away_score
-        @home_score   = game_data.home_score
         @start_time   = game_data.start_time
         @away =
             team:  @away_team
@@ -203,12 +201,20 @@ window.FootballGame = class FootballGame
         @home =
             team:  @home_team
             score: @home_score
+        @setFromApi game_data
 
     isStarted: ->
         moment().isAfter(@start_time)
 
     isFinal: ->
         @away_score != null || @home_score != null
+
+    setFromApi: (game_data) ->
+        if game_data.game_id is not @game_id
+            throw "Attempting to update game with data from wrong game_id"
+        @away_score   = game_data.away_score
+        @home_score   = game_data.home_score
+
 
 
 

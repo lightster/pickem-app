@@ -209,11 +209,19 @@ window.FootballGame = class FootballGame
     isFinal: ->
         @away_score != null || @home_score != null
 
+    getCurrentQuarter: ->
+        @quarter
+
+    getRemainingTime: ->
+        @remaining_time
+
     setFromApi: (game_data) ->
         if game_data.game_id is not @game_id
             throw "Attempting to update game with data from wrong game_id"
-        @away_score   = game_data.away_score
-        @home_score   = game_data.home_score
+        @away_score     = game_data.away_score
+        @home_score     = game_data.home_score
+        @quarter        = game_data.quarter
+        @remaining_time = moment.duration '00:' + game_data.remaining_time
 
 
 

@@ -6,4 +6,4 @@ window.ActiveService = class ActiveService
     setUser: (@user) ->
     getUser: -> @user
 
-    isLoggedIn: -> !!(@user && @user.userId)
+    isLoggedIn: -> !!@user?.userId

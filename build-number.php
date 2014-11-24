@@ -1,2 +1,2 @@
 <?php
-return array('version' => 4);
+return array('version' => 5);

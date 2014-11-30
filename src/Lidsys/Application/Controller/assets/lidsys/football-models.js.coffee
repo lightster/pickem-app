@@ -219,7 +219,9 @@ window.FootballGame = class FootballGame
         if game_data.game_id is not @game_id
             throw "Attempting to update game with data from wrong game_id"
         @away_score     = game_data.away_score
+        @away.score     = game_data.away_score
         @home_score     = game_data.home_score
+        @home.score     = game_data.home_score
         @quarter        = game_data.quarter
         @remaining_time = moment.duration '00:' + game_data.remaining_time
 

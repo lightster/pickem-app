@@ -15,26 +15,26 @@
                 ng-style="getTeamNameBoxStyle(game.away.team)"
                 class="text-right"
             >
-                {{game.away_team.location}} {{game.away_team.mascot}}
+                {{game.away.team.location}} {{game.away.team.mascot}}
             </td>
             <td ng-style="getTeamAccessoryBoxStyle(game.away.team)">&nbsp;</td>
             <td
                 class="fantasy-pick-box"
                 ng-class="getTeamScoreCellClasses(game, game.away, game.home)"
             >
-                {{game.away_score}}
+                {{game.away.score}}
             </td>
             <td
                 class="fantasy-pick-box"
                 ng-class="getTeamScoreCellClasses(game, game.home, game.away)"
             >
-                {{game.home_score}}
+                {{game.home.score}}
             </td>
             <td ng-style="getTeamAccessoryBoxStyle(game.home.team)">&nbsp;</td>
             <td
                 ng-style="getTeamNameBoxStyle(game.home.team)"
             >
-                {{game.home_team.location}} {{game.home_team.mascot}}
+                {{game.home.team.location}} {{game.home.team.mascot}}
             </td>
         </tr>
     </table>

@@ -349,7 +349,7 @@ window.FootballPickService = class FootballPickService
 
                 pickCount = (k for own k of picksHash).length
 
-                @errors.pop while @errors.length
+                @errors.pop() while @errors.length > 0
                 data   = {fantasy_picks: picksHash}
                 @$http.post("/api/v1.0/football/fantasy-picks/", data)
                     .success((response) =>

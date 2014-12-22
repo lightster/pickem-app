@@ -128,7 +128,6 @@ class FantasyPickService
         $values     = array(
             'player_id' => $player_id,
         );
-        $saved_picks = array();
         foreach ($valid_game_ids as $valid_game_id) {
             $value_sets[] = "
                 (
@@ -162,6 +161,25 @@ class FantasyPickService
                 ",
                 $values
             );
+        }
+
+        $saved_picks = array();
+        $query = $db->query(
+            "
+                SELECT
+                    playerId AS player_id,
+                    gameId AS game_id,
+                    teamId AS team_id
+                FROM nflFantPick pick
+                WHERE gameId IN ($valid_game_ids_sql)
+                    AND playerId = :player_id
+            ",
+            array(
+                'player_id' => $player_id,
+            )
+        );
+        while ($saved_pick = $query->fetch()) {
+            $saved_picks[] = $saved_pick;
         }
 
         return $saved_picks;

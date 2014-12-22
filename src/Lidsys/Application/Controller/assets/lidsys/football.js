@@ -356,7 +356,13 @@ module.controller('LidsysFootballPicksCtrl', [
             if (game.picks[current_player_id].team_id != team.team_id) {
                 game.picks[current_player_id].team_id = team.team_id
             }
-            footballPick.changePick(game, $scope.currentPlayer, team)
+            footballPick.changePick(
+                season.getYear(),
+                week.week_number,
+                game,
+                $scope.currentPlayer,
+                team
+            )
         }
         $scope.headerExists = function (game) {
             if ($scope.prevGameTime === game.start_time) {

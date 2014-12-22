@@ -228,6 +228,19 @@ window.FootballGame = class FootballGame
 
 
 
+window.FootballPick = class FootballPick
+    constructor: (pick_data) ->
+        @game_id       = pick_data.game_id
+        @player_id     = pick_data.player_id
+        @team_id       = pick_data.team_id
+        @saved_team_id = null
+        @
+
+    setSavedTeam: (@saved_team_id) ->
+
+
+
+
 window.FootballTeamService = class FootballTeamService
     constructor: (@$http, @$q) ->
         @teams   = null
@@ -292,6 +305,7 @@ window.FootballTeamStandingService = class FootballTeamService
 window.FootballPickService = class FootballPickService
     constructor: (@$http, @$timeout, @$q, @$window) ->
         @picks              = {}
+        @picksByPlayerGame  = {}
         @queuedPickChanges  = []
         @queueTimeout       = null
         @isSaving           = false
@@ -308,7 +322,16 @@ window.FootballPickService = class FootballPickService
         @$http.get("/api/v1.0/football/fantasy-picks/#{year}/#{week}")
             .success((response) =>
                 @picks[year]       = {}
-                @picks[year][week] = response.fantasy_picks
+                @picks[year][week] = {}
+                for own gameId, gamePickData of response.fantasy_picks
+                    @picks[year][week][gameId] = {}
+                    @picksByPlayerGame[gameId] = {}
+                    for own playerId, playerGamePickData of gamePickData
+                        pick = new FootballPick(playerGamePickData)
+                        pick.setSavedTeam pick.team_id
+
+                        @picks[year][week][gameId][playerId] = pick
+                        @picksByPlayerGame[gameId][playerId] = pick
             )
 
 
@@ -322,17 +345,29 @@ window.FootballPickService = class FootballPickService
             game_id = game.game_id
             @picks[year][week_num][game_id] ?= {}
             for player_id, player of players
-                @picks[year][week_num][game_id][player_id] ?=
+                @picks[year][week_num][game_id][player_id] ?= new FootballPick
                     game_id:   game_id,
                     player_id: player_id,
                     team_id:   null
         @picks[year][week_num]
 
 
-    changePick: (game, player, team) ->
-        @queuedPickChanges.push
-            game_id: game.game_id
+    changePick: (year, week, game, player, team) ->
+        gameId = game.game_id
+        playerId = player.player_id
+
+        @picks[year][week][gameId] ?= {}
+        @picks[year][week][gameId][playerId] ?= new FootballPick
+            game_id: gameId
+            player_id: playerId
             team_id: team.team_id
+        @picksByPlayerGame[gameId] ?= {}
+        @picksByPlayerGame[gameId][playerId] ?= @picks[year][week][gameId][playerId]
+
+        pick = @picksByPlayerGame[gameId][playerId]
+        pick.team_id = team.team_id
+
+        @queuedPickChanges.push pick
         @savePicks() if not @isSaving
         true
 
@@ -345,20 +380,29 @@ window.FootballPickService = class FootballPickService
                 picksHash = {}
                 while @queuedPickChanges.length
                     pick = @queuedPickChanges.pop()
-                    picksHash[pick.game_id] = pick.team_id
+                    if pick.team_id isnt pick.saved_team_id
+                        picksHash[pick.game_id] = pick.team_id
 
                 pickCount = (k for own k of picksHash).length
+                if pickCount <= 0
+                    @isSaving = false
+                    @savePicks() if @queuedPickChanges.length
+                    return true
 
-                @errors.pop while @errors.length
+                @errors.pop() while @errors.length > 0
                 data   = {fantasy_picks: picksHash}
                 @$http.post("/api/v1.0/football/fantasy-picks/", data)
                     .success((response) =>
-                        if response.saved_picks.length != pickCount
-                            console.log(response.saved_picks.length, pickCount)
-                            @$window.location.reload()
+                        for saved_pick in response.saved_picks
+                            gameId = saved_pick.game_id
+                            playerId = saved_pick.player_id
+
+                            pick = @picksByPlayerGame[gameId][playerId]
+                            pick.setSavedTeam saved_pick.team_id
                     )
                     .error((response) =>
-                        @errors.push("Your picks could not be saved. Please try again.")
+                        error = response.error ? "Please try again."
+                        @errors.push "Your picks could not be saved. " + error
                     )
                     .finally(=>
                         @isSaving = false
@@ -370,9 +414,14 @@ window.FootballPickService = class FootballPickService
         )
 
     isPickSavePending: (game, player) ->
-        for queuedPick in @queuedPickChanges
-            return true if queuedPick.game_id == game.game_id
-        false
+        game_id = game.game_id
+        player_id = player.player_id
+        if @picksByPlayerGame[game_id]?[player_id]?
+            pick = @picksByPlayerGame[game_id][player_id]
+            if pick.team_id is pick.saved_team_id
+                return false
+
+        true
 
 
 

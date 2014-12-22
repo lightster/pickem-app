@@ -237,7 +237,7 @@ class Provider implements ControllerProviderInterface
             if (!$authenticated_user) {
                 return $app->json(
                     array(
-                        'error' => 'The user you are logged in as could not be determined.',
+                        'error' => 'You are logged out. Please sign in and try again.',
                     ),
                     403
                 );

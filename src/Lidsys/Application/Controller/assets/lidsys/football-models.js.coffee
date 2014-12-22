@@ -401,7 +401,8 @@ window.FootballPickService = class FootballPickService
                             pick.setSavedTeam saved_pick.team_id
                     )
                     .error((response) =>
-                        @errors.push("Your picks could not be saved. Please try again.")
+                        error = response.error ? "Please try again."
+                        @errors.push "Your picks could not be saved. " + error
                     )
                     .finally(=>
                         @isSaving = false

@@ -235,9 +235,12 @@ class Provider implements ControllerProviderInterface
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
 
             if (!$authenticated_user) {
-                return $app->json(array(
-                    'error' => 'The user you are logged in as could not be determined.',
-                ));
+                return $app->json(
+                    array(
+                        'error' => 'The user you are logged in as could not be determined.',
+                    ),
+                    403
+                );
             }
 
             $picks = $request->get('fantasy_picks');

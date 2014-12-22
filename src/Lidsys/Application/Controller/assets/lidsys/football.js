@@ -311,10 +311,15 @@ module.controller('LidsysFootballPicksCtrl', [
     ) {
         var season  = footballSchedule.getSelectedSeason(),
             week    = footballSchedule.getSelectedWeek(),
-            picks   = footballPick.getPicks(season.getYear(), week.week_number),
             teams   = footballTeam.getTeams(),
             games   = footballSchedule.getGames(),
             players = footballPlayer.getPlayers(season.getYear()),
+            picks   = footballPick.getPicksForPlayersAndGames(
+                season.getYear(),
+                week.week_number,
+                games,
+                players
+            ),
             game    = null,
             game_id = null,
             standing_id    = null,
@@ -330,17 +335,6 @@ module.controller('LidsysFootballPicksCtrl', [
 
             game.is_started = moment(game.start_time).isBefore(moment())
             game.picks = picks[game.game_id]
-
-            if (!game.picks) {
-                game.picks = {}
-            }
-            if (!game.picks[current_player_id]) {
-                game.picks[current_player_id] = {
-                    game_id:   game_id,
-                    player_id: current_player_id,
-                    team_id:   null
-                }
-            }
         }
 
         for (standing_id in team_standings) {

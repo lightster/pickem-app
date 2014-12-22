@@ -316,6 +316,18 @@ window.FootballPickService = class FootballPickService
         throw "Picks not yet loaded using 'loadPicks' for year #{year} week #{week_num}" if not @picks[year]? or not @picks[year][week_num]?
         @picks[year][week_num]
 
+    getPicksForPlayersAndGames: (year, week_num, games, players) ->
+        throw "Picks not yet loaded using 'loadPicks' for year #{year} week #{week_num}" if not @picks[year]? or not @picks[year][week_num]?
+        for game in games
+            game_id = game.game_id
+            @picks[year][week_num][game_id] ?= {}
+            for player_id, player of players
+                @picks[year][week_num][game_id][player_id] ?=
+                    game_id:   game_id,
+                    player_id: player_id,
+                    team_id:   null
+        @picks[year][week_num]
+
 
     changePick: (game, player, team) ->
         @queuedPickChanges.push

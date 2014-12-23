@@ -388,7 +388,8 @@ module.controller('LidsysFootballPicksCtrl', [
                     'label':      game.isFinal(),
                     'success':    game.isFinal() && side.score >= opp_side.score,
                     'alert':      side.score < opp_side.score,
-                    'wrong-team': side.team.team_id != game.picks[$scope.currentPlayerId].team_id
+                    'wrong-team': !$scope.currentPlayerId
+                        || side.team.team_id != game.picks[$scope.currentPlayerId].team_id
                 };
             } else if (!$scope.currentPlayer) {
                 return {

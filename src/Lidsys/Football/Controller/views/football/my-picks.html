@@ -42,10 +42,10 @@
                 <span ng-show="game.isFinal() &amp;&amp; game.away.score < game.home.score">
                     0
                 </span>
-                <span lds-authenticated="true" ng-show="game.is_started &amp;&amp; game.picks[currentPlayerId].team_id == game.away.team.team_id &amp;&amp; !game.away.score &amp;&amp; !game.home.score">
+                <span lds-authenticated="true" ng-show="game.isStarted() &amp;&amp; game.picks[currentPlayerId].team_id == game.away.team.team_id &amp;&amp; !game.away.score &amp;&amp; !game.home.score">
                     X
                 </span>
-                <span lds-authenticated="true" ng-hide="game.is_started">
+                <span lds-authenticated="true" ng-hide="game.isStarted()">
                     <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.away.team.team_id}}" style="margin: 0; " ng-change="pickChanged(game, game.away.team)" />
                 </span>
             </td>
@@ -60,10 +60,10 @@
                 <span ng-show="game.isFinal() &amp;&amp; game.away.score > game.home.score">
                     0
                 </span>
-                <span lds-authenticated="true" ng-show="game.is_started &amp;&amp; game.picks[currentPlayerId].team_id == game.home.team.team_id &amp;&amp; !game.away.score &amp;&amp; !game.home.score">
+                <span lds-authenticated="true" ng-show="game.isStarted() &amp;&amp; game.picks[currentPlayerId].team_id == game.home.team.team_id &amp;&amp; !game.away.score &amp;&amp; !game.home.score">
                     X
                 </span>
-                <span lds-authenticated="true" ng-hide="game.is_started">
+                <span lds-authenticated="true" ng-hide="game.isStarted()">
                     <input type="radio" ng-model="game.picks[currentPlayerId].team_id" value="{{game.home.team.team_id}}" style="margin: 0; " ng-change="pickChanged(game, game.home.team)" />
                 </span>
             </td>

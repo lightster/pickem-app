@@ -42,7 +42,7 @@
                 <span ng-show="game.isFinal() &amp;&amp; game.away.score < game.home.score">
                     0
                 </span>
-                <span lds-authenticated="true" ng-show="game.isStarted() &amp;&amp; game.picks[currentPlayerId].isPickedTeam(game.away.team) &amp;&amp; !game.away.score &amp;&amp; !game.home.score">
+                <span lds-authenticated="true" ng-show="game.isStarted() &amp;&amp; game.picks[currentPlayerId].isPickedTeam(game.away.team) &amp;&amp; !game.isFinal()">
                     X
                 </span>
                 <span lds-authenticated="true" ng-hide="game.isStarted()">
@@ -60,7 +60,7 @@
                 <span ng-show="game.isFinal() &amp;&amp; game.away.score > game.home.score">
                     0
                 </span>
-                <span lds-authenticated="true" ng-show="game.isStarted() &amp;&amp; game.picks[currentPlayerId].isPickedTeam(game.home.team) &amp;&amp; !game.away.score &amp;&amp; !game.home.score">
+                <span lds-authenticated="true" ng-show="game.isStarted() &amp;&amp; game.picks[currentPlayerId].isPickedTeam(game.home.team) &amp;&amp; !game.isFinal()">
                     X
                 </span>
                 <span lds-authenticated="true" ng-hide="game.isStarted()">

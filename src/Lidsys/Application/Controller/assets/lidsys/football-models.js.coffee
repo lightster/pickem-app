@@ -238,6 +238,9 @@ window.FootballPick = class FootballPick
 
     setSavedTeam: (@saved_team_id) ->
 
+    isPickedTeam: (team_to_match) ->
+        team_to_match.team_id == @team_id
+
 
 
 

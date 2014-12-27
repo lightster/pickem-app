@@ -23,7 +23,7 @@
                         label: game.isFinal(),
                         success: game.isFinal() &amp;&amp; game.away.score >= game.home.score,
                         alert: game.away.score < game.home.score,
-                        'wrong-team': game.away.team.team_id != game.picks[currentPlayerId].team_id
+                        'wrong-team': !game.picks[currentPlayerId].isPickedTeam(game.away.team)
                     }
                 "
             >
@@ -64,7 +64,7 @@
                         label: game.isFinal(),
                         success: game.isFinal() &amp;&amp; game.away.score <= game.home.score,
                         alert: game.away.score > game.home.score,
-                        'wrong-team': game.home.team.team_id != game.picks[currentPlayerId].team_id
+                        'wrong-team': !game.picks[currentPlayerId].isPickedTeam(game.home.team)
                     }
                 "
             >

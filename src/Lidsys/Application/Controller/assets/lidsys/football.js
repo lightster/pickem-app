@@ -469,7 +469,9 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
             game.picks = picks[game.game_id]
             for (pick_id in game.picks) {
                 pick = game.picks[pick_id]
-                players_with_picks_hash[pick.player_id] = players[pick.player_id]
+                if (pick.team_id) {
+                    players_with_picks_hash[pick.player_id] = players[pick.player_id]
+                }
             }
         }
 

@@ -446,10 +446,15 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
     ) {
         var season  = footballSchedule.getSelectedSeason(),
             week    = footballSchedule.getSelectedWeek(),
-            picks   = footballPick.getPicks(season.getYear(), week.week_number),
             teams   = footballTeam.getTeams(),
             games   = footballSchedule.getGames(),
             players = footballPlayer.getPlayers(season.getYear()),
+            picks   = footballPick.getPicksForPlayersAndGames(
+                season.getYear(),
+                week.week_number,
+                games,
+                players
+            ),
             game    = null,
             game_id = null,
             pick_id = null,
@@ -528,6 +533,24 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
                 return {
                     'color': '#' + $scope.players[player.player_id].background_color
                 }
+            }
+        }
+        $scope.getPickCellClasses = function (game, side, opp_side) {
+            if (game.isFinal()) {
+                return {
+                    'label':      game.isFinal(),
+                    'success':    game.isFinal() && side.score >= opp_side.score,
+                    'alert':      side.score < opp_side.score,
+                    'wrong-team': !$scope.currentPlayerId
+                        || !game.picks[$scope.currentPlayerId].isPickedTeam(side.team)
+                };
+            } else {
+                return {
+                    'label':      false,
+                    'success':    false,
+                    'alert':      false,
+                    'wrong-team': false
+                };
             }
         }
     }

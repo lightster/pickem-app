@@ -18,14 +18,7 @@
         <tr>
             <td
                 class="fantasy-pick-box"
-                ng-class="
-                    {
-                        label: game.isFinal(),
-                        success: game.isFinal() &amp;&amp; game.away.score >= game.home.score,
-                        alert: game.away.score < game.home.score,
-                        'wrong-team': !game.picks[currentPlayerId].isPickedTeam(game.away.team)
-                    }
-                "
+                ng-class="getPickCellClasses(game, game.away, game.home)"
             >
                 <span ng-show="game.isFinal() &amp;&amp; game.away.score >= game.home.score">
                     {{week.win_weight}}
@@ -59,14 +52,7 @@
         <tr ng-repeat-end>
             <td
                 class="fantasy-pick-box"
-                ng-class="
-                    {
-                        label: game.isFinal(),
-                        success: game.isFinal() &amp;&amp; game.away.score <= game.home.score,
-                        alert: game.away.score > game.home.score,
-                        'wrong-team': !game.picks[currentPlayerId].isPickedTeam(game.home.team)
-                    }
-                "
+                ng-class="getPickCellClasses(game, game.home, game.away)"
             >
                 <span ng-show="game.isFinal() &amp;&amp; game.away.score <= game.home.score">
                     {{week.win_weight}}

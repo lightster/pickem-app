@@ -823,7 +823,12 @@ module.controller('LidsysFootballTeamStandingsCtrl', [
     'lidsysFootballSchedule',
     'lidsysFootballTeam',
     'lidsysFootballTeamStanding',
-    function ($scope, footballSchedule, footballTeam, footballTeamStanding) {
+    function (
+        $scope,
+        footballSchedule,
+        footballTeam,
+        footballTeamStanding
+    ) {
         var season = footballSchedule.getSelectedSeason(),
             week   = footballSchedule.getSelectedWeek(),
             conference = footballTeamStanding.getSelectedConference(),

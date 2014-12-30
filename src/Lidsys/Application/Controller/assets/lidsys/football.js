@@ -436,13 +436,15 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
     'lidsysFootballFantasyPlayer',
     'lidsysFootballSchedule',
     'lidsysFootballTeam',
+    'lidsysFootballTeamStylist',
     function (
         $scope,
         active,
         footballPick,
         footballPlayer,
         footballSchedule,
-        footballTeam
+        footballTeam,
+        footballTeamStylist
     ) {
         var season  = footballSchedule.getSelectedSeason(),
             week    = footballSchedule.getSelectedWeek(),
@@ -555,6 +557,8 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
                 };
             }
         }
+        $scope.getTeamNameBoxStyle      = footballTeamStylist.getTeamNameBoxStyle
+        $scope.getTeamAccessoryBoxStyle = footballTeamStylist.getTeamAccessoryBoxStyle
     }
 ])
 

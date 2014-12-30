@@ -27,15 +27,12 @@
                     0
                 </span>
             </td>
-            <td ng-style="{
-                'background-color': game.away.team.border_color,
-                'width': '4%'
-            }">&nbsp;</td>
-            <td ng-style="{
-                    'color': game.away.team.font_color,
-                    'background-color': game.away.team.background_color,
-                    'width': '40%'
-                }"
+            <td
+                ng-style="getTeamAccessoryBoxStyle(game.away.team)"
+            >
+                &nbsp;
+            </td>
+            <td ng-style="getTeamNameBoxStyle(game.away.team)"
                 class="no-wrap"
             >
                 {{game.away.team.location}} {{game.away.team.mascot}}
@@ -61,15 +58,13 @@
                     0
                 </span>
             </td>
-            <td ng-style="{
-                'background-color': game.home.team.border_color,
-                'width': '4%'
-            }">&nbsp;</td>
-            <td ng-style="{
-                    'color': game.home.team.font_color,
-                    'background-color': game.home.team.background_color,
-                    'width': '40%'
-                }"
+            <td
+                ng-style="getTeamAccessoryBoxStyle(game.home.team)"
+            >
+                &nbsp;
+            </td>
+            <td
+                ng-style="getTeamNameBoxStyle(game.home.team)"
                 class="no-wrap"
             >
                 {{game.home.team.location}} {{game.home.team.mascot}}

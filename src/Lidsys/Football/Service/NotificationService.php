@@ -175,6 +175,7 @@ HTML
         $pt_timezone     = new DateTimeZone('America/Los_Angeles');
         $first_game_time->setTimezone($pt_timezone);
         $first_game_day  = $first_game_time->format('l');
+        $week_name       = "week {$week_number}";
 
         $this->mailer->sendMessage(
             array(
@@ -183,10 +184,10 @@ HTML
                 'text'    => <<<TEXT
 Hello {{PLAYER_NAME}},
 
-Remember to make your fantasy football picks for week {{WEEK_NUMBER}}. Each game has its
+Remember to make your fantasy football picks for {{WEEK_NAME}}. Each game has its
 own individual due date and time, but the first game is {{FIRST_GAME_DAY}}.
 
-If you already submitted your picks for week {{WEEK_NUMBER}}, you are good to go.
+If you already submitted your picks for {{WEEK_NAME}}, you are good to go.
 
 Good luck,
 
@@ -200,12 +201,12 @@ TEXT
 <p>Hello {{PLAYER_NAME}},</p>
 
 <p>
-    Remember to make your fantasy football picks for week {{WEEK_NUMBER}}. Each game has its
+    Remember to make your fantasy football picks for {{WEEK_NAME}}. Each game has its
     own individual due date and time, but the first game is {{FIRST_GAME_DAY}}.
 </p>
 
 <p>
-    If you already submitted your picks for week {{WEEK_NUMBER}}, you are good to go.
+    If you already submitted your picks for {{WEEK_NAME}}, you are good to go.
 </p>
 
 <p>Good luck,</p>
@@ -221,7 +222,7 @@ HTML
             ),
             array(
                 '{{PLAYER_NAME}}'    => $user['name'],
-                '{{WEEK_NUMBER}}'    => $week_number,
+                '{{WEEK_NAME}}'      => $week_name,
                 '{{FIRST_GAME_DAY}}' => $first_game_day,
             )
         );

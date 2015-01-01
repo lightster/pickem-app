@@ -175,17 +175,35 @@ HTML
         $pt_timezone     = new DateTimeZone('America/Los_Angeles');
         $first_game_time->setTimezone($pt_timezone);
         $first_game_day  = $first_game_time->format('l');
-        $week_name       = "week {$week_number}";
+        $week_name       = "Week {$week_number}";
+        if ($week_number >= 18) {
+            $week_names = array(
+                18 => 'Wildcard Weekend',
+                19 => 'the Divisional Playoffs',
+                20 => 'the Conference Championships',
+                21 => 'The Big Game',
+            );
+            $week_name = $week_names[$week_number];
+            $points = $week['win_weight'];
+
+            $points_text = <<<POINTS_TEXT
+
+Since this is {$week_name}, each winning team that you pick is worth {$points} points.
+POINTS_TEXT;
+        }
+
+        $week_name_title = ucfirst($week_name);
 
         $this->mailer->sendMessage(
             array(
                 'to'      => "{$user['name']} <{$user['email']}>",
-                'subject' => "Fantasy Football {$year} - Week {$week_number} starts {$first_game_day}",
+                'subject' => "Fantasy Football {$year} - {$week_name_title} starts {$first_game_day}",
                 'text'    => <<<TEXT
 Hello {{PLAYER_NAME}},
 
 Remember to make your fantasy football picks for {{WEEK_NAME}}. Each game has its
 own individual due date and time, but the first game is {{FIRST_GAME_DAY}}.
+{$points_text}
 
 If you already submitted your picks for {{WEEK_NAME}}, you are good to go.
 
@@ -206,6 +224,10 @@ TEXT
 </p>
 
 <p>
+    <b>{$points_text}</b>
+</p>
+
+<p>
     If you already submitted your picks for {{WEEK_NAME}}, you are good to go.
 </p>
 
@@ -222,7 +244,7 @@ HTML
             ),
             array(
                 '{{PLAYER_NAME}}'    => $user['name'],
-                '{{WEEK_NAME}}'      => $week_name,
+                '{{WEEK_NAME}}'      => strtolower($week_name),
                 '{{FIRST_GAME_DAY}}' => $first_game_day,
             )
         );

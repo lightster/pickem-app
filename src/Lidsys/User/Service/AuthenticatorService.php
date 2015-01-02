@@ -17,10 +17,12 @@ use Lstr\Silex\Database\DatabaseService;
 class AuthenticatorService
 {
     private $db;
+    private $auth_config;
 
-    public function __construct(DatabaseService $db)
+    public function __construct(DatabaseService $db, array $auth_config)
     {
         $this->db    = $db;
+        $this->auth_config = $auth_config;
     }
 
     public function getUserForUsername($username)
@@ -149,6 +151,28 @@ SQL;
             )
         );
         return $query;
+    }
+
+    public function createRememberMeTokenData($username)
+    {
+        $public_params = array(
+            'username'  => $username,
+            'timestamp' => time(),
+        );
+
+        $private_params                = $public_params;
+        $private_params['private-key'] = $this->auth_config['remember-me']['private-key'];
+
+        ksort($private_params);
+
+        $public_params['token'] = $this->generateToken($private_params);
+
+        return $public_params;
+    }
+
+    private function generateToken(array $params)
+    {
+        return base64_encode(sha1(http_build_query($params)));
     }
 
     private function findUserWithWhereClause($where_sql, array $params)

@@ -20,7 +20,10 @@ class Provider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['lidsys.user.authenticator'] = $app->share(function ($app) {
-            return new AuthenticatorService($app['db']);
+            return new AuthenticatorService(
+                $app['db'],
+                $app['config']['auth']
+            );
         });
         $app['lidsys.user.auth-reset'] = $app->share(function ($app) {
             return new AuthenticationResetService(

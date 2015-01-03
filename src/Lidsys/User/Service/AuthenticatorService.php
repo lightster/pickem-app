@@ -153,6 +153,17 @@ SQL;
         return $query;
     }
 
+    public function getUserFromRememberMeTokenData(array $params)
+    {
+        try {
+            $this->validateRememberMeTokenData($params);
+        } catch (Exception $exception) {
+            return false;
+        }
+
+        return $this->getUserForUsername($params['username']);
+    }
+
     public function createRememberMeTokenData($username)
     {
         $public_params = array(
@@ -168,6 +179,35 @@ SQL;
         $public_params['token'] = $this->generateToken($private_params);
 
         return $public_params;
+    }
+
+    private function validateRememberMeTokenData(array $params)
+    {
+        if (!isset($params['username'])) {
+            throw new Exception("Parameter 'username' is missing.");
+        }
+        if (!isset($params['timestamp'])) {
+            throw new Exception("Parameter 'timestamp' is missing.");
+        }
+        if (!isset($params['token'])) {
+            throw new Exception("Parameter 'token' is missing.");
+        }
+
+        $private_params = array(
+            'username'    => $params['username'],
+            'timestamp'   => $params['timestamp'],
+            'private-key' => $this->auth_config['reset']['private-key'],
+        );
+
+        ksort($private_params);
+
+        $correct_token = $this->generateToken($private_params);
+
+        if ($correct_token !== $params['token']) {
+            throw new Exception("The provided token is invalid.");
+        }
+
+        return true;
     }
 
     private function generateToken(array $params)

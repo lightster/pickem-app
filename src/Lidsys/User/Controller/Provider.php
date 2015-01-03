@@ -190,11 +190,19 @@ class Provider implements ControllerProviderInterface
             $user_id = $app['session']->get('user_id');
 
             $authenticated_user = false;
+            $cookies = $request->cookies;
 
             if ($user_id) {
                 $authenticated_user =
                     $app['lidsys.user.authenticator']->getUserForUserId(
                         $user_id
+                    );
+            } elseif ($cookies->has('remember_me')
+                && ($remember_me_data = json_decode($cookies->get('remember_me'), true))
+            ) {
+                $authenticated_user =
+                    $app['lidsys.user.authenticator']->getUserFromRememberMeTokenData(
+                        $remember_me_data
                     );
             }
 
@@ -206,9 +214,13 @@ class Provider implements ControllerProviderInterface
         $controllers->post('/logout/', function (Request $request, Application $app) {
             $app['session']->remove('user_id');
 
-            return $app->json(array(
+            $response = $app->json(array(
                 'logged_out' => true,
             ));
+
+            $response->headers->clearCookie('remember_me');
+
+            return $response;
         });
 
         $controllers->post('/register/', function (Request $request, Application $app) {

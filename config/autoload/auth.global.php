@@ -4,5 +4,8 @@ return array(
         'reset' => array(
             'private-key' => '',
         ),
+        'remember-me' => array(
+            'private-key' => '',
+        ),
     ),
 );

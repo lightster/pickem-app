@@ -15,6 +15,7 @@ use Lstr\Silex\Controller\JsonRequestMiddlewareService;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 
 class Provider implements ControllerProviderInterface
@@ -89,25 +90,37 @@ class Provider implements ControllerProviderInterface
                     $request->get('password')
                 );
 
-            $response = array();
+            $response_data = array();
 
             $app['session']->remove('user_id');
 
             if ($authenticated_user) {
                 if ($authenticated_user['password_changed_at']) {
-                    $response['authenticated_user'] = $authenticated_user;
+                    $response_data['authenticated_user'] = $authenticated_user;
                     $app['session']->set(
                         'user_id',
                         $authenticated_user['user_id']
                     );
                 } else {
-                    $response['error'] = 'passwordless_account';
+                    $response_data['error'] = 'passwordless_account';
                 }
             } else {
-                $response['error'] = 'incorrect_credentials';
+                $response_data['error'] = 'incorrect_credentials';
             }
 
-            return $app->json($response);
+            $response = $app->json($response_data);
+
+            $remember_me_data = $app['lidsys.user.authenticator']->createRememberMeTokenData(
+                $authenticated_user['username']
+            );
+            $remember_me_cookie = new Cookie(
+                "remember_me",
+                json_encode($remember_me_data),
+                time() + (60 * 60 * 24 * 365 * 10)
+            );
+            $response->headers->setCookie($remember_me_cookie);
+
+            return $response;
         });
 
         $controllers->post('/password/', function (Request $request, Application $app) {
@@ -177,11 +190,19 @@ class Provider implements ControllerProviderInterface
             $user_id = $app['session']->get('user_id');
 
             $authenticated_user = false;
+            $cookies = $request->cookies;
 
             if ($user_id) {
                 $authenticated_user =
                     $app['lidsys.user.authenticator']->getUserForUserId(
                         $user_id
+                    );
+            } elseif ($cookies->has('remember_me')
+                && ($remember_me_data = json_decode($cookies->get('remember_me'), true))
+            ) {
+                $authenticated_user =
+                    $app['lidsys.user.authenticator']->getUserFromRememberMeTokenData(
+                        $remember_me_data
                     );
             }
 
@@ -193,9 +214,13 @@ class Provider implements ControllerProviderInterface
         $controllers->post('/logout/', function (Request $request, Application $app) {
             $app['session']->remove('user_id');
 
-            return $app->json(array(
+            $response = $app->json(array(
                 'logged_out' => true,
             ));
+
+            $response->headers->clearCookie('remember_me');
+
+            return $response;
         });
 
         $controllers->post('/register/', function (Request $request, Application $app) {

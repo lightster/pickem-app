@@ -10,6 +10,7 @@
 
 namespace Lidsys\Football\Service;
 
+use DateTime;
 use DOMDocument;
 use DOMXPath;
 use Pdo;
@@ -243,10 +244,17 @@ SQL;
 
     public function updateScores()
     {
-        $html = file_get_contents(
-            'http://www.nfl.com/liveupdate/scorestrip/ss.xml?random=' . microtime(true)
-            //'http://www.nfl.com/liveupdate/scorestrip/postseason/ss.xml?random=' . microtime(true)
+        $now = new DateTime();
+        $week = $this->getWeekForDate($now->format('c'));
+        $week_number = $this->getWeekNumberForWeekId($week['week_id']);
+
+        $scorestrip_url = (
+            $week_number >= 18
+            ? 'http://www.nfl.com/liveupdate/scorestrip/postseason/ss.xml?random=' . microtime(true)
+            : 'http://www.nfl.com/liveupdate/scorestrip/ss.xml?random=' . microtime(true)
         );
+        $html = file_get_contents($scorestrip_url);
+
         $dom            = new DOMDocument();
         libxml_use_internal_errors(true);
 

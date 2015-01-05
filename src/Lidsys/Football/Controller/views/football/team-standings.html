@@ -14,8 +14,8 @@
             <th>Ties</th>
         </tr>
         <tr ng-repeat="standing in standings">
-            <td ng-style="getTeamAccessoryBoxStyle(game.away.team)">&nbsp;</td>
-            <td ng-style="getTeamNameBoxStyle(game.away.team)"
+            <td ng-style="getTeamAccessoryBoxStyle(standing.team)">&nbsp;</td>
+            <td ng-style="getTeamNameBoxStyle(standing.team)">
                 {{standing.team.location}} {{standing.team.mascot}}
             </td>
             <td class="text-center">{{standing.win_count}}</td>

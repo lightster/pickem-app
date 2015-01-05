@@ -823,11 +823,13 @@ module.controller('LidsysFootballTeamStandingsCtrl', [
     'lidsysFootballSchedule',
     'lidsysFootballTeam',
     'lidsysFootballTeamStanding',
+    'lidsysFootballTeamStylist',
     function (
         $scope,
         footballSchedule,
         footballTeam,
-        footballTeamStanding
+        footballTeamStanding,
+        footballTeamStylist
     ) {
         var season = footballSchedule.getSelectedSeason(),
             week   = footballSchedule.getSelectedWeek(),
@@ -853,5 +855,7 @@ module.controller('LidsysFootballTeamStandingsCtrl', [
             }
         }
         $scope.standings = filteredStandings
+        $scope.getTeamNameBoxStyle      = footballTeamStylist.getTeamNameBoxStyle
+        $scope.getTeamAccessoryBoxStyle = footballTeamStylist.getTeamAccessoryBoxStyle
     }
 ])

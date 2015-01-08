@@ -8,40 +8,13 @@
  * that is distributed with this source code.
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+$app = require_once __DIR__ . '/../bootstrap.php';
 
-use Lidsys\Application\Application;
 use Lidsys\Application\Controller\Provider as AppControllerProvider;
 use Lidsys\Football\Controller\Provider as FootballControllerProvider;
 use Lidsys\User\Controller\Provider as UserControllerProvider;
 
-use Lstr\Silex\Asset\AssetServiceProvider;
-use Lstr\Silex\Config\ConfigServiceProvider;
-use Lstr\Silex\Database\DatabaseServiceProvider;
-use Lstr\Silex\Template\TemplateServiceProvider;
-
-use Lidsys\Application\Service\Provider as AppServiceProvider;
-use Lidsys\Football\Service\Provider as FootballServiceProvider;
-use Lidsys\User\Service\Provider as UserServiceProvider;
-
-use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
-
-$app = new Application();
-$app['route_class'] = 'Lidsys\Application\Route';
-
-$app->register(new AppServiceProvider());
-$app->register(new AssetServiceProvider());
-$app->register(new ConfigServiceProvider());
-$app->register(new DatabaseServiceProvider());
-$app->register(new FootballServiceProvider());
-$app->register(new SessionServiceProvider());
-$app->register(new TemplateServiceProvider());
-$app->register(new UserServiceProvider());
-
-if (isset($app['config']['debug'])) {
-    $app['debug'] = $app['config']['debug'];
-}
 
 $app->before(function (Request $request) use ($app) {
     if (strpos($request->getPathInfo(), '/app/build-number') === 0) {
@@ -71,6 +44,5 @@ $app->mount('/app', new AppControllerProvider());
 $app->get('/', function () use ($app) {
     return $app->redirect('/app/');
 });
-
 
 $app->run();

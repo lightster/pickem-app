@@ -204,6 +204,10 @@ class Provider implements ControllerProviderInterface
                     $app['lidsys.user.authenticator']->getUserFromRememberMeTokenData(
                         $remember_me_data
                     );
+                $app['session']->set(
+                    'user_id',
+                    $authenticated_user['user_id']
+                );
             }
 
             return $app->json(array(

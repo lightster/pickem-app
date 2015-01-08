@@ -10,6 +10,7 @@
 
 namespace Lidsys\User\Service;
 
+use Exception;
 use Pdo;
 
 use Lstr\Silex\Database\DatabaseService;
@@ -196,7 +197,7 @@ SQL;
         $private_params = array(
             'username'    => $params['username'],
             'timestamp'   => $params['timestamp'],
-            'private-key' => $this->auth_config['reset']['private-key'],
+            'private-key' => $this->auth_config['remember-me']['private-key'],
         );
 
         ksort($private_params);

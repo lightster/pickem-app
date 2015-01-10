@@ -1,7 +1,7 @@
 <?php
-return array(
-    'mailer' => array(
+return [
+    'mailer' => [
         'key'    => '',
         'domain' => '',
-    ),
-);
+    ],
+];

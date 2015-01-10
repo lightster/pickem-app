@@ -1,10 +1,10 @@
 <?php
-return array(
-    'app' => array(
+return [
+    'app' => [
         'base_url' => 'http://lightdatasys.com/app/#',
-        'commissioner' => array(
+        'commissioner' => [
             'name' => 'The Commissioner',
             'email' => '',
-        ),
-    ),
-);
+        ],
+    ],
+];

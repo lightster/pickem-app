@@ -1,11 +1,11 @@
 <?php
-return array(
-    'auth' => array(
-        'reset' => array(
+return [
+    'auth' => [
+        'reset' => [
             'private-key' => '',
-        ),
-        'remember-me' => array(
+        ],
+        'remember-me' => [
             'private-key' => '',
-        ),
-    ),
-);
+        ],
+    ],
+];

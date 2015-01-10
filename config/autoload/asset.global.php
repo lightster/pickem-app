@@ -1,4 +1,4 @@
 <?php
-return array(
+return [
     'lstr.asset.url_prefix' => '/app/asset/{{LAST_MODIFIED}}',
-);
+];

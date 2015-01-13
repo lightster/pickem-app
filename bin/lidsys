@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+/*
+ * Lightdatasys tools
+ */
+
+$app = require_once __DIR__ . '/../bootstrap.php';
+
+use Lidsys\Football\Command\SendReminderCommand as FootballSendReminderCommand;
+
+use Lstr\Silex\App\AppAwareInterface;
+use Silex\Application;
+use Symfony\Component\Console\Application as ConsoleApp;
+
+$console = new ConsoleApp(
+    'lightdatasys tools'
+);
+
+$console->add(new FootballSendReminderCommand());
+
+foreach ($console->all() as $command) {
+    if ($command instanceof AppAwareInterface) {
+        $command->setSilexApplication($app);
+    }
+}
+
+$exit_code = $console->run();
+
+exit($exit_code);

@@ -1,7 +1,8 @@
 <?php
 return [
     'mailer' => [
-        'key'    => '',
-        'domain' => '',
+        'key'                => '',
+        'domain'             => '',
+        'recipient_override' => '',
     ],
 ];

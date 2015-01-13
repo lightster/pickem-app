@@ -36,7 +36,7 @@ class Provider implements ServiceProviderInterface
 
             $overrides = array();
             if ($app['debug']) {
-                $overrides['to'] = $_SERVER['SERVER_ADMIN'];
+                $overrides['to'] = $mailer_config['recipient_override'];
             }
 
             return new MailerService(

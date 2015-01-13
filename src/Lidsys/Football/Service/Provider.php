@@ -47,7 +47,9 @@ class Provider implements ServiceProviderInterface
         });
         $app['lidsys.football.notification'] = $app->share(function ($app) {
             return new NotificationService(
-                $app['mailer']
+                $app['lidsys.football.schedule'],
+                $app['mailer'],
+                $app['lidsys.user.authenticator']
             );
         });
     }

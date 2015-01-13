@@ -15,15 +15,20 @@ use DateTimeZone;
 use Exception;
 
 use Lidsys\Application\Service\MailerService;
+use Lidsys\User\Service\AuthenticatorService;
 
 class NotificationService
 {
     private $mailer;
 
     public function __construct(
-        MailerService $mailer
+        ScheduleService $schedule,
+        MailerService $mailer,
+        AuthenticatorService $authenticator
     ) {
-        $this->mailer      = $mailer;
+        $this->schedule      = $schedule;
+        $this->mailer        = $mailer;
+        $this->authenticator = $authenticator;
     }
 
     public function sendWelcomeEmail($user)
@@ -250,5 +255,32 @@ HTML
         );
 
         return true;
+    }
+
+    public function sendReminderEmailForDate(DateTime $date)
+    {
+        $week         = $this->schedule->getWeekForDate($date->format('Y-m-d'));
+        if ($week) {
+            $games = $this->schedule->getGamesForWeek(
+                $week['year'],
+                $week['week_number']
+            );
+            $first_game = current($games);
+
+            $count = 0;
+            $user_results = $this->authenticator->findUsersActiveSince('2014-09-01');
+            while ($user = $user_results->fetch()) {
+                $this->sendReminderEmail(
+                    $user,
+                    $week,
+                    $first_game
+                );
+                ++$count;
+            }
+
+            return $count;
+        }
+
+        return null;
     }
 }

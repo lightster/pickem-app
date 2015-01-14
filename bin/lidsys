@@ -7,6 +7,7 @@
 $app = require_once __DIR__ . '/../bootstrap.php';
 
 use Lidsys\Football\Command\SendReminderCommand as FootballSendReminderCommand;
+use Lidsys\Football\Command\UpdateScoresCommand as FootballUpdateScoresCommand;
 
 use Lstr\Silex\App\AppAwareInterface;
 use Silex\Application;
@@ -17,6 +18,7 @@ $console = new ConsoleApp(
 );
 
 $console->add(new FootballSendReminderCommand());
+$console->add(new FootballUpdateScoresCommand());
 
 foreach ($console->all() as $command) {
     if ($command instanceof AppAwareInterface) {

@@ -32,9 +32,9 @@ class AuthenticatorService
             "
                 WHERE u.username = :username
             ",
-            array(
+            [
                 'username' => $username,
-            )
+            ]
         );
     }
 
@@ -45,10 +45,10 @@ class AuthenticatorService
                 WHERE u.username = :username
                     AND u.password = md5(concat(:password, u.securityHash))
             ",
-            array(
+            [
                 'username' => $username,
                 'password' => md5($password),
-            )
+            ]
         );
     }
 
@@ -59,10 +59,10 @@ class AuthenticatorService
                 WHERE u.userId = :user_id
                     AND u.password = md5(concat(:password, u.securityHash))
             ",
-            array(
+            [
                 'user_id' => $user_id,
                 'password' => md5($password),
-            )
+            ]
         );
     }
 
@@ -72,9 +72,9 @@ class AuthenticatorService
             "
                 WHERE u.userId = :user_id
             ",
-            array(
+            [
                 'user_id' => $user_id,
-            )
+            ]
         );
     }
 
@@ -84,9 +84,9 @@ class AuthenticatorService
             "
                 WHERE u.email = :email
             ",
-            array(
+            [
                 'email' => $email,
-            )
+            ]
         );
     }
 
@@ -100,10 +100,10 @@ class AuthenticatorService
                     passwordDate = NOW()
                 WHERE userId = :user_id
             ",
-            array(
+            [
                 'user_id'  => $user_id,
                 'password' => md5($password),
-            )
+            ]
         );
 
         return true;
@@ -129,10 +129,10 @@ class AuthenticatorService
                 SET password = md5(concat(:password, securityHash))
                 WHERE username = :username
             ",
-            array(
+            [
                 'username'  => $username,
                 'password' => md5($new_password),
-            )
+            ]
         );
 
         return $new_password;
@@ -147,9 +147,9 @@ WHERE lastActive >= :last_active
 SQL;
         $query = $this->db->query(
             $sql,
-            array(
+            [
                 'last_active' => $last_active,
-            )
+            ]
         );
         return $query;
     }
@@ -167,10 +167,10 @@ SQL;
 
     public function createRememberMeTokenData($username)
     {
-        $public_params = array(
+        $public_params = [
             'username'  => $username,
             'timestamp' => time(),
-        );
+        ];
 
         $private_params                = $public_params;
         $private_params['private-key'] = $this->auth_config['remember-me']['private-key'];
@@ -194,11 +194,11 @@ SQL;
             throw new Exception("Parameter 'token' is missing.");
         }
 
-        $private_params = array(
+        $private_params = [
             'username'    => $params['username'],
             'timestamp'   => $params['timestamp'],
             'private-key' => $this->auth_config['remember-me']['private-key'],
-        );
+        ];
 
         ksort($private_params);
 

@@ -46,7 +46,7 @@ class AuthenticationResetService
         $query_string = $this->createTokenQueryString($user['username']);
 
         $this->mailer->sendMessage(
-            array(
+            [
                 'to'      => "{$user['name']} <{$user['email']}>",
                 'subject' => 'Lightdatasys Account Information',
                 'text'    => <<<TEXT
@@ -85,7 +85,7 @@ TEXT
 </p>
 HTML
                 ,
-            )
+            ]
         );
 
         return true;
@@ -96,7 +96,7 @@ HTML
         $query_string = $this->createTokenQueryString($user['username']);
 
         $this->mailer->sendMessage(
-            array(
+            [
                 'to'      => "{$user['name']} <{$user['email']}>",
                 'subject' => 'Lightdatasys Account Information',
                 'text'    => <<<TEXT
@@ -137,7 +137,7 @@ TEXT
 </p>
 HTML
                 ,
-            )
+            ]
         );
 
         return true;
@@ -160,10 +160,10 @@ HTML
 
     private function createTokenQueryString($username)
     {
-        $public_params = array(
+        $public_params = [
             'username'  => $username,
             'timestamp' => time(),
-        );
+        ];
 
         $private_params                = $public_params;
         $private_params['private-key'] = $this->auth_config['reset']['private-key'];
@@ -187,11 +187,11 @@ HTML
             throw new Exception("Parameter 'token' is missing.");
         }
 
-        $private_params = array(
+        $private_params = [
             'username'    => $params['username'],
             'timestamp'   => $params['timestamp'],
             'private-key' => $this->auth_config['reset']['private-key'],
-        );
+        ];
 
         ksort($private_params);
 

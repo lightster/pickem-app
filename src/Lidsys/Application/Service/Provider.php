@@ -19,10 +19,10 @@ class Provider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['config'] = $app->share(function ($app) {
-            return $app['lstr.config']->load(array(
+            return $app['lstr.config']->load([
                 __DIR__ . '/../../../../config/autoload/*.global.php',
                 __DIR__ . '/../../../../config/autoload/*.local.php',
-            ));
+            ]);
         });
 
         $app['db'] = $app->share(function ($app) {
@@ -34,7 +34,7 @@ class Provider implements ServiceProviderInterface
             $app_config     = $app['config']['app'];
             $commish_config = $app_config['commissioner'];
 
-            $overrides = array();
+            $overrides = [];
             if ($app['debug']) {
                 $overrides['to'] = $mailer_config['recipient_override'];
             }
@@ -42,15 +42,15 @@ class Provider implements ServiceProviderInterface
             return new MailerService(
                 $mailer_config['key'],
                 $mailer_config['domain'],
-                array(
-                    'substitutions' => array(
+                [
+                    'substitutions' => [
                         '{{BASE_URL}}' => $app_config['base_url'],
-                    ),
-                    'defaults' => array(
+                    ],
+                    'defaults' => [
                         'from' => "{$commish_config['name']} <{$commish_config['email']}>",
-                    ),
+                    ],
                     'overrides' => $overrides,
-                )
+                ]
             );
         });
     }

@@ -22,9 +22,9 @@ class MailerService
 
     private $mailgun;
 
-    public function __construct($key, $domain, array $options = array())
+    public function __construct($key, $domain, array $options = [])
     {
-        $substitutions = $defaults = $overrides = array();
+        $substitutions = $defaults = $overrides = [];
         extract($options, EXTR_IF_EXISTS);
 
         $this->key           = $key;
@@ -46,7 +46,7 @@ class MailerService
         return $this->mailgun;
     }
 
-    public function sendMessage(array $data, array $local_subs = array())
+    public function sendMessage(array $data, array $local_subs = [])
     {
         $data = array_replace_recursive(
             $this->defaults,

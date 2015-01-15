@@ -35,7 +35,7 @@ class UserService
     {
         $db = $this->db;
 
-        $errors = array();
+        $errors = [];
 
         if (strlen($user_info['first_name']) < 3) {
             $errors['first_name'] = 'Please enter at least 3 characters of your first name.';
@@ -55,9 +55,9 @@ class UserService
                     FROM user
                     WHERE email = :email
                 ",
-                array(
+                [
                     'email'   => $user_info['email'],
-                )
+                ]
             )->fetch();
             if ($email_exists) {
                 $errors['email'] = 'The email address you entered is already in use.';
@@ -65,7 +65,7 @@ class UserService
         }
 
         if (count($errors)) {
-            return array('error' => $errors);
+            return ['error' => $errors];
         }
 
         $group = $db->query(
@@ -82,39 +82,39 @@ class UserService
 
         $db->insert(
             'user',
-            array(
+            [
                 'username'     => $user_info['email'],
                 'email'        => $user_info['email'],
                 'password'     => md5(microtime()),
                 'securityHash' => substr(base64_encode(md5(microtime())), 0, 4),
                 'joinDate'     => date('Y-m-d H:i:s'),
-            )
+            ]
         );
         $user_id = $db->getLastInsertId();
 
         $db->insert(
             'player',
-            array(
+            [
                 'name'    => $user_info['first_name'] . ' ' . $user_info['last_name'],
                 'bgcolor' => substr(md5(microtime()), 0, 6),
-            )
+            ]
         );
         $player_id = $db->getLastInsertId();
 
         $db->insert(
             'user_userGroup',
-            array(
+            [
                 'groupId' => $group['group_id'],
                 'userId'  => $user_id,
-            )
+            ]
         );
 
         $db->insert(
             'player_user',
-            array(
+            [
                 'playerId' => $player_id,
                 'userId'   => $user_id,
-            )
+            ]
         );
 
         return $this->auth->getUserForUserId($user_id);
@@ -133,10 +133,10 @@ class UserService
                     WHERE userId = :user_id
                 )
             ",
-            array(
+            [
                 'color'   => $color,
                 'user_id' => $user_id,
-            )
+            ]
         );
 
         return true;
@@ -151,9 +151,9 @@ class UserService
                 SET lastActive = NOW()
                 WHERE userId = :user_id
             ",
-            array(
+            [
                 'user_id' => $user_id,
-            )
+            ]
         );
     }
 }

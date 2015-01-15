@@ -31,7 +31,7 @@ class Provider implements ControllerProviderInterface
                 $request->get('email')
             );
 
-            $response = array();
+            $response = [];
             if ($is_found) {
                 $response['success'] = 'Your account information has been emailed to you.';
             } else {
@@ -48,13 +48,13 @@ class Provider implements ControllerProviderInterface
             );
 
             if ($user) {
-                $user_info = array(
+                $user_info = [
                     'username' => $user['username'],
-                );
+                ];
             } else {
-                $user_info = array(
+                $user_info = [
                     'error' => 'invalid_token',
-                );
+                ];
             }
 
             return $app->json($user_info);
@@ -72,15 +72,15 @@ class Provider implements ControllerProviderInterface
                     $request->get('newPassword')
                 );
                 if ($password_change) {
-                    return $app->json(array(
+                    return $app->json([
                         'success' => 'Your password has successfully been changed.',
-                    ));
+                    ]);
                 }
             }
 
-            return $app->json(array(
+            return $app->json([
                 'error' => 'invalid_token',
-            ));
+            ]);
         });
 
         $controllers->post('/login/', function (Request $request, Application $app) {
@@ -90,7 +90,7 @@ class Provider implements ControllerProviderInterface
                     $request->get('password')
                 );
 
-            $response_data = array();
+            $response_data = [];
 
             $app['session']->remove('user_id');
 
@@ -147,9 +147,9 @@ class Provider implements ControllerProviderInterface
                         $request->get('newPassword')
                     );
                     if ($password_change) {
-                        return $app->json(array(
+                        return $app->json([
                             'success' => 'Your password has successfully been changed.',
-                        ));
+                        ]);
                     } else {
                         $error = 'An error occurred. Your password change was not saved.';
                     }
@@ -158,9 +158,9 @@ class Provider implements ControllerProviderInterface
                 $error = 'The user you are logged in as could not be determined.';
             }
 
-            return $app->json(array(
+            return $app->json([
                 'error' => $error,
-            ));
+            ]);
         });
 
         $controllers->post('/user-profile/color/', function (Request $request, Application $app) {
@@ -170,19 +170,19 @@ class Provider implements ControllerProviderInterface
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
 
             if (!$authenticated_user) {
-                return $app->json(array(
+                return $app->json([
                     'error' => 'The user you are logged in as could not be determined.',
-                ));
+                ]);
             }
 
             if ($app['lidsys.user']->updateUserColor($user_id, $request->get('background_color'))) {
-                return $app->json(array(
+                return $app->json([
                     'success' => 'Your new color has been saved.',
-                ));
+                ]);
             } else {
-                return $app->json(array(
+                return $app->json([
                     'error' => 'An error occurred. Your color change was not saved.',
-                ));
+                ]);
             }
         });
 
@@ -210,17 +210,17 @@ class Provider implements ControllerProviderInterface
                 );
             }
 
-            return $app->json(array(
+            return $app->json([
                 'authenticated_user' => $authenticated_user,
-            ));
+            ]);
         });
 
         $controllers->post('/logout/', function (Request $request, Application $app) {
             $app['session']->remove('user_id');
 
-            $response = $app->json(array(
+            $response = $app->json([
                 'logged_out' => true,
-            ));
+            ]);
 
             $response->headers->clearCookie('remember_me');
 
@@ -228,11 +228,11 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->post('/register/', function (Request $request, Application $app) {
-            $new_user = $app['lidsys.user']->createUser(array(
+            $new_user = $app['lidsys.user']->createUser([
                 'email'      => $request->get('email'),
                 'first_name' => $request->get('first_name'),
                 'last_name'  => $request->get('last_name'),
-            ));
+            ]);
 
             if (!empty($new_user['error'])) {
                 return $app->json($new_user);
@@ -243,15 +243,15 @@ class Provider implements ControllerProviderInterface
             );
             $app['lidsys.football.notification']->sendWelcomeEmail($new_user);
 
-            $response = array();
+            $response = [];
             if ($is_found) {
-                $response['success'] = array(
+                $response['success'] = [
                     'form' => 'Your account verification email has been emailed to you.',
-                );
+                ];
             } else {
-                $response['error']   = array(
+                $response['error']   = [
                     'form' => 'There was an error creating your account. Please contact an administrator.',
-                );
+                ];
             }
 
             return $app->json($response);
@@ -264,13 +264,13 @@ class Provider implements ControllerProviderInterface
             );
 
             if ($user && empty($user['password_changed_at'])) {
-                $user_info = array(
+                $user_info = [
                     'username' => $user['username'],
-                );
+                ];
             } else {
-                $user_info = array(
+                $user_info = [
                     'error' => 'invalid_token',
-                );
+                ];
             }
 
             return $app->json($user_info);
@@ -288,15 +288,15 @@ class Provider implements ControllerProviderInterface
                     $request->get('newPassword')
                 );
                 if ($password_change) {
-                    return $app->json(array(
+                    return $app->json([
                         'success' => 'Your password has successfully been saved.',
-                    ));
+                    ]);
                 }
             }
 
-            return $app->json(array(
+            return $app->json([
                 'error' => 'invalid_token',
-            ));
+            ]);
         });
 
         $controllers->before(new JsonRequestMiddlewareService());

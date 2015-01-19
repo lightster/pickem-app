@@ -10,6 +10,8 @@
 
 namespace Lidsys\Application\Service;
 
+use Lidsys\Application\View\ViewTransformer;
+
 use Lstr\Silex\Database\DatabaseService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -52,6 +54,10 @@ class Provider implements ServiceProviderInterface
                     'overrides' => $overrides,
                 ]
             );
+        });
+
+        $app['view.transformer'] =$app->share(function ($app) {
+            return new ViewTransformer();
         });
     }
 

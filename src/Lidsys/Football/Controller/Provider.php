@@ -13,6 +13,8 @@ namespace Lidsys\Football\Controller;
 use DateTime;
 use DateTimeZone;
 
+use Lidsys\Football\View\SeasonTransformation;
+
 use Lstr\Silex\Template\Exception\TemplateNotFound;
 use Lstr\Silex\Controller\JsonRequestMiddlewareService;
 
@@ -70,15 +72,11 @@ class Provider implements ControllerProviderInterface
         $controllers->get('/seasons', function (Application $app) {
             $seasons = $app['lidsys.football.schedule']->getSeasons();
 
-            array_walk(
-                $seasons,
-                function (array & $season) {
-                    unset($season['season_id']);
-                }
-            );
-
             return $app->json(array(
-                'seasons' => $seasons,
+                'seasons' => $app['view.transformer']->transformList(
+                    new SeasonTransformation(),
+                    $seasons
+                ),
             ));
         });
 

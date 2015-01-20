@@ -14,6 +14,7 @@ use DateTime;
 use DateTimeZone;
 
 use Lidsys\Football\View\SeasonTransformation;
+use Lidsys\Football\View\WeekTransformation;
 
 use Lstr\Silex\Template\Exception\TemplateNotFound;
 use Lstr\Silex\Controller\JsonRequestMiddlewareService;
@@ -83,15 +84,11 @@ class Provider implements ControllerProviderInterface
         $controllers->get('/weeks/{year}', function ($year, Application $app) {
             $weeks = $app['lidsys.football.schedule']->getWeeksForYear($year);
 
-            array_walk(
-                $weeks,
-                function (array & $week) {
-                    unset($week['week_id']);
-                }
-            );
-
             return $app->json(array(
-                'weeks' => $weeks,
+                'weeks' => $app['view.transformer']->transformList(
+                    new WeekTransformation(),
+                    $weeks
+                ),
             ));
         });
 

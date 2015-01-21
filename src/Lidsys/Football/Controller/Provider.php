@@ -13,6 +13,7 @@ namespace Lidsys\Football\Controller;
 use DateTime;
 use DateTimeZone;
 
+use Lidsys\Football\View\GameTransformation;
 use Lidsys\Football\View\SeasonTransformation;
 use Lidsys\Football\View\WeekTransformation;
 
@@ -106,7 +107,10 @@ class Provider implements ControllerProviderInterface
             );
 
             return $app->json(array(
-                'games' => $games,
+                'games' => $app['view.transformer']->transformList(
+                    new GameTransformation(),
+                    $games
+                ),
             ));
         });
 

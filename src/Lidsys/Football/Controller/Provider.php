@@ -98,14 +98,6 @@ class Provider implements ControllerProviderInterface
 
             $timezone = new DateTimeZone('UTC');
 
-            array_walk(
-                $games,
-                function (array & $game) use ($timezone) {
-                    $start_time = new DateTime($game['start_time'], $timezone);
-                    $game['start_time'] = $start_time->format('c');
-                }
-            );
-
             return $app->json(array(
                 'games' => $app['view.transformer']->transformList(
                     new GameTransformation(),

@@ -11,7 +11,6 @@
 namespace Lidsys\Football\Controller;
 
 use DateTime;
-use DateTimeZone;
 
 use Lidsys\Football\View\GameTransformation;
 use Lidsys\Football\View\GameScoreTransformation;
@@ -97,8 +96,6 @@ class Provider implements ControllerProviderInterface
         $controllers->get('/schedule/{year}/{week}', function ($year, $week, Application $app) {
             $games = $app['lidsys.football.schedule']->getGamesForWeek($year, $week);
 
-            $timezone = new DateTimeZone('UTC');
-
             return $app->json(array(
                 'games' => $app['view.transformer']->transformList(
                     new GameTransformation(),
@@ -121,8 +118,6 @@ class Provider implements ControllerProviderInterface
         $controllers->get('/scores/{year}', function ($year, Application $app) {
             $sched_service = $app['lidsys.football.schedule'];
             $weeks         = $sched_service->getWeeksForYear($year);
-
-            $timezone = new DateTimeZone('UTC');
 
             $all_games = array();
             foreach ($weeks as $week_num => $week) {

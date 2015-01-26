@@ -10,6 +10,11 @@
 
 namespace Lidsys\Football\Service;
 
+use Lidsys\Football\View\GameTransformation;
+use Lidsys\Football\View\GameScoreTransformation;
+use Lidsys\Football\View\SeasonTransformation;
+use Lidsys\Football\View\WeekTransformation;
+
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -51,6 +56,18 @@ class Provider implements ServiceProviderInterface
                 $app['mailer'],
                 $app['lidsys.user.authenticator']
             );
+        });
+        $app['lidsys.football.transformation.game'] = $app->share(function ($app) {
+            return new GameTransformation();
+        });
+        $app['lidsys.football.transformation.game-score'] = $app->share(function ($app) {
+            return new GameScoreTransformation();
+        });
+        $app['lidsys.football.transformation.season'] = $app->share(function ($app) {
+            return new SeasonTransformation();
+        });
+        $app['lidsys.football.transformation.week'] = $app->share(function ($app) {
+            return new WeekTransformation();
         });
     }
 

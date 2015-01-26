@@ -12,11 +12,6 @@ namespace Lidsys\Football\Controller;
 
 use DateTime;
 
-use Lidsys\Football\View\GameTransformation;
-use Lidsys\Football\View\GameScoreTransformation;
-use Lidsys\Football\View\SeasonTransformation;
-use Lidsys\Football\View\WeekTransformation;
-
 use Lstr\Silex\Template\Exception\TemplateNotFound;
 use Lstr\Silex\Controller\JsonRequestMiddlewareService;
 
@@ -76,7 +71,7 @@ class Provider implements ControllerProviderInterface
 
             return $app->json(array(
                 'seasons' => $app['view.transformer']->transformList(
-                    new SeasonTransformation(),
+                    $app['lidsys.football.transformation.season'],
                     $seasons
                 ),
             ));
@@ -87,7 +82,7 @@ class Provider implements ControllerProviderInterface
 
             return $app->json(array(
                 'weeks' => $app['view.transformer']->transformList(
-                    new WeekTransformation(),
+                    $app['lidsys.football.transformation.week'],
                     $weeks
                 ),
             ));
@@ -98,7 +93,7 @@ class Provider implements ControllerProviderInterface
 
             return $app->json(array(
                 'games' => $app['view.transformer']->transformList(
-                    new GameTransformation(),
+                    $app['lidsys.football.transformation.game'],
                     $games
                 ),
             ));
@@ -109,7 +104,7 @@ class Provider implements ControllerProviderInterface
 
             return $app->json(array(
                 'games' => $app['view.transformer']->transformList(
-                    new GameScoreTransformation(),
+                    $app['lidsys.football.transformation.game-score'],
                     $games
                 ),
             ));
@@ -122,7 +117,7 @@ class Provider implements ControllerProviderInterface
             $all_games = array();
             foreach ($weeks as $week_num => $week) {
                 $all_games[$week_num] = $app['view.transformer']->transformList(
-                    new GameScoreTransformation(),
+                    $app['lidsys.football.transformation.game-score'],
                     $sched_service->getGamesForWeek(
                         $year,
                         $week_num

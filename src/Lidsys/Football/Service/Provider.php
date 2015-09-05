@@ -44,6 +44,12 @@ class Provider implements ServiceProviderInterface
                 $app['db']
             );
         });
+        $app['lidsys.football.schedule-import'] = $app->share(function ($app) {
+            return new ScheduleImportService(
+                $app['db'],
+                $app['lidsys.football.schedule']
+            );
+        });
         $app['lidsys.football.team'] = $app->share(function ($app) {
             return new TeamService(
                 $app['db'],

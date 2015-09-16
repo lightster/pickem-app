@@ -134,7 +134,7 @@ SELECT
 FROM nflWeek AS week
 JOIN nflSeason AS season USING (seasonId)
 JOIN nflGame AS game USING (weekId)
-WHERE :date BETWEEN weekStart AND weekEnd
+WHERE DATE(:date) BETWEEN weekStart AND weekEnd
 GROUP BY week_id
 LIMIT 1
 SQL;

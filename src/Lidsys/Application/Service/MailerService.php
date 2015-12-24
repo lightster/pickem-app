@@ -17,6 +17,9 @@ class MailerService
 {
     private $key;
     private $domain;
+    private $api_endpoint;
+    private $api_ssl;
+
     private $substitutions;
     private $defaults;
 
@@ -25,10 +28,14 @@ class MailerService
     public function __construct($key, $domain, array $options = [])
     {
         $substitutions = $defaults = $overrides = [];
+        $api_endpoint = 'bourne.r34d.me';
+        $api_ssl = false;
         extract($options, EXTR_IF_EXISTS);
 
         $this->key           = $key;
         $this->domain        = $domain;
+        $this->api_endpoint  = $api_endpoint;
+        $this->api_ssl       = $api_ssl;
 
         $this->substitutions = $substitutions;
         $this->defaults      = $defaults;
@@ -41,7 +48,12 @@ class MailerService
             return $this->mailgun;
         }
 
-        $this->mailgun = new Mailgun($this->key, 'bourne.r34d.me', 'v2', false);
+        $this->mailgun = new Mailgun(
+            $this->key,
+            $this->api_endpoint,
+            'v2',
+            $this->api_ssl
+        );
 
         return $this->mailgun;
     }

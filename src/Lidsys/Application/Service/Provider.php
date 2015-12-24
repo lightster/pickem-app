@@ -52,6 +52,8 @@ class Provider implements ServiceProviderInterface
                         'from' => "{$commish_config['name']} <{$commish_config['email']}>",
                     ],
                     'overrides' => $overrides,
+                    'api_endpoint' => $mailer_config['api_endpoint'],
+                    'api_ssl' => $mailer_config['api_ssl'],
                 ]
             );
         });

@@ -28,8 +28,8 @@ class MailerService
     public function __construct($key, $domain, array $options = [])
     {
         $substitutions = $defaults = $overrides = [];
-        $api_endpoint = 'bourne.r34d.me';
-        $api_ssl = false;
+        $api_endpoint = 'api.mailgun.net';
+        $api_ssl = true;
         extract($options, EXTR_IF_EXISTS);
 
         $this->key           = $key;

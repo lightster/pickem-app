@@ -25,6 +25,7 @@ nav.top-bar .title-area h1 {
     text-align: center;
     vertical-align: middle;
     width: 4%;
+    display: table-cell;
 }
 
 .label.success.wrong-team {

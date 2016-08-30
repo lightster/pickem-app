@@ -159,6 +159,8 @@ class ScheduleImportService
             'minute' => intval($raw_time[1]),
         );
 
+        $timezone = date_default_timezone_get();
+        date_default_timezone_set('America/New_York');
         $timestamp  = mktime(
             $time['hour'],
             $time['minute'],
@@ -167,6 +169,7 @@ class ScheduleImportService
             $date['day'],
             $date['year']
         );
+        date_default_timezone_set($timezone);
 
         return $timestamp;
     }

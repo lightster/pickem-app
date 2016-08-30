@@ -128,6 +128,14 @@ class ScheduleImportService
             $known_data['time'] = $time_div->textContent;
         }
 
+        $time_of_day = $xpath->query(
+            './/span[@class="suff"]/span',
+            $game_li
+        );
+        if ($time_of_day->length && ($time_of_day_div = $time_of_day->item(0))) {
+            $known_data['time_of_day'] = trim($time_of_day_div->textContent);
+        }
+
         return $known_data;
     }
 
@@ -147,7 +155,7 @@ class ScheduleImportService
 
         $raw_time = explode(':', $known_data['time']);
         $time = array(
-            'hour'   => intval($raw_time[0]) + 12,
+            'hour'   => intval($raw_time[0]) + ('PM' === $known_data['time_of_day'] && $raw_time[0] != 12 ? 12 : 0),
             'minute' => intval($raw_time[1]),
         );
 

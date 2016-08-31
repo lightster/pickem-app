@@ -40,7 +40,7 @@ class NotificationService
                 'text'    => <<<TEXT
 Hello {{PLAYER_NAME}},
 
-The regular season starts THIS THURSDAY, September 10. I recommend that you
+The regular season starts Thursday, September 8. I recommend that you
 start picking now so you don't forget to do so later—you can always change
 your picks later, as long as it is before the game is locked.
 
@@ -90,7 +90,7 @@ TEXT
 <p>Hello {{PLAYER_NAME}},</p>
 
 <p>
-    The regular season starts THIS THURSDAY, September 10. I recommend that you
+    The regular season starts Thursday, September 8. I recommend that you
     start picking now so you don't forget to do so later—you can always change
     your picks later, as long as it is before the game is locked.
 </p>

@@ -24,7 +24,9 @@ class ImportScheduleCommand extends Command implements AppAwareInterface
     {
         $app     = $this->getSilexApplication();
 
-        $app['lidsys.football.schedule-import']->importThirdPartySchedule(date('Y'));
+        $app['lidsys.football.schedule-import']->importThirdPartySchedule(
+            (date('n') >= 5 ? date('Y') : date('Y') - 1)
+        );
 
         $output->writeln("done");
     }

@@ -20,6 +20,7 @@ $console = new ConsoleApp(
 
 $console->add(new FootballImportScheduleCommand());
 $console->add(new FootballSendReminderCommand());
+$console->add(new Lidsys\Football\Command\SendWelcomeEmailCommand());
 $console->add(new FootballUpdateScoresCommand());
 
 foreach ($console->all() as $command) {

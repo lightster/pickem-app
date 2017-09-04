@@ -47,7 +47,7 @@ class Provider implements ControllerProviderInterface
             return $app->json('nada');
         });
 
-        $controllers->get('/notification', function (Application $app) {
+        $controllers->get('/welcome-emailer', function (Application $app) {
             $user_id = $app['session']->get('user_id');
 
             $authenticated_user =
@@ -55,7 +55,7 @@ class Provider implements ControllerProviderInterface
 
             if ('lightster' === $authenticated_user['username']) {
                 $count = 0;
-                $user_results = $app['lidsys.user.authenticator']->findUsersActiveSince('2013-09-01');
+                $user_results = $app['lidsys.user.authenticator']->findUsersActiveSince((date('Y') - 1) . '-09-01');
                 while ($user = $user_results->fetch()) {
                     $app['lidsys.football.notification']->sendWelcomeEmail($user);
                     ++$count;

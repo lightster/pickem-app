@@ -36,11 +36,11 @@ class NotificationService
         $this->mailer->sendMessage(
             array(
                 'to'      => "{$user['name']} <{$user['email']}>",
-                'subject' => 'Fantasy Football \'15 - Week 1 starts THURSDAY',
+                'subject' => 'Fantasy Football - Week 1 starts THURSDAY',
                 'text'    => <<<TEXT
 Hello {{PLAYER_NAME}},
 
-The regular season starts Thursday, September 8. I recommend that you
+The regular season starts this Thursday. I recommend that you
 start picking now so you don't forget to do so later—you can always change
 your picks later, as long as it is before the game is locked.
 
@@ -90,7 +90,7 @@ TEXT
 <p>Hello {{PLAYER_NAME}},</p>
 
 <p>
-    The regular season starts Thursday, September 8. I recommend that you
+    The regular season starts this Thursday. I recommend that you
     start picking now so you don't forget to do so later—you can always change
     your picks later, as long as it is before the game is locked.
 </p>
@@ -268,7 +268,7 @@ HTML
             $first_game = current($games);
 
             $count = 0;
-            $user_results = $this->authenticator->findUsersActiveSince('2015-09-01');
+            $user_results = $this->authenticator->findUsersActiveSince(date('Y') . '-07-01');
             while ($user = $user_results->fetch()) {
                 $this->sendReminderEmail(
                     $user,

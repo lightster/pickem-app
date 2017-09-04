@@ -283,4 +283,21 @@ HTML
 
         return null;
     }
+
+    public function sendWelcomeEmailForDate(DateTime $date)
+    {
+        $week         = $this->schedule->getWeekForDate($date->format('Y-m-d'));
+        if ($week['week_number'] !== 1) {
+            return null;
+        }
+
+        $count = 0;
+        $user_results = $this->authenticator->findUsersActiveSince((date('Y') - 1) . '-09-01');
+        while ($user = $user_results->fetch()) {
+            $this->sendWelcomeEmail($user);
+            ++$count;
+        }
+
+        return $count;
+    }
 }

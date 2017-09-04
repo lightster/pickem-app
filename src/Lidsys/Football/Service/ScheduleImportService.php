@@ -41,7 +41,7 @@ class ScheduleImportService
     private function retrieveSeasonGamesFromThirdParty($year)
     {
         $games = array();
-        for ($week = 1; $week <= 17; $week++) {
+        for ($week = 1; $week <= 18; $week++) {
             $week_games = $this->retrieveWeekGamesFromThirdParty($year, $week);
             $games = $games + $week_games;
         }
@@ -51,7 +51,8 @@ class ScheduleImportService
 
     private function retrieveWeekGamesFromThirdParty($year, $week)
     {
-        $html = file_get_contents("http://www.nfl.com/schedules/{$year}/REG{$week}");
+        $week_name = ($week >= 18 ? 'POST' : "REG{$week}");
+        $html = file_get_contents("http://www.nfl.com/schedules/{$year}/{$week_name}");
         $dom = new DOMDocument();
 
         libxml_use_internal_errors(true);
@@ -74,6 +75,8 @@ class ScheduleImportService
                 throw new Exception(
                     "Game element matched but did not contain a 'data-gameid' value."
                 );
+            } elseif (empty($known_data['time_of_day'])) {
+                continue;
             }
 
             $games[$known_data['game_id']] = array(
@@ -237,12 +240,19 @@ SQL;
     {
         $season_id = $this->getSeasonIdForYear($year);
 
+        $weeks_by_start = [];
+        $week_number = 1;
         foreach ($this->getStagedDates() as $date) {
             $start_timestamp = strtotime(
                 'last Wednesday',
                 strtotime($date)
             );
             $start_date = date('Y-m-d', $start_timestamp);
+
+            if (!isset($weeks_by_start[$start_date])) {
+                $weeks_by_start[$start_date] = $week_number;
+                ++$week_number;
+            }
 
             if ($this->doesWeekExist($season_id, $start_date)) {
                 continue;
@@ -259,7 +269,7 @@ SQL;
                     'seasonId'  => $season_id,
                     'weekStart' => $start_date,
                     'weekEnd'   => date('Y-m-d', $end_timestamp),
-                    'winWeight' => 1,
+                    'winWeight' => ($week_number > 17 ? pow(2, $week_number - 17) : 1),
                 )
             );
         }
@@ -272,6 +282,7 @@ SQL;
         $sql = <<<SQL
 SELECT DISTINCT DATE(gameTime) AS date
 FROM nflGameImport
+ORDER BY DATE(gameTime)
 SQL;
         $result = $this->db->query($sql);
         while ($row = $result->fetch()) {
@@ -317,6 +328,7 @@ FROM nflGameImport AS import
 JOIN nflTeam AS away ON import.awayTeam = away.abbreviation
 JOIN nflTeam AS home ON import.homeTeam = home.abbreviation
 JOIN nflWeek AS week ON DATE(import.gameTime) BETWEEN week.weekStart AND week.weekEnd
+ON DUPLICATE KEY UPDATE gameTime = VALUES(gameTime)
 SQL;
         $this->db->query($sql);
     }

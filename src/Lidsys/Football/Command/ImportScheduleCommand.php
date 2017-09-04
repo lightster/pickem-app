@@ -26,6 +26,6 @@ class ImportScheduleCommand extends Command implements AppAwareInterface
 
         $app['lidsys.football.schedule-import']->importThirdPartySchedule(date('Y'));
 
-        echo "done";
+        $output->writeln("done");
     }
 }

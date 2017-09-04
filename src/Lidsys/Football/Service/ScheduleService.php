@@ -248,6 +248,9 @@ SQL;
     {
         $now = new DateTime();
         $week = $this->getWeekForDate($now->format('c'));
+        if (!$week) {
+            return;
+        }
         $week_number = $this->getWeekNumberForWeekId($week['week_id']);
 
         $scorestrip_url = (

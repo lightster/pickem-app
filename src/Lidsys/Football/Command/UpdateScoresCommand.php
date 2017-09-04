@@ -26,6 +26,6 @@ class UpdateScoresCommand extends Command implements AppAwareInterface
 
         $app['lidsys.football.schedule']->updateScores();
 
-        echo "done";
+        $output->writeln("done");
     }
 }

@@ -6,6 +6,7 @@ FROM php:5.6-fpm-alpine
 
 # opcache is for lidsys-web
 # pdo is for lidsys-web
+# pdo_mysql is for lidsys-web
 # nodejs is for lidsys-web JS/CSS assets
 # dom is for lidsys-web
 
@@ -24,6 +25,7 @@ RUN apk add --no-cache --virtual '.lightster-phpize-deps' \
         zip \
         opcache \
         pdo \
+        pdo_mysql \
         dom \
     && apk del --no-cache .lightster-phpize-deps
 

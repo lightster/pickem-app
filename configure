@@ -9,14 +9,21 @@ case "$1" in
     pier)
         COMPOSE_FILES=(
             docker-compose.web.yml
+            docker-compose.development.yml
             docker-compose.pier.yml
         )
+        INSTALL_TARGET="install-pier"
+        YESTERDAY=$(date +"%Y-%m-%d" -d "yesterday")
+        BACKUP_LOCATION=$(moor config get lidsys.snapshot.location)"/${YESTERDAY}/*lidsys.sql.gz"
         ;;
 
     docker-dev)
         COMPOSE_FILES=(
             docker-compose.web.yml
+            docker-compose.development.yml
         )
+        INSTALL_TARGET="install-dev"
+        BACKUP_LOCATION=""
         ;;
 
     docker-prod)
@@ -24,6 +31,8 @@ case "$1" in
             docker-compose.web.yml
             # docker-compose.production.yml
         )
+        INSTALL_TARGET="install-docker"
+        BACKUP_LOCATION=""
         ;;
 
     *)
@@ -33,6 +42,8 @@ esac
 
 cat >Makefile <<ENV_VARS
 COMPOSE_FILES=$(printf ' -f %s' "${COMPOSE_FILES[@]}")
+INSTALL_TARGET=${INSTALL_TARGET}
+BACKUP_LOCATION=${BACKUP_LOCATION}
 
 ENV_VARS
 

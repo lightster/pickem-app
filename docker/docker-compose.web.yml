@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  nginx:
+    image: nginx:1.13.6-alpine
+    restart: always
+    volumes:
+      - .:/var/www/html/lidsys-web
+      - ./docker/nginx/lightdatasys.conf:/etc/nginx/conf.d/lightdatasys.conf
+    ports:
+      - 80
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: always
+    volumes:
+      - .:/var/www/html/lidsys-web
+      - ~/.composer:/root/.composer
+    ports:
+      - 9000

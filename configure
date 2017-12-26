@@ -1,0 +1,39 @@
+#!/bin/bash
+
+cd $(dirname ${0})
+
+INSTALL_TARGET=""
+COMPOSE_FILES=()
+
+case "$1" in
+    pier)
+        COMPOSE_FILES=(
+            docker-compose.web.yml
+            docker-compose.pier.yml
+        )
+        ;;
+
+    docker-dev)
+        COMPOSE_FILES=(
+            docker-compose.web.yml
+        )
+        ;;
+
+    docker-prod)
+        COMPOSE_FILES=(
+            docker-compose.web.yml
+            # docker-compose.production.yml
+        )
+        ;;
+
+    *)
+        echo "Usage: $0 pier|docker-dev|docker-prod"
+        exit 1
+esac
+
+cat >Makefile <<ENV_VARS
+COMPOSE_FILES=$(printf ' -f %s' "${COMPOSE_FILES[@]}")
+
+ENV_VARS
+
+tee -a Makefile <Makefile.in >/dev/null

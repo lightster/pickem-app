@@ -2,6 +2,7 @@ install: build-compose-file
 	docker-compose build
 	docker-compose up -d
 	docker-compose run --rm -w /var/www/html/lidsys-web php-fpm composer install
+	docker-compose run --rm -w /var/www/html/lidsys-web php-fpm npm install
 
 build-compose-file:
 	cp -a docker/docker-compose.*.yml .

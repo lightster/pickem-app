@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  nginx:
+    networks:
+      default:
+      pier-buoy:
+        aliases:
+          - lightdatasys
+
+networks:
+  pier-buoy:
+    external:
+      name: pier-buoy

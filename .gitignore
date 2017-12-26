@@ -1,3 +1,7 @@
 vendor
 node_modules
 config/autoload/*.local.php
+Makefile
+docker-compose.yml
+/data/mariadb
+/.pier.overrides.yaml

@@ -11,7 +11,7 @@ install-pier: install-dev-db install-dev
 install-dev: install-dev-config install-docker
 
 install-dev-db:
-	rsync -aP ${BACKUP_LOCATION} ./backups/
+	rsync -aP ${BACKUP_LOCATION} ./docker/mariadb/initdb.d/
 
 install-dev-config:
 	ln -sfn database.dev.php config/autoload/database.local.php

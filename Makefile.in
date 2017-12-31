@@ -14,8 +14,8 @@ install-dev-db:
 	rsync -aP ${BACKUP_LOCATION} ./docker/mariadb/initdb.d/
 
 install-dev-config:
-	ln -sfn database.dev.php config/autoload/database.local.php
-	ln -sfn debug.dev.php config/autoload/debug.local.php
+	cp config/autoload/database.dev.php config/autoload/database.local.php
+	cp config/autoload/debug.dev.php config/autoload/debug.local.php
 
 build-compose-file:
 	cp -a docker/docker-compose.*.yml .

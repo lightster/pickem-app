@@ -51,7 +51,13 @@ class FantasyStandingService
                             0
                         )
                     ) AS points,
-                    COUNT(winWeight) AS potential_points
+                    SUM(
+                        IF(
+                            g.homeScore IS NULL OR g.awayScore IS NULL,
+                            0,
+                            winWeight
+                        )
+                    ) AS potential_points
                 FROM player AS p
                 LEFT JOIN nflFantPick AS fp ON p.playerId = fp.playerId
                 LEFT JOIN nflGame AS g ON fp.gameId=g.gameId

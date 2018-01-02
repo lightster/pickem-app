@@ -11,7 +11,6 @@
 namespace Lidsys\Application\Service;
 
 use Mailgun\Mailgun;
-use Silex\Application;
 
 class MailerService
 {

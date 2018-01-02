@@ -10,11 +10,7 @@
 
 namespace Lidsys\User\Service;
 
-use Pdo;
-
 use Lstr\Silex\Database\DatabaseService;
-
-use Silex\Application;
 
 class UserService
 {

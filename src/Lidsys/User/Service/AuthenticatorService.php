@@ -11,7 +11,6 @@
 namespace Lidsys\User\Service;
 
 use Exception;
-use Pdo;
 
 use Lstr\Silex\Database\DatabaseService;
 

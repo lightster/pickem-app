@@ -12,13 +12,11 @@ namespace Lidsys\Football\Controller;
 
 use DateTime;
 
-use Lstr\Silex\Template\Exception\TemplateNotFound;
 use Lstr\Silex\Controller\JsonRequestMiddlewareService;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class Provider implements ControllerProviderInterface
 {

@@ -10,7 +10,6 @@
 
 namespace Lidsys\Football\Service;
 
-use DateTime;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;

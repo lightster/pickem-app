@@ -10,8 +10,6 @@
 
 namespace Lidsys\User\Service;
 
-use Lstr\Silex\Database\DatabaseService;
-
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

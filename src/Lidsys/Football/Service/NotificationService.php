@@ -12,7 +12,6 @@ namespace Lidsys\Football\Service;
 
 use DateTime;
 use DateTimeZone;
-use Exception;
 
 use Lidsys\Application\Service\MailerService;
 use Lidsys\User\Service\AuthenticatorService;

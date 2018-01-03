@@ -14,7 +14,6 @@ use DateTime;
 use DOMDocument;
 use DOMXPath;
 use Exception;
-use Pdo;
 
 use Lstr\Silex\Database\DatabaseService;
 

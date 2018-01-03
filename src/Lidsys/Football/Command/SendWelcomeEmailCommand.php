@@ -4,15 +4,11 @@ namespace Lidsys\Football\Command;
 
 use DateInterval;
 use DateTime;
-use Exception;
 
 use Lstr\Silex\App\AppAwareInterface;
 use Lstr\Silex\App\AppAwareTrait;
-use Silex\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SendWelcomeEmailCommand extends Command implements AppAwareInterface

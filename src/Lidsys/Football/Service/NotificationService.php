@@ -267,7 +267,7 @@ HTML
             $first_game = current($games);
 
             $count = 0;
-            $user_results = $this->authenticator->findUsersActiveSince(date('Y') . '-07-01');
+            $user_results = $this->authenticator->findUsersActiveSince($week['year'] . '-07-01');
             while ($user = $user_results->fetch()) {
                 $this->sendReminderEmail(
                     $user,

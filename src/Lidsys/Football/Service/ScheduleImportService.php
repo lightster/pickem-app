@@ -232,8 +232,8 @@ SQL;
         $season_id = $this->getSeasonIdForYear($year);
 
         $weeks_by_start = [];
-        $week_number = 1;
-        foreach ($this->getStagedDates() as $date) {
+        $week_number = 0;
+        foreach ($this->getGameDates($year) as $date) {
             $start_timestamp = strtotime(
                 'last Wednesday',
                 strtotime($date)
@@ -266,16 +266,25 @@ SQL;
         }
     }
 
-    private function getStagedDates()
+    private function getGameDates($year)
     {
         $dates = array();
 
         $sql = <<<SQL
 SELECT DISTINCT DATE(gameTime) AS date
 FROM nflGameImport
-ORDER BY DATE(gameTime)
+
+UNION DISTINCT
+
+SELECT DISTINCT DATE(gameTime) AS date
+FROM nflGame
+JOIN nflWeek USING (weekId)
+JOIN nflSeason USING (seasonId)
+WHERE year = :year
+
+ORDER BY date
 SQL;
-        $result = $this->db->query($sql);
+        $result = $this->db->query($sql, array('year' => $year));
         while ($row = $result->fetch()) {
             $dates[$row['date']] = $row['date'];
         }

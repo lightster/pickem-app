@@ -272,7 +272,9 @@ SQL;
 
         $sql = <<<SQL
 SELECT DISTINCT DATE(gameTime) AS date
-FROM nflGameImport
+FROM nflGameImport AS import
+JOIN nflTeam AS away ON import.awayTeam = away.abbreviation
+JOIN nflTeam AS home ON import.homeTeam = home.abbreviation
 
 UNION DISTINCT
 

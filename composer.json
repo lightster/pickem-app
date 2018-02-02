@@ -14,7 +14,7 @@
 		"php": ">=5.4.19",
 		"silex/silex": "~1.1",
 		"lightster/lstr-silex": "~0.2.1",
-		"mailgun/mailgun-php": "~1.7.1",
+		"mailgun/mailgun-php": "^1.7.1",
 		"davedevelopment/phpmig": "~1.0"
 	}
 }

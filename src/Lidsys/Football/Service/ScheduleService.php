@@ -287,7 +287,7 @@ SQL;
             $away_score     = $game->getAttribute('vs');
             $away_abbr      = $game->getAttribute('v');
 
-            if ($time === 'F' || $time === 'FO' || $time === 'P') {
+            if ($time === 'F' || $time === 'FO') {
                 $this->db->query(
                     $sql,
                     array(

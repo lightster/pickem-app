@@ -3,11 +3,11 @@ services:
   nginx:
     networks:
       default:
-      pier-buoy:
+      buoy:
         aliases:
           - lightdatasys
 
 networks:
-  pier-buoy:
+  buoy:
     external:
-      name: pier-buoy
+      name: buoy

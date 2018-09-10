@@ -6,7 +6,7 @@ install-docker:
 	docker-compose run --rm -w /var/www/html/lidsys-web php-fpm composer install
 	docker-compose run --rm -w /var/www/html/lidsys-web php-fpm npm install
 
-install-pier: install-dev-db install-dev
+install-buoy: install-dev-db install-dev
 
 install-dev: install-dev-config install-docker
 

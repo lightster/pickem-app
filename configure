@@ -6,15 +6,15 @@ INSTALL_TARGET=""
 COMPOSE_FILES=()
 
 case "$1" in
-    pier)
+    buoy)
         COMPOSE_FILES=(
             docker-compose.web.yml
             docker-compose.development.yml
-            docker-compose.pier.yml
+            docker-compose.buoy.yml
         )
-        INSTALL_TARGET="install-pier"
-        YESTERDAY=$(date +"%Y-%m-%d" -d "yesterday")
-        BACKUP_LOCATION=$(moor config get lidsys.snapshot.location)"/${YESTERDAY}/*lidsys.sql.gz"
+        INSTALL_TARGET="install-buoy"
+        YESTERDAY=$(date -v-1d +"%Y-%m-%d")
+        BACKUP_LOCATION="smart:backup/snapshot/databases/${YESTERDAY}/*lidsys.sql.gz"
         ;;
 
     docker-dev)
@@ -36,7 +36,7 @@ case "$1" in
         ;;
 
     *)
-        echo "Usage: $0 pier|docker-dev|docker-prod"
+        echo "Usage: $0 buoy|docker-dev|docker-prod"
         exit 1
 esac
 

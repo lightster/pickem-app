@@ -244,22 +244,9 @@ SQL;
         }
         $week_number = $this->getWeekNumberForWeekId($week['week_id']);
 
-        $scorestrip_url = (
-            $week_number >= 18
-            ? 'http://www.nfl.com/liveupdate/scorestrip/postseason/ss.xml?random=' . microtime(true)
-            : 'http://www.nfl.com/liveupdate/scorestrip/ss.xml?random=' . microtime(true)
-        );
-        $html = file_get_contents($scorestrip_url);
-
-        $dom            = new DOMDocument();
-        libxml_use_internal_errors(true);
-
-        $dom->loadXML($html);
-
-        $xpath  = new DOMXPath($dom);
-
-        $query  = '//ss/gms/g';
-        $games  = $xpath->query($query);
+        $score_url = 'https://feeds.nfl.com/feeds-rs/scores.json';
+        $json = file_get_contents($score_url);
+        $data = json_decode($json, true);
 
         $sql = <<<SQL
 UPDATE nflGame AS game
@@ -275,30 +262,33 @@ WHERE away.abbreviation = :away_team
     AND :game_date BETWEEN week.weekStart AND week.weekEnd
 SQL;
 
-        foreach ($games as $game) {
-            $game_date = $game->getAttribute('eid');
-            $date_sql  = substr($game_date, 0, 4)
-                . '-' . substr($game_date, 4, 2)
-                . '-' . substr($game_date, 6, 2);
-            $time      = $game->getAttribute('q');
+        foreach ($data['gameScores'] as $game) {
+            $game_schedule = $game['gameSchedule'];
+            $score = $game['score'];
 
-            $home_score     = $game->getAttribute('hs');
-            $home_abbr      = $game->getAttribute('h');
-            $away_score     = $game->getAttribute('vs');
-            $away_abbr      = $game->getAttribute('v');
-
-            if ($time === 'F' || $time === 'FO') {
-                $this->db->query(
-                    $sql,
-                    array(
-                        'away_score' => $away_score,
-                        'home_score' => $home_score,
-                        'away_team'  => $away_abbr,
-                        'home_team'  => $home_abbr,
-                        'game_date'  => $date_sql,
-                    )
-                );
+            $time = $score['phase'];
+            if ($time !== 'FINAL' && $time !== 'FINAL_OVERTIME') {
+                continue;
             }
+
+            $date = DateTime::createFromFormat('m/d/Y', $game_schedule['gameDate']);
+            $date_sql = $date->format('Y-m-d');
+
+            $home_score     = $score['homeTeamScore']['pointTotal'];
+            $home_abbr      = $game_schedule['homeTeam']['abbr'];
+            $away_score     = $score['visitorTeamScore']['pointTotal'];
+            $away_abbr      = $game_schedule['visitorTeam']['abbr'];
+
+            $this->db->query(
+                $sql,
+                array(
+                    'away_score' => $away_score,
+                    'home_score' => $home_score,
+                    'away_team'  => $away_abbr,
+                    'home_team'  => $home_abbr,
+                    'game_date'  => $date_sql,
+                )
+            );
         }
     }
 }

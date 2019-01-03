@@ -18,7 +18,7 @@ RUN apk add --no-cache --virtual '.lightster-phpize-deps' \
     && apk add --no-cache \
         git \
         libxml2-dev \
-        nodejs \
+        npm \
         zlib-dev \
     && docker-php-ext-install \
         bcmath \

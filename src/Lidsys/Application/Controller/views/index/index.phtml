@@ -1,62 +1,68 @@
-<html ng-app="app">
+<!doctype html>
+<html lang="en" ng-app="app">
     <head>
-        <title>Lightdatasys</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
         <?php echo $app['lstr.asset']->cssTag('app/bundle/application.css'); ?>
+
+        <title>Lightdatasys</title>
     </head>
     <body ng-controller="AppCtrl">
 
         <div style="display: none; " ng-style="{'display': 'block'}" id="canvas">
 
-            <nav class="top-bar" data-topbar data-options="is_hover: false">
-                <ul class="title-area">
-                    <li class="toggle-topbar menu-icon">
-                        <a href="#">Menu</a>
-                    </li>
-                    <li class="name">
-                        <h1><a href="#/">Lightdatasys</a></h1>
-                    </li>
-                </ul>
+            <header>
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark" data-topbar data-options="is_hover: false">
 
-                <ul class="">
-                </ul>
+                    <a class="navbar-brand mb-0 h1" href="#/">Pickem</a>
 
-                <section class="top-bar-section">
-                    <!-- Right Nav Section -->
-                    <ul class="right">
-                        <li lds-authenticated="true" lds-user-info class="has-dropdown">
-                            <a href="#" class="dropdown-parent">
-                                Hello {{user.username}}
-                            </a>
-                            <ul class="dropdown">
-                                <li><a href="#/user/profile">Edit Profile</a></li>
-                                <li><a href="#/user/password">Change Password</a></li>
-                            </ul>
-                        </li>
-                        <li lds-authenticated="false"><a href="#/user/login">Login</a></li>
-                        <li lds-authenticated="true"><a href="#/user/logout">Logout</a></li>
-                    </ul>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                    <!-- Left Nav Section -->
-                    <ul class="left">
-                        <li><a href="#/football/my-picks">Football</a></lI>
-                    </ul>
-                </section>
-            </nav>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <div ng-include="'/app/template/football/navigation.html'">
+                        </div>
+
+                        <ul class="navbar-nav my-2 my-lg-0 ml-auto">
+                            <li lds-authenticated="true" lds-user-info class="nav-item dropdown">
+                                <a href="" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Hello {{user.username}}
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a href="#/user/profile" class="dropdown-item">Edit Profile</a>
+                                    <a href="#/user/password" class="dropdown-item">Change Password</a>
+                                    <a href="#/user/logout" class="dropdown-item">Logout</a>
+                                </div>
+                            </li>
+                            <li lds-authenticated="false" class="nav-item"><a href="#/user/login" class="nav-link">Login</a></li>
+                        </ul>
+
+                    </div>
+
+                </nav>
+            </header>
 
             <ng-view>
                 Loading
             </ng-view>
 
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
             <?php echo $app['lstr.asset']->jsTag('app/bundle/application.js'); ?>
 
         </div>
 
-        <div class="row" ng-style="{'display': 'none'}">
-            <div class="alert-box secondary small-10 small-offset-1 columns text-center radius" style="margin-top: 10px; ">
-                Loading...
+        <div class="container" ng-style="{'display': 'none'}">
+            <div class="row text-center" style="margin-top: 10px; ">
+                <div class="col">
+                    Loading...
+                </div>
             </div>
         </div>
 

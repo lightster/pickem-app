@@ -159,6 +159,11 @@ window.FootballScheduleService = class FootballScheduleService
         throw "Seasons not yet loaded using 'loadSeasons'" if not @seasons?
         @seasons
 
+    getSeasonsArray: (year) ->
+        throw "Seasons not yet loaded using 'loadSeasons'" if not @seasons?
+        for own year, season of @seasons
+            season
+
 
     getWeek: (year, week_num) ->
         @getWeeks(year)[week_num]
@@ -177,10 +182,10 @@ window.FootballScheduleService = class FootballScheduleService
 
     getGames: (year, week_num) ->
         if not year?
-            year     = @selectedSeason.year 
+            year     = @selectedSeason.year
             week_num = null
         if not week_num?
-            week_num = @selectedWeek.week_number 
+            week_num = @selectedWeek.week_number
 
         throw "Games not yet loaded using 'loadGames' for year #{year} week #{week_num}" if not @games[year]? or not @games[year][week_num]?
         @games[year][week_num]

@@ -2,8 +2,8 @@ var module =  angular.module('ldsNavigation', ['ngRoute']);
 
 module.directive('ldsNavigation', [function () {
     return {
-        restrict: "E",
         scope: true,
+        replace: true,
         controller: ['$attrs', '$route', '$scope', function ($attrs, $route, $scope) {
             var navItems = [],
                 routeDef,
@@ -41,7 +41,7 @@ module.directive('ldsNavigation', [function () {
                     navItems.push({
                         url:      url,
                         label:    route.navigationLabel,
-                        selected: (currentRoute.originalPath == route.originalPath)
+                        selected: false //(currentRoute.originalPath == route.originalPath)
                     })
                 }
             }

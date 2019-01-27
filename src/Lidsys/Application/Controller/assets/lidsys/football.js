@@ -402,7 +402,7 @@ module.controller('LidsysFootballPicksCtrl', [
                 classes['game-started'] = true;
             }
 
-            if ($scope.currentPlayer) {
+            if ($scope.currentPlayerId) {
                 classes['picked-team']  = $scope.isPickSaved(game) && game.picks[$scope.currentPlayerId].isPickedTeam(side.team);
                 classes['discarded-team']  = !classes['picked-team'];
                 classes['picked-game']  = $scope.isPickSaved(game) && game.picks[$scope.currentPlayerId].saved_team_id;
@@ -537,22 +537,24 @@ module.controller('LidsysFootballLeaguePicksCtrl', [
             }
         }
         $scope.getPickCellClasses = function (game, side, opp_side) {
+            var classes = {};
+
             if (game.isFinal()) {
-                return {
-                    'label':      game.isFinal(),
-                    'success':    game.isFinal() && side.score >= opp_side.score,
-                    'alert':      side.score < opp_side.score,
-                    'wrong-team': !$scope.currentPlayerId
-                        || !game.picks[$scope.currentPlayerId].isPickedTeam(side.team)
-                };
-            } else {
-                return {
-                    'label':      false,
-                    'success':    false,
-                    'alert':      false,
-                    'wrong-team': false
-                };
+                classes['winning-team'] = side.score >= opp_side.score;
+                classes['losing-team']  = side.score <= opp_side.score;
+                classes['game-finished'] = true;
+            } else if(game.isStarted()) {
+                classes['game-started'] = true;
             }
+
+            if ($scope.currentPlayerId) {
+                classes['picked-team']  = game.picks[$scope.currentPlayerId].isPickedTeam(side.team);
+                classes['discarded-team']  = !classes['picked-team'];
+                classes['picked-game']  = game.picks[$scope.currentPlayerId].saved_team_id;
+                classes['discarded-game']  = !classes['picked-game'];
+            }
+
+            return classes;
         }
         $scope.getTeamNameBoxStyle      = footballTeamStylist.getTeamNameBoxStyle
         $scope.getTeamAccessoryBoxStyle = footballTeamStylist.getTeamAccessoryBoxStyle

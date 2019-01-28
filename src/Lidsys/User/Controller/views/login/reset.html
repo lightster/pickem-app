@@ -1,58 +1,41 @@
-<form ng-submit="processPasswordReset($event)">
-    <div class="row">
-        <div class="large-2 medium-2 columns">
-            &nbsp;
-        </div>
-        <div class="large-6 medium-8 columns">
-            <div class="row">
-                <div class="large-12 columns">
-                    <h2>{{form.title}}</h2>
-                </div>
-            </div>
-            <div class="row" ng-show="form.success.form">
-                <div class="large-12 columns">
-                    <div data-alert class="alert-box success">
-                        {{form.success.form}}
-                    </div>
-                </div>
-            </div>
-            <div lds-authenticated="false" ng-hide="form.success.form">
-                <div ng-show="form.show_form">
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <div data-alert class="alert-box warning" ng-show="form.error.form">
-                                {{form.error.form}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns" ng-class="{error: form.error.newPassword}">
-                            <input type="password" placeholder="new password" ng-model="form.passwordReset.newPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
-                            <small ng-show="form.error.newPassword">{{form.error.newPassword}}</small>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns" ng-class="{error: form.error.confirmPassword}">
-                            <input type="password" placeholder="confirm new password" ng-model="form.passwordReset.confirmPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
-                            <small ng-show="form.error.confirmPassword">{{form.error.confirmPassword}}</small>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-5 columns">
-                            <input type="submit" class="button small" value="Save" />
-                        </div>
-                    </div>
-                </div>
-                <div ng-hide="form.show_form" data-alert class="large-12 columns alert-box alert">
-                    Your password reset link has expired.
-                    Please <a href="#/user/login/help" style="color: #ccccff; ">request a new link</a>.
-                </div>
-            </div>
-            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="true">
-                You are already logged in!
-            </div>
-        </div>
-        <div class="large-5 medium-4 columns">
-        </div>
+<div class="container mt-4">
+  <div class="row mb-1">
+    <div class="col-lg-4 offset-lg-4">
+      <h1>{{form.title}}</h1>
     </div>
-</form>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4">
+      <form ng-submit="processPasswordReset($event)" ng-show="form.show_form">
+        <div class="alert alert-success" ng-show="form.success.form">
+          {{form.success.form}}
+        </div>
+        <div lds-authenticated="false" ng-hide="form.success.form">
+          <div class="alert alert-danger" ng-show="form.error.form">
+            {{form.error.form}}
+          </div>
+          <div class="form-group">
+            <label for="new-password">New password</label>
+            <input type="password" class="form-control" ng-class="{'is-invalid': form.error.newPassword}" id="new-password" placeholder="New password" ng-model="form.passwordReset.newPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)">
+            <div class="invalid-feedback" ng-show="form.error.newPassword">{{form.error.newPassword}}</div>
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm password</label>
+            <input type="password" class="form-control" ng-class="{'is-invalid': form.error.confirmPassword}" id="confirm-password" placeholder="Confirm password" ng-model="form.passwordReset.confirmPassword" ng-keyup="formChanged($event)" ng-changed="formChanged($event)">
+            <div class="invalid-feedback" ng-show="form.error.confirmPassword">{{form.error.confirmPassword}}</div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary mr-4">Save</button>
+          </div>
+        </div>
+      </form>
+      <div ng-hide="form.show_form" class="alert alert-warning">
+          Your password reset link has expired.
+          Please <a href="#/user/login/help">request a new link</a>.
+      </div>
+      <div class="alert alert-warning" lds-authenticated="true">
+        You are already logged in!
+      </div>
+    </div>
+  </div>
+</div>

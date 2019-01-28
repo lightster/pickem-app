@@ -1,53 +1,40 @@
-<form ng-submit="processLogin($event)">
-    <div class="row">
-        <div class="large-2 medium-2 columns">
-            &nbsp;
-        </div>
-        <div class="large-5 medium-6 columns">
-            <div class="row">
-                <div class="large-12 columns" ng-hide="login.error.form == 'Success!!'">
-                    <h2>Login</h2>
-                </div>
-                <div class="large-12 columns" ng-show="login.error.form == 'Success!!'">
-                    <h2>Logging you in...</h2>
-                </div>
-            </div>
-            <div lds-authenticated="false">
-                <div class="row">
-                    <div class="large-12 columns">
-                        <div data-alert class="alert-box warning" ng-show="login.error.form == 'passwordless_account'">
-                            Your account has not yet been activated.
-                            Please activate your account by <a href="#/user/login/help" style="color: #ccccff; ">requesting a password reset</a>.
-                        </div>
-                        <div data-alert class="alert-box warning" ng-show="login.error.form == 'incorrect_credentials'">
-                            The provided username/password are incorrect.
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="large-12 columns" ng-class="{error: login.error.username}">
-                        <input type="text" placeholder="username" ng-model="login.username" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" autocorrect="off" autocapitalize="off" />
-                        <small ng-show="login.error.username">{{login.error.username}}</small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="large-12 columns" ng-class="{error: login.error.password}">
-                        <input type="password" placeholder="password" ng-model="login.password" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
-                        <small ng-show="login.error.password">{{login.error.password}}</small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="large-12 columns">
-                        <input type="submit" class="button small" value="Sign In" style="margin-right: 20px; " />
-                        <a href="#/user/login/help" style="font-size: .9em; ">Need help logging in?</a>
-                    </div>
-                </div>
-            </div>
-            <div data-alert class="large-12 columns alert-box warning" lds-authenticated="true" ng-hide="login.error.form == 'Success!!'">
-                You are already logged in!
-            </div>
-        </div>
-        <div class="large-5 medium-4 columns">
-        </div>
+<div class="container mt-4">
+  <div class="row mb-1">
+    <div class="col-lg-4 offset-lg-4">
+      <h1 ng-hide="login.error.form == 'Success!!'">Sign in</h1>
+      <h1 ng-show="login.error.form == 'Success!!'">Signing you in...</h1>
     </div>
-</form>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4">
+      <form ng-submit="processLogin($event)">
+        <div lds-authenticated="false">
+          <div class="alert alert-danger" ng-show="login.error.form == 'passwordless_account'">
+            Your account has not yet been activated.
+            Please activate your account by <a href="#/user/login/help" style="color: #ccccff; ">requesting a password reset</a>.
+          </div>
+          <div  class="alert alert-danger" ng-show="login.error.form == 'incorrect_credentials'">
+            The provided username/password are incorrect.
+          </div>
+          <div class="form-group">
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" class="form-control" ng-class="{'is-invalid': login.error.password}" id="username" placeholder="Username" ng-model="login.username" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" autocorrect="off" autocapitalize="off" >
+            <div class="invalid-feedback" ng-show="login.error.username">{{login.error.username}}</div>
+          </div>
+          <div class="form-group">
+            <label for="password" class="sr-only">Password</label>
+            <input type="password"  class="form-control" ng-class="{'is-invalid': login.error.password}" id="password" placeholder="Password" ng-model="login.password" ng-keyup="formChanged($event)" ng-changed="formChanged($event)" />
+            <div class="invalid-feedback" ng-show="login.error.password">{{login.error.password}}</div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary mr-4">Sign in</button>
+            <a href="#/user/login/help">Need help logging in?</a>
+          </div>
+        </div>
+        <div class="alert alert-warning" lds-authenticated="true" ng-hide="login.error.form == 'Success!!'">
+          You are already logged in!
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

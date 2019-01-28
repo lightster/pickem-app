@@ -57,6 +57,11 @@ module.directive('ldsNavigation', [function () {
                 $scope.navItems = navItems
             }
 
+            $('body').on('click', '.navbar-collapse a:not(.dropdown-toggle)', function(event) {
+              console.log('yo');
+                $(this).parents('.navbar-collapse').first().collapse('hide');
+            });
+
             upsertNavItems();
 
             $scope.$on('$routeChangeSuccess', upsertNavItems);

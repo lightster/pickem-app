@@ -81,6 +81,20 @@ table tr.week-header th {
     text-align: right;
 }
 
+@media (max-width: 575px) {
+  #fantasy-standings .week {
+    display: none;
+  }
+
+  #fantasy-standings .week.current-week {
+    display: table-cell;
+  }
+
+  #fantasy-standings .secondary-stats {
+    display: none;
+  }
+}
+
 #fantasy-standings .player-name {
     text-align: right;
 }

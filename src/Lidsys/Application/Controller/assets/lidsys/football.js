@@ -842,18 +842,30 @@ module.controller('LidsysFootballTeamStandingsCtrl', [
             standing_idx,
             standing,
             team,
-            filteredStandings = []
+            organizedStandings = {},
+            conferences = [],
+            divisions = {}
         for (standing_idx = 0; standing_idx < standings.length; standing_idx++) {
-            standing = standings[standing_idx]
-            if (standing.team_id) {
-                team          = teams[standing.team_id]
-                standing.team = team
-                if (team.conference == conference && team.division == division) {
-                    filteredStandings.push(standing)
-                }
-            }
+          standing = standings[standing_idx]
+          team          = teams[standing.team_id]
+          standing.team = team
+
+          if (!standing.team_id) {
+            continue;
+          }
+          if (!organizedStandings[team.conference]) {
+            organizedStandings[team.conference] = {}
+          }
+          if (!organizedStandings[team.conference][team.division]) {
+            organizedStandings[team.conference][team.division] = []
+          }
+
+          organizedStandings[team.conference][team.division].push(standing)
         }
-        $scope.standings = filteredStandings
+
+        $scope.standings = organizedStandings
+        $scope.conferences = Object.keys(organizedStandings).sort()
+        $scope.divisions = Object.keys(organizedStandings['AFC']).sort()
         $scope.getTeamNameBoxStyle      = footballTeamStylist.getTeamNameBoxStyle
         $scope.getTeamAccessoryBoxStyle = footballTeamStylist.getTeamAccessoryBoxStyle
     }

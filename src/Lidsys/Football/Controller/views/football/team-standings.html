@@ -1,26 +1,46 @@
-<div class="row">
-    <div class="small-12 columns">
-        <h1>Team Standings</h1>
-        <div ng-include="'/app/template/football/navigation.html'"></div>
-        <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
-        <lds-football-division-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-division-selector>
-    </div>
-    <table class="small-12" style="margin: inherit auto; ">
-        <tr>
-            <th></th>
-            <th>Team</th>
-            <th>Wins</th>
-            <th>Losses</th>
-            <th>Ties</th>
-        </tr>
-        <tr ng-repeat="standing in standings">
-            <td ng-style="getTeamAccessoryBoxStyle(standing.team)">&nbsp;</td>
-            <td ng-style="getTeamNameBoxStyle(standing.team)">
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="row align-items-end mb-1 mx-lg-3">
+        <div class="col">
+          <h1>Team standings</h1>
+        </div>
+        <div class="col-sm-auto mb-1">
+          <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+        </div>
+      </div>
+      <div class="row mx-lg-3">
+        <div ng-repeat="conference in conferences" class="col-lg-6 col-12">
+          <table class="table">
+            <tr class="thead-dark">
+              <th></th>
+              <th colspan="4">{{conference}}</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th>Team</th>
+              <th class="text-center">Wins</th>
+              <th class="text-center">Losses</th>
+              <th class="text-center">Ties</th>
+            </tr>
+            <tr ng-repeat-start="division in divisions" class="thead-light">
+                <th colspan="5">
+                  {{division}}
+                </th>
+            </tr>
+            <tr ng-repeat-end ng-repeat="standing in standings[conference][division]">
+              <td ng-style="getTeamAccessoryBoxStyle(standing.team)">&nbsp;</td>
+              <td ng-style="getTeamNameBoxStyle(standing.team)">
                 {{standing.team.location}} {{standing.team.mascot}}
-            </td>
-            <td class="text-center">{{standing.win_count}}</td>
-            <td class="text-center">{{standing.loss_count}}</td>
-            <td class="text-center">{{standing.tie_count}}</td>
-        </tr>
-    </table>
+              </td>
+              <td class="text-center">{{standing.win_count}}</td>
+              <td class="text-center">{{standing.loss_count}}</td>
+              <td class="text-center">{{standing.tie_count}}</td>
+            </tr>
+          </table>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

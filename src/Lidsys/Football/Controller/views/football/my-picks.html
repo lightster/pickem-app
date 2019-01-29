@@ -1,16 +1,20 @@
-<div class="row">
-    <div class="small-12 columns">
-        <h1>My Picks</h1>
-        <div ng-include="'/app/template/football/navigation.html'"></div>
-        <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+<div class="container mt-4">
+  <div class="row align-items-end mb-1 mx-lg-3">
+    <div class="col">
+      <h1>My Picks</h1>
     </div>
-    <div data-alert class="large-12 columns alert-box warning text-center" lds-authenticated="false">
+    <div class="col-sm-auto mb-1">
+      <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+    </div>
+  </div>
+  <div class="row mx-lg-3" ng-class="{'logged-in': currentPlayerId}">
+    <div data-alert class="col-12 alert alert-warning text-center" lds-authenticated="false">
         You must login in to make your picks!
     </div>
-    <div class="small-12 columns alert-box alert" ng-show="errors.length">
+    <div class="col-12 alert-box alert" ng-show="errors.length">
         <span ng-repeat="error in errors">{{error}}<br /></span>
     </div>
-    <table class="small-12" style="margin: inherit auto; ">
+    <table class="col-12 table">
         <tr ng-repeat-start="game in games" ng-show="headerExists(game)" class="week-header">
             <th colspan="8">
                 {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
@@ -82,4 +86,5 @@
             </td>
         </tr>
     </table>
+  </div>
 </div>

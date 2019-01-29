@@ -1,41 +1,41 @@
-<div class="row">
-    <div class="small-12 columns">
-        <h1>Schedule</h1>
-        <div ng-include="'/app/template/football/navigation.html'"></div>
-        <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+<div class="container mt-4">
+  <div class="row align-items-end mb-1 mx-lg-3">
+    <div class="col">
+      <h1>Schedule</h1>
     </div>
-    <table class="small-12" style="margin: inherit auto; ">
-        <tr ng-repeat-start="game in games" ng-show="headerExists(game)" class="week-header">
-            <th colspan="8">
-                {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
-            </th>
-        </tr>
-        <tr ng-repeat-end>
-            <td
-                ng-style="getTeamNameBoxStyle(game.away.team)"
-                class="text-right"
-            >
-                {{game.away.team.location}} {{game.away.team.mascot}}
-            </td>
-            <td ng-style="getTeamAccessoryBoxStyle(game.away.team)">&nbsp;</td>
-            <td
-                class="fantasy-pick-box"
-                ng-class="getTeamScoreCellClasses(game, game.away, game.home)"
-            >
-                {{game.away.score}}
-            </td>
-            <td
-                class="fantasy-pick-box"
-                ng-class="getTeamScoreCellClasses(game, game.home, game.away)"
-            >
-                {{game.home.score}}
-            </td>
-            <td ng-style="getTeamAccessoryBoxStyle(game.home.team)">&nbsp;</td>
-            <td
-                ng-style="getTeamNameBoxStyle(game.home.team)"
-            >
-                {{game.home.team.location}} {{game.home.team.mascot}}
-            </td>
-        </tr>
+    <div class="col-sm-auto mb-1">
+      <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+    </div>
+  </div>
+  <div class="row mx-lg-3">
+    <table class="col-12 table">
+      <tr ng-repeat-start="game in games" ng-show="headerExists(game)" class="week-header">
+        <th colspan="8">
+          {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
+        </th>
+      </tr>
+      <tr ng-repeat-end>
+        <td
+          ng-style="getTeamNameBoxStyle(game.away.team)"
+          class="text-right">
+          {{game.away.team.location}} {{game.away.team.mascot}}
+        </td>
+        <td ng-style="getTeamAccessoryBoxStyle(game.away.team)">&nbsp;</td>
+        <td
+          class="fantasy-pick-box"
+          ng-class="getTeamScoreCellClasses(game, game.away, game.home)">
+          {{game.away.score}}
+        </td>
+        <td
+          class="fantasy-pick-box"
+          ng-class="getTeamScoreCellClasses(game, game.home, game.away)">
+          {{game.home.score}}
+        </td>
+        <td ng-style="getTeamAccessoryBoxStyle(game.home.team)">&nbsp;</td>
+        <td ng-style="getTeamNameBoxStyle(game.home.team)">
+          {{game.home.team.location}} {{game.home.team.mascot}}
+        </td>
+      </tr>
     </table>
+  </div>
 </div>

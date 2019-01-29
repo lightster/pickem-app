@@ -1,12 +1,17 @@
-<div class="row">
-    <div class="small-12 columns">
-        <h1>League Picks</h1>
-        <div ng-include="'/app/template/football/navigation.html'"></div>
-        <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+<div class="container mt-4">
+  <div class="row align-items-end mb-1">
+    <div class="col">
+      <h1>League Picks</h1>
     </div>
+    <div class="col-sm-auto mb-1">
+      <lds-football-week-selector ng-model="week_selector" ng-change="changeWeek(event)"></lds-football-week-selector>
+    </div>
+  </div>
 </div>
-<div class="row full-width">
-    <table class="small-12" style="margin: inherit auto; ">
+<div class="container-fluid">
+  <div class="row mx-lg-3 mx-1" ng-class="{'logged-in': currentPlayerId}">
+    <div class="table-responsive">
+      <table class="table">
         <tr ng-repeat-start="game in games" ng-show="headerExists(game)">
             <th colspan="{{playerCount + 3}}" style="background-color: #f2f2f2;">
                 {{game.start_time | date:'EEEE, MMMM d, y, h:mm a'}}
@@ -40,6 +45,7 @@
             <td ng-repeat="player in players_with_picks"
                 ng-style="getPickedTeamStyle(player, game, game.away.team)"
                 ng-attr-title="{{player.name}}"
+                style="width: 25px; "
             >
                 <span ng-show="game.picks[player.player_id].team_id == game.away.team.team_id">
                     {{player.displayName}}
@@ -72,11 +78,13 @@
             <td ng-repeat="player in players_with_picks"
                 ng-style="getPickedTeamStyle(player, game, game.home.team)"
                 ng-attr-title="{{player.name}}"
+                style="width: 25px; "
             >
                 <span ng-show="game.picks[player.player_id].team_id == game.home.team.team_id">
                     {{player.displayName}}
                 </span>
             </td>
         </tr>
-    </table>
+      </table>
+    </div>
 </div>

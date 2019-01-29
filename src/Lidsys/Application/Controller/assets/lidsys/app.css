@@ -3,7 +3,7 @@
 }
 
 nav.top-bar .title-area h1 {
-    
+
     background: url("images/logo.png") no-repeat scroll 10px 5px transparent;
     background-size: 120px 30px;
     text-indent: -9999px;
@@ -21,21 +21,41 @@ nav.top-bar .title-area h1 {
     color: #999999;
 }
 
-.fantasy-pick-box {
+.table td.fantasy-pick-box {
     text-align: center;
     vertical-align: middle;
     width: 4%;
     display: table-cell;
+    border-radius: 0;
 }
 
-.label.success.wrong-team {
-    color: #43ac6a;
-    background-color: inherit;
+.fantasy-pick-box {
+  background-color: #f9f9f9;
 }
 
-.label.alert.wrong-team {
-    color: #f04124;
-    background-color: inherit;
+.fantasy-pick-box+.fantasy-pick-box {
+  border: solid #ffffff;
+  border-width: 0 0 0 1px;
+}
+
+.fantasy-pick-box.losing-team, .logged-in .fantasy-pick-box.losing-team.discarded-team {
+  background-color: #f9f9f9;
+  color: #dc3545;
+}
+
+.fantasy-pick-box.winning-team, .logged-in .fantasy-pick-box.winning-team.discarded-team {
+  background-color: #f9f9f9;
+  color: #28a745;
+}
+
+.logged-in .fantasy-pick-box.discarded-game, .logged-in .fantasy-pick-box.losing-team.picked-team {
+  background-color: #dc3545;
+  color: white;
+}
+
+.logged-in .fantasy-pick-box.picked-game, .logged-in .fantasy-pick-box.winning-team.picked-team {
+  background-color: #28a745;
+  color: white;
 }
 
 .row.full-width {
@@ -49,11 +69,30 @@ nav.top-bar .title-area h1 {
 
 table tr.week-header th {
     text-align: center;
+    padding: .45rem .2rem;
+}
+
+.table th, .table td {
+  font-size: .8em;
 }
 
 #fantasy-standings .rank {
     width: 35px;
     text-align: right;
+}
+
+@media (max-width: 575px) {
+  #fantasy-standings .week {
+    display: none;
+  }
+
+  #fantasy-standings .week.current-week {
+    display: table-cell;
+  }
+
+  #fantasy-standings .secondary-stats {
+    display: none;
+  }
 }
 
 #fantasy-standings .player-name {

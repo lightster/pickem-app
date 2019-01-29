@@ -1,7 +1,5 @@
-<lds-navigation filter="route.isFootball">
-    <dl class="sub-nav right" style="margin-top: -1.6rem; margin-bottom: 0; ">
-        <dd ng-repeat="navItem in navItems" ng-class="{active: navItem.selected}">
-            <a href="{{navItem.url}}">{{navItem.label}}</a>
-        </dd>
-    </dl>
-</lds-navigation>
+<ul lds-navigation class="navbar-nav" filter="route.isFootball">
+    <li ng-repeat="navItem in navItems" class="nav-item" ng-class="{active: navItem.selected}">
+      <a href="{{navItem.url}}" class="nav-link">{{navItem.label}}</a>
+    </li>
+</ul>

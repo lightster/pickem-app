@@ -550,6 +550,14 @@ module.controller('UserRegisterCtrl', [
 
             register.error = {}
 
+            if (!register.first_name) {
+                register.error.hasError = true;
+                register.error.first_name = 'Please enter your first name.';
+            }
+            if (!register.last_name) {
+                register.error.hasError = true;
+                register.error.last_name = 'Please enter your last initial.';
+            }
             if (!register.email) {
                 register.error.hasError = true;
                 register.error.email = 'Please enter your email address.';

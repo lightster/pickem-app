@@ -3,6 +3,8 @@ services:
   mariadb:
     image: mariadb:5.5.58
     restart: always
+    ports:
+      - 3306
     volumes:
       - ./data/mariadb:/var/lib/mysql
       - ./docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
@@ -11,3 +13,15 @@ services:
       MYSQL_USER: lidsys
       MYSQL_PASSWORD: lidsys
       MYSQL_DATABASE: dev_lidsys
+
+  postgres:
+    image: postgres:11.5-alpine
+    restart: always
+    ports:
+      - 5432
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=pickem
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data

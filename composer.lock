@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdde36f469a6a05f6ddc776f9de46ba1",
+    "content-hash": "09189995b6b0809064d9c833c41f0ef0",
     "packages": [
         {
             "name": "assetrinc/assetrinc",
@@ -353,6 +353,65 @@
                 "stream"
             ],
             "time": "2014-10-12T19:18:40+00:00"
+        },
+        {
+            "name": "kelvineducation/the-framework-php",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:kelvineducation/the-framework-php.git",
+                "reference": "8f312404ad06f270ac180ebad6792c547c2ca427"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kelvineducation/the-framework-php/zipball/8f312404ad06f270ac180ebad6792c547c2ca427",
+                "reference": "8f312404ad06f270ac180ebad6792c547c2ca427",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-pgsql": "*",
+                "ext-redis": "*",
+                "php": "~7.3.0"
+            },
+            "bin": [
+                "bin/the",
+                "bin/app"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "The\\": "src/"
+                }
+            },
+            "scripts": {
+                "compile": [
+                    "./bin/the assets:compile"
+                ]
+            },
+            "license": [
+                "AGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Zachary Rankin",
+                    "email": "zach@kelvin.education"
+                },
+                {
+                    "name": "Matthew Light",
+                    "email": "matt@kelvin.education"
+                }
+            ],
+            "description": "The Framework",
+            "support": {
+                "email": "hello@kelvin.education",
+                "source": "https://github.com/kelvineducation/the-framework-php/tree/v3.0.0",
+                "issues": "https://github.com/kelvineducation/the-framework-php/issues"
+            },
+            "time": "2019-07-14T07:24:48+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -971,6 +1030,7 @@
             "keywords": [
                 "microframework"
             ],
+            "abandoned": "symfony/flex",
             "time": "2014-03-29T14:15:59+00:00"
         },
         {
@@ -1640,7 +1700,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4.19"
+        "php": "~7.3.0"
     },
     "platform-dev": []
 }

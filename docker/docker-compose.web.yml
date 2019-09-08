@@ -20,5 +20,8 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
       - .:/var/www/html/lidsys-web
       - ~/.composer:/root/.composer
+    environment:
+      - APP_ENV
+      - DATABASE_URL
     ports:
       - 9000

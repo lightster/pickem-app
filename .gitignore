@@ -4,4 +4,6 @@ config/autoload/*.local.php
 Makefile
 docker-compose.yml
 /data/mariadb
+/data/postgres
 /.pier.overrides.yaml
+/.env

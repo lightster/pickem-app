@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/the-bootstrap.php';
 
 use Lidsys\Application\Application;
 

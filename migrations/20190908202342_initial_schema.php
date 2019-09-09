@@ -16,7 +16,7 @@ CREATE TABLE users (
     password varchar NOT NULL,
     password_changed_at timestamp with time zone,
     security_hash varchar NOT NULL,
-    email varchar UNIQUE,
+    email varchar,
     display_name varchar NOT NULL,
     display_color varchar NOT NULL,
     last_active_at timestamptz,

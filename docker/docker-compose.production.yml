@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  nginx:
+    image: nginx:1.17.3-alpine
+    restart: always
+    volumes:
+      - .:/app
+      - ./docker/nginx/app.conf:/etc/nginx/conf.d/app.conf
+    ports:
+      - 80
+    networks:
+      default:
+      reverse-proxy:
+        aliases:
+          - pickem
+          - pickem.frontend
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: always
+    volumes:
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+      - .:/app
+      - ~/.composer:/root/.composer
+    environment:
+      - APP_ENV
+      - DATABASE_URL
+    ports:
+      - 9000
+
+  postgres:
+    image: postgres:11.5-alpine
+    restart: always
+    ports:
+      - 5432
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=pickem
+      - PSQL_HISTORY=/var/lib/postgresql/data/psql_history
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+networks:
+  reverse-proxy:
+    external:
+      name: "${REVERSE_PROXY_NETWORK:-frontend}"

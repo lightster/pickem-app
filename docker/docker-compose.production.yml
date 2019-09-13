@@ -26,6 +26,7 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
       - .:/app
       - ~/.composer:/root/.composer
+    working_dir: /app
     environment:
       - APP_ENV
       - DATABASE_URL

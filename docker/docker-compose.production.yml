@@ -6,8 +6,6 @@ services:
     volumes:
       - .:/app
       - ./docker/nginx/app.conf:/etc/nginx/conf.d/app.conf
-    ports:
-      - 80
     networks:
       default:
       reverse-proxy:
@@ -30,14 +28,10 @@ services:
     environment:
       - APP_ENV
       - DATABASE_URL
-    ports:
-      - 9000
 
   postgres:
     image: postgres:11.5-alpine
     restart: always
-    ports:
-      - 5432
     environment:
       - PGDATA=/var/lib/postgresql/data
       - POSTGRES_USER=${POSTGRES_USER:-postgres}

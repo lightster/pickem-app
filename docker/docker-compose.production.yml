@@ -41,6 +41,18 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
 
+  mariadb:
+    image: mariadb:5.5.58
+    restart: always
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+      - ./docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
+
 networks:
   reverse-proxy:
     external:

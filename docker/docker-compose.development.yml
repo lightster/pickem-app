@@ -48,18 +48,23 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
 
   mariadb:
-    image: mariadb:5.5.58
+    build:
+      context: .
+      dockerfile: docker/mariadb/Dockerfile
     restart: always
     ports:
       - 3306
     volumes:
       - ./data/mariadb:/var/lib/mysql
       - ./docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
+      - ./bin:/app/bin
     environment:
       - MYSQL_ROOT_PASSWORD=pickem
       - MYSQL_USER=pickem
       - MYSQL_PASSWORD=pickem
       - MYSQL_DATABASE=pickem
+      - DROPBOX_TOKEN
+      - HONEYBADGER_MARIA_BACKUPS_CHECKIN
 
 networks:
   reverse-proxy:

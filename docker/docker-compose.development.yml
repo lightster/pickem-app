@@ -41,7 +41,7 @@ services:
     environment:
       - PGDATA=/var/lib/postgresql/data
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=pickem
       - PSQL_HISTORY=/var/lib/postgresql/data/psql_history
     volumes:
@@ -56,10 +56,10 @@ services:
       - ./data/mariadb:/var/lib/mysql
       - ./docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: lidsys
-      MYSQL_USER: lidsys
-      MYSQL_PASSWORD: lidsys
-      MYSQL_DATABASE: dev_lidsys
+      - MYSQL_ROOT_PASSWORD=pickem
+      - MYSQL_USER=pickem
+      - MYSQL_PASSWORD=pickem
+      - MYSQL_DATABASE=pickem
 
 networks:
   reverse-proxy:

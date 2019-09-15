@@ -34,9 +34,9 @@ services:
     restart: always
     environment:
       - PGDATA=/var/lib/postgresql/data
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-}
-      - POSTGRES_DB=${POSTGRES_DB:-pickem}
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
       - PSQL_HISTORY=/var/lib/postgresql/data/psql_history
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
@@ -48,7 +48,7 @@ services:
       - ./data/mariadb:/var/lib/mysql
       - ./docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
     environment:
-      - MYSQL_ROOT_PASSWORD
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_USER
       - MYSQL_PASSWORD
       - MYSQL_DATABASE

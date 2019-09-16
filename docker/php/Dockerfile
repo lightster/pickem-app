@@ -8,7 +8,7 @@ FROM php:7.3-fpm-alpine
 # pdo_mysql is for lidsys-web
 # nodejs is for lidsys-web JS/CSS assets
 
-# pgsql is for pulse
+# pgsql is for pickem
 
 # needed by lidsys-web but not directly included:
 # - mysqlnd is provided by the base php image

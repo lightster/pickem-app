@@ -17,7 +17,7 @@ DROPBOX_WEEKLY_DIR="${DROPBOX_DIR}/historical/${YEAR}/weekly-${WEEK}"
 DROPBOX_HOURLY_DIR="${DROPBOX_DIR}/historical/${YEAR}/hourly-${HOUR}"
 HISTORICAL_DIRS=("${DROPBOX_DAILY_DIR}" "${DROPBOX_WEEKLY_DIR}" "${DROPBOX_HOURLY_DIR}")
 
-echo -n "Backing up MariaDB databases"
+echo -en "=====\n\nBacking up MariaDB databases\n\n--"
 
 for DATABASE in $(mysql -u "${MYSQL_USER}" -N -e 'show databases'); do
   if [[ $DATABASE == "information_schema" || $DATABASE == "performance_schema" ]]; then
@@ -54,4 +54,4 @@ done
 echo -e "\n\nNotifying Honeybadger of completion"
 http --ignore-stdin "${HONEYBADGER_MARIA_BACKUPS_CHECKIN}"
 
-echo -e "\n\nAll done"
+echo -en "\n\n--\n\nAll done\n\n"

@@ -6,8 +6,6 @@ services:
     volumes:
       - .:/app
       - ./docker/nginx/app.conf:/etc/nginx/conf.d/app.conf
-    ports:
-      - 80
     networks:
       default:
       reverse-proxy:
@@ -30,29 +28,25 @@ services:
     environment:
       - APP_ENV
       - DATABASE_URL
-    ports:
-      - 9000
 
   mariadb:
     build:
       context: .
       dockerfile: docker/mariadb/Dockerfile
     restart: always
-    ports:
-      - 3306
     volumes:
       - ./data/mariadb:/var/lib/mysql
       - ./docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
       - ./bin:/app/bin
     environment:
-      - MYSQL_ROOT_PASSWORD=pickem
-      - MYSQL_USER=pickem
-      - MYSQL_PASSWORD=pickem
-      - MYSQL_DATABASE=pickem
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
       - DROPBOX_TOKEN
       - HONEYBADGER_MARIA_BACKUPS_CHECKIN
 
 networks:
   reverse-proxy:
     external:
-      name: "${REVERSE_PROXY_NETWORK:-buoy}"
+      name: "${REVERSE_PROXY_NETWORK:-frontend}"

@@ -11,7 +11,7 @@
 		}
 	},
 	"require": {
-		"php": ">=5.4.19",
+		"php": "~7.3.0",
 		"silex/silex": "~1.1",
 		"lightster/lstr-silex": "~0.2.1",
 		"mailgun/mailgun-php": "^1.7.1",

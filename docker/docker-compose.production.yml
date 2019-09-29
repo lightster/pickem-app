@@ -42,6 +42,18 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
       - ./data/psql-history:/var/lib/postgresql/history
 
+  postgres-snapshot:
+    build:
+      context: .
+      dockerfile: docker/postgres-snapshot/Dockerfile
+    restart: 'no'
+    environment:
+      - DATABASE_URL
+      - DROPBOX_TOKEN
+      - HONEYBADGER_POSTGRES_SNAPSHOTS_CHECKIN
+    volumes:
+      - ./bin:/app/bin
+
   mariadb:
     build:
       context: .

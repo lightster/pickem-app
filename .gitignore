@@ -3,5 +3,7 @@ node_modules
 config/autoload/*.local.php
 docker-compose.yml
 /data/mariadb
+/data/postgres
+/data/psql-history
 /.pier.overrides.yaml
 /.env

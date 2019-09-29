@@ -29,6 +29,31 @@ services:
       - APP_ENV
       - DATABASE_URL
 
+  postgres:
+    image: postgres:11.5-alpine
+    restart: always
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - PSQL_HISTORY=/var/lib/postgresql/history/pickem
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./data/psql-history:/var/lib/postgresql/history
+
+  postgres-snapshot:
+    build:
+      context: .
+      dockerfile: docker/postgres-snapshot/Dockerfile
+    restart: 'no'
+    environment:
+      - DATABASE_URL
+      - DROPBOX_TOKEN
+      - HONEYBADGER_POSTGRES_SNAPSHOTS_CHECKIN
+    volumes:
+      - ./bin:/app/bin
+
   mariadb:
     build:
       context: .

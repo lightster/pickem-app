@@ -1,5 +1,5 @@
 YESTERDAY=$(shell date -v-1d +"%Y-%m-%d")
-BACKUP_LOCATION="smart:backup/snapshot/databases/${YESTERDAY}/*lidsys.sql.gz"
+BACKUP_LOCATION="${HOME}/Dropbox/Apps/Pickem/maria-backups/latest/pickem.sql.gz"
 
 install: install-${ENV}
 
@@ -12,6 +12,8 @@ init:
 	docker-compose up -d
 	docker-compose run --rm php-fpm composer install
 	docker-compose run --rm php-fpm npm ci
+	docker-compose run --rm php-fpm bin/the migrate:setup
+	docker-compose run --rm php-fpm bin/the migrate
 
 install-dev-db:
 	rsync -aP ${BACKUP_LOCATION} ./docker/mariadb/initdb.d/

@@ -164,6 +164,7 @@ class MigrateToPostgresCommand extends Command implements AppAwareInterface
         );
         while ($row = $query->fetch()) {
             try {
+                $row['end_at'] .= ' 23:59:59';
                 if ($pg->exists('SELECT 1 FROM weeks WHERE week_id = $1', [$row['week_id']])) {
                     $row['updated_at'] = new DbExpr('NOW()');
                     $pg->update('weeks', $row, 'week_id = $1', [$row['week_id']]);

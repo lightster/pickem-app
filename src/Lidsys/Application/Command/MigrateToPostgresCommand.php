@@ -187,6 +187,8 @@ class MigrateToPostgresCommand extends Command implements AppAwareInterface
                 weekId AS week_id,
                 awayId AS away_team_id,
                 homeId AS home_team_id,
+                homeScore AS home_score,
+                awayScore AS away_score,
                 gameTime AS game_time
             FROM nflGame
             JOIN nflWeek USING (weekId)

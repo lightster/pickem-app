@@ -8,13 +8,23 @@
 	"autoload": {
 		"psr-0": {
 			"Lidsys\\": "src/"
+		},
+		"psr-4": {
+			"App\\": "src/"
 		}
 	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/kelvineducation/the-framework-php"
+		}
+	],
 	"require": {
 		"php": "~7.3.0",
 		"silex/silex": "~1.1",
 		"lightster/lstr-silex": "~0.2.1",
 		"mailgun/mailgun-php": "^1.7.1",
-		"davedevelopment/phpmig": "~1.0"
+		"davedevelopment/phpmig": "~1.0",
+		"kelvineducation/the-framework-php": "^3.0"
 	}
 }

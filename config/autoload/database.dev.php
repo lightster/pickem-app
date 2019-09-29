@@ -1,9 +1,9 @@
 <?php
 $dbParams = [
     'hostname'  => 'mariadb',
-    'username'  => 'lidsys',
-    'password'  => 'lidsys',
-    'database'  => 'dev_lidsys',
+    'username'  => 'pickem',
+    'password'  => 'pickem',
+    'database'  => 'pickem',
 ];
 return [
     'db.config' => [

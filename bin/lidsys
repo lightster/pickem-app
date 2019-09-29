@@ -6,6 +6,7 @@
 
 $app = require_once __DIR__ . '/../bootstrap.php';
 
+use Lidsys\Application\Command\MigrateToPostgresCommand;
 use Lidsys\Football\Command\ImportScheduleCommand as FootballImportScheduleCommand;
 use Lidsys\Football\Command\SendReminderCommand as FootballSendReminderCommand;
 use Lidsys\Football\Command\UpdateScoresCommand as FootballUpdateScoresCommand;
@@ -22,6 +23,7 @@ $console->add(new FootballImportScheduleCommand());
 $console->add(new FootballSendReminderCommand());
 $console->add(new Lidsys\Football\Command\SendWelcomeEmailCommand());
 $console->add(new FootballUpdateScoresCommand());
+$console->add(new MigrateToPostgresCommand());
 
 foreach ($console->all() as $command) {
     if ($command instanceof AppAwareInterface) {

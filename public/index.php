@@ -7,6 +7,8 @@ use Lidsys\Football\Controller\Provider as FootballControllerProvider;
 use Lidsys\User\Controller\Provider as UserControllerProvider;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use The\DbException;
 
 $app->before(function (Request $request) use ($app) {
     if (strpos($request->getPathInfo(), '/app/build-number') === 0) {
@@ -37,4 +39,7 @@ $app->get('/', function () use ($app) {
     return $app->redirect('/app/');
 });
 
+$app->error(function (DbException $e, $code) {
+    return new Response($e->getLastError());
+});
 $app->run();

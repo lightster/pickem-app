@@ -28,6 +28,10 @@ class MigrateToPostgresCommand extends Command implements AppAwareInterface
     {
         $app     = $this->getSilexApplication();
 
+        $app['db'] = $app->share(function ($app) {
+            return new DatabaseService($app, $app['config']['db.config']);
+        });
+
         $maria = $app['db'];
         $pg = \The\db();
 
@@ -53,6 +57,10 @@ class MigrateToPostgresCommand extends Command implements AppAwareInterface
 
         $output->write("Importing picks... ");
         $this->importPicks($maria, $pg);
+        $output->writeln("done");
+
+        $output->write("Resetting sequence tables... ");
+        $this->resetAllSequenceTables($pg);
         $output->writeln("done");
 
         $output->writeln("All done");
@@ -247,6 +255,29 @@ class MigrateToPostgresCommand extends Command implements AppAwareInterface
                 throw $e;
             }
         }
+    }
+
+    private function resetAllSequenceTables(Db $pg)
+    {
+        foreach (['game', 'pick', 'season', 'team', 'user', 'week'] as $table) {
+            $this->resetSequenceTable($pg, $table);
+        }
+    }
+
+    private function resetSequenceTable(Db $pg, $table)
+    {
+        $pg->query(
+            <<<SQL
+            SELECT
+                setval(
+                    pg_get_serial_sequence($1, $2),
+                    COALESCE(MAX({$table}_id), 1),
+                    MAX({$table}_id) IS NOT null
+                )
+            FROM {$table}s
+            SQL,
+            ["{$table}s", "{$table}_id"]
+        );
     }
 
     private function cleanDate($date)

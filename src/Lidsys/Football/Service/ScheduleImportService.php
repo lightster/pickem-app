@@ -7,14 +7,14 @@ use DOMElement;
 use DOMXPath;
 use Exception;
 
-use Lstr\Silex\Database\DatabaseService;
+use The\Db;
 
 class ScheduleImportService
 {
     private $db;
     private $schedule;
 
-    public function __construct(DatabaseService $db, ScheduleService $schedule)
+    public function __construct(Db $db, ScheduleService $schedule)
     {
         $this->db = $db;
         $this->schedule = $schedule;
@@ -171,12 +171,13 @@ class ScheduleImportService
     private function createStagingTemporaryTable()
     {
         $sql = <<<SQL
-CREATE TEMPORARY TABLE `nflGameImport` (
-  `awayTeam` varchar(3) NOT NULL,
-  `homeTeam` varchar(3) NOT NULL,
-  `gameTime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-)
-SQL;
+        CREATE TEMPORARY TABLE game_import (
+            away_team VARCHAR NOT NULL,
+            home_team VARCHAR NOT NULL,
+            game_time TIMESTAMPTZ NOT NULL
+        )
+        SQL;
+
         $this->db->query($sql);
     }
 
@@ -184,12 +185,12 @@ SQL;
     {
         foreach ($games as $game) {
             $this->db->insert(
-                'nflGameImport',
-                array(
-                    'awayTeam' => $game['away_team'],
-                    'homeTeam' => $game['home_team'],
-                    'gameTime' => $game['game_time'],
-                )
+                'game_import',
+                [
+                    'away_team' => $game['away_team'],
+                    'home_team' => $game['home_team'],
+                    'game_time' => $game['game_time'],
+                ]
             );
         }
     }
@@ -200,12 +201,7 @@ SQL;
             return;
         }
 
-        $this->db->insert(
-            'nflSeason',
-            array(
-                'year' => $year,
-            )
-        );
+        $this->db->insert('seasons', ['year' => $year]);
     }
 
     private function doesSeasonExist($year)
@@ -216,15 +212,14 @@ SQL;
     private function getSeasonIdForYear($year)
     {
         $sql = <<<SQL
-SELECT seasonId
-FROM nflSeason
-WHERE year = :year
-SQL;
+        SELECT season_id
+        FROM seasons
+        WHERE year = $1
+        SQL;
 
-        $result = $this->db->query($sql, array('year' => $year));
-        $row = $result->fetch();
+        $result = $this->db->query($sql, [$year]);
 
-        return $row['seasonId'];
+        return $result->fetchOne();
     }
 
     private function createWeeksIfTheyDoNotExist($year)
@@ -250,18 +245,18 @@ SQL;
             }
 
             $end_timestamp = strtotime(
-                '+6 days',
+                '+6 days 23:59:59',
                 $start_timestamp
             );
 
             $this->db->insert(
-                'nflWeek',
-                array(
-                    'seasonId'  => $season_id,
-                    'weekStart' => $start_date,
-                    'weekEnd'   => date('Y-m-d', $end_timestamp),
-                    'winWeight' => ($week_number > 17 ? pow(2, $week_number - 17) : 1),
-                )
+                'weeks',
+                [
+                    'season_id'  => $season_id,
+                    'start_at'   => $start_date,
+                    'end_at'     => date('c', $end_timestamp),
+                    'win_weight' => ($week_number > 17 ? pow(2, $week_number - 17) : 1),
+                ]
             );
         }
     }
@@ -270,24 +265,24 @@ SQL;
     {
         $dates = array();
 
-        $sql = <<<SQL
-SELECT DISTINCT DATE(gameTime) AS date
-FROM nflGameImport AS import
-JOIN nflTeam AS away ON import.awayTeam = away.abbreviation
-JOIN nflTeam AS home ON import.homeTeam = home.abbreviation
+        $sql = <<<'SQL'
+        SELECT DISTINCT game_time::date AS date
+        FROM game_import
+        JOIN teams AS away ON game_import.away_team = away.abbreviation
+        JOIN teams AS home ON game_import.home_team = home.abbreviation
 
-UNION DISTINCT
+        UNION DISTINCT
 
-SELECT DISTINCT DATE(gameTime) AS date
-FROM nflGame
-JOIN nflWeek USING (weekId)
-JOIN nflSeason USING (seasonId)
-WHERE year = :year
+        SELECT DISTINCT game_time::date AS date
+        FROM games
+        JOIN weeks USING (week_id)
+        JOIN seasons USING (season_id)
+        WHERE year = $1
 
-ORDER BY date
-SQL;
-        $result = $this->db->query($sql, array('year' => $year));
-        while ($row = $result->fetch()) {
+        ORDER BY date
+        SQL;
+        $result = $this->db->query($sql, [$year]);
+        while ($row = $result->fetchRow()) {
             $dates[$row['date']] = $row['date'];
         }
 
@@ -296,42 +291,37 @@ SQL;
 
     private function doesWeekExist($season_id, $start_date)
     {
-        $sql = <<<SQL
-SELECT 1
-FROM nflWeek
-WHERE seasonId = :season_id
-    AND weekStart = :start_date
-SQL;
+        $sql = <<<'SQL'
+        SELECT 1
+        FROM weeks
+        WHERE season_id = $1
+            AND start_at = $2
+        SQL;
 
-        $criteria = array(
-            'season_id'  => $season_id,
-            'start_date' => $start_date,
-        );
-
-        return (bool)$this->db->query($sql, $criteria)->fetch();
+        return $this->db->exists($sql, [$season_id, $start_date]);
     }
 
     public function importStagedGames()
     {
-        $sql = <<<SQL
-INSERT IGNORE INTO nflGame
-(
-    `weekId`,
-    `awayId`,
-    `homeId`,
-    `gameTime`
-)
-SELECT
-    week.weekId,
-    away.teamId,
-    home.teamId,
-    import.gameTime
-FROM nflGameImport AS import
-JOIN nflTeam AS away ON import.awayTeam = away.abbreviation
-JOIN nflTeam AS home ON import.homeTeam = home.abbreviation
-JOIN nflWeek AS week ON DATE(import.gameTime) BETWEEN week.weekStart AND week.weekEnd
-ON DUPLICATE KEY UPDATE gameTime = VALUES(gameTime)
-SQL;
+        $sql = <<<'SQL'
+        INSERT INTO games
+        (
+            week_id,
+            away_team_id,
+            home_team_id,
+            game_time
+        )
+        SELECT
+            weeks.week_id,
+            away_team.team_id,
+            home_team.team_id,
+            game_import.game_time
+        FROM game_import
+        JOIN teams AS away_team ON game_import.away_team = away_team.abbreviation
+        JOIN teams AS home_team ON game_import.home_team = home_team.abbreviation
+        JOIN weeks ON game_import.game_time BETWEEN weeks.start_at AND weeks.end_at
+        ON CONFLICT (week_id, away_team_id, home_team_id) DO UPDATE SET game_time = excluded.game_time
+        SQL;
         $this->db->query($sql);
     }
 }

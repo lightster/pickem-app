@@ -151,14 +151,14 @@ class Provider implements ControllerProviderInterface
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
 
-            $player_id = $authenticated_user
-                ? $authenticated_user['player_id']
+            $user_id = $authenticated_user
+                ? $authenticated_user['user_id']
                 : null;
 
             $picks = $app['lidsys.football.fantasy-pick']->getPicksForWeek(
                 $year,
                 $week,
-                $player_id
+                $user_id
             );
 
             return $app->json(array(
@@ -196,13 +196,13 @@ class Provider implements ControllerProviderInterface
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
 
-            $player_id = $authenticated_user
-                ? $authenticated_user['player_id']
+            $user_id = $authenticated_user
+                ? $authenticated_user['user_id']
                 : null;
 
             $players = $app['lidsys.football.fantasy-player']->getPlayersForYear(
                 $year,
-                $player_id
+                $user_id
             );
 
             return $app->json(array(

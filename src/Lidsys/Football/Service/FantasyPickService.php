@@ -2,7 +2,8 @@
 
 namespace Lidsys\Football\Service;
 
-use Lstr\Silex\Database\DatabaseService;
+use The\Db;
+use The\DbExpr;
 
 class FantasyPickService
 {
@@ -12,7 +13,7 @@ class FantasyPickService
 
 
     public function __construct(
-        DatabaseService $db,
+        Db $db,
         ScheduleService $schedule
     ) {
         $this->db       = $db;
@@ -21,7 +22,7 @@ class FantasyPickService
 
 
 
-    public function getPicksForWeek($year, $week_number, $player_id)
+    public function getPicksForWeek($year, $week_number, $user_id)
     {
         $weeks = $this->schedule->getWeeksForYear($year);
 
@@ -35,23 +36,19 @@ class FantasyPickService
 
         $db    = $this->db;
         $query = $db->query(
-            "
-                SELECT
-                    playerId AS player_id,
-                    gameId AS game_id,
-                    teamId AS team_id
-                FROM nflFantPick pick
-                JOIN nflGame game USING (gameId)
-                WHERE weekId = :week_id
-                     AND (gameTime < :now OR playerId = :player_id)
-            ",
-            array(
-                'week_id'   => $week['week_id'],
-                'now'       => gmdate('Y-m-d H:i:s'),
-                'player_id' => $player_id,
-            )
+            <<<'SQL'
+            SELECT
+                user_id AS player_id,
+                game_id,
+                team_id
+            FROM picks
+            JOIN games USING (game_id)
+            WHERE week_id = $1
+                 AND (game_time < $2 OR user_id = $3)
+            SQL,
+            [$week['week_id'], new DbExpr('NOW()'), $user_id]
         );
-        while ($pick = $query->fetch()) {
+        while ($pick = $query->fetchRow()) {
             $picks[$pick['game_id']][$pick['player_id']] = $pick;
         }
 
@@ -68,32 +65,15 @@ class FantasyPickService
         $db    = $this->db;
 
         $query = $db->query(
-            "
-                SELECT
-                    playerId AS player_id
-                FROM player_user
-                WHERE userId = :user_id
-            ",
-            array(
-                'user_id' => $user_id,
-            )
+            <<<SQL
+            SELECT game_id
+            FROM games
+            WHERE game_id IN ({$game_ids_sql})
+                AND game_time >= $1
+            SQL,
+            [new DbExpr('NOW()')]
         );
-        $player    = $query->fetch();
-        $player_id = $player['player_id'];
-
-        $query = $db->query(
-            "
-                SELECT
-                    gameId AS game_id
-                FROM nflGame game
-                WHERE gameId IN ({$game_ids_sql})
-                    AND gameTime >= :now
-            ",
-            array(
-                'now'      => gmdate('Y-m-d H:i:s'),
-            )
-        );
-        while ($game = $query->fetch()) {
+        while ($game = $query->fetchRow()) {
             $valid_game_ids[] = $game['game_id'];
         }
 
@@ -101,74 +81,45 @@ class FantasyPickService
             return;
         }
 
-        $valid_game_ids_sql = implode(',', $valid_game_ids);
-        $db->query(
-            "
-                DELETE FROM nflFantPick
-                WHERE gameId IN ($valid_game_ids_sql)
-                    AND playerId = :player_id
-            ",
-            array(
-                'player_id' => $player_id,
-            )
-        );
-
-        $row_num    = 0;
-        $value_sets = array();
-        $values     = array(
-            'player_id' => $player_id,
-        );
-        foreach ($valid_game_ids as $valid_game_id) {
-            $value_sets[] = "
-                (
-                    :player_id,
-                    :game_id_{$row_num},
-                    :team_id_{$row_num}
-                )
-            ";
-            $values["game_id_{$row_num}"] = $valid_game_id;
-            $values["team_id_{$row_num}"] = $picks[$valid_game_id];
-            $saved_picks[] = array(
-                'player_id' => $player_id,
-                'game_id'   => $valid_game_id,
-                'team_id'   => $picks[$valid_game_id],
+        foreach ($valid_game_ids as $game_id) {
+            $updated_row = $db->update(
+                'picks',
+                [
+                    'team_id'    => $picks[$game_id],
+                    'updated_at' => new DbExpr('NOW()'),
+                ],
+                'user_id = $1 AND game_id = $2',
+                [$user_id, $game_id]
             );
-            ++$row_num;
+
+            if (!$updated_row) {
+                $db->insert(
+                    'picks',
+                    [
+                        'user_id' => $user_id,
+                        'game_id' => $game_id,
+                        'team_id' => $picks[$game_id],
+                    ]
+                );
+            }
         }
 
-        if (count($value_sets)) {
-            $values_sql = implode(",\n", $value_sets);
-            $db->query(
-                "
-                    INSERT INTO nflFantPick
-                    (
-                        playerId,
-                        gameId,
-                        teamId
-                    )
-                    VALUES
-                    {$values_sql}
-                ",
-                $values
-            );
-        }
+        $valid_game_ids_sql = implode(', ', $valid_game_ids);
 
         $saved_picks = array();
         $query = $db->query(
-            "
-                SELECT
-                    playerId AS player_id,
-                    gameId AS game_id,
-                    teamId AS team_id
-                FROM nflFantPick pick
-                WHERE gameId IN ($valid_game_ids_sql)
-                    AND playerId = :player_id
-            ",
-            array(
-                'player_id' => $player_id,
-            )
+            <<<SQL
+            SELECT
+                user_id AS player_id,
+                game_id,
+                team_id
+            FROM picks
+            WHERE game_id IN ($valid_game_ids_sql)
+                AND user_id = $1
+            SQL,
+            [$user_id]
         );
-        while ($saved_pick = $query->fetch()) {
+        while ($saved_pick = $query->fetchRow()) {
             $saved_picks[] = $saved_pick;
         }
 

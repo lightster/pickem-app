@@ -6,23 +6,20 @@ use Exception;
 
 use Lidsys\Application\Service\MailerService;
 
-use Lstr\Silex\Database\DatabaseService;
+use The\Db;
 
 class AuthenticationResetService
 {
     private $auth;
-    private $db;
     private $mailer;
     private $auth_config;
 
     public function __construct(
         AuthenticatorService $auth,
-        DatabaseService $db,
         MailerService $mailer,
         array $auth_config
     ) {
         $this->auth        = $auth;
-        $this->db          = $db;
         $this->mailer      = $mailer;
         $this->auth_config = $auth_config;
     }

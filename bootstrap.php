@@ -7,7 +7,6 @@ use Lidsys\Application\Application;
 
 use Lstr\Silex\Asset\AssetServiceProvider;
 use Lstr\Silex\Config\ConfigServiceProvider;
-use Lstr\Silex\Database\DatabaseServiceProvider;
 use Lstr\Silex\Template\TemplateServiceProvider;
 
 use Lidsys\Application\Service\Provider as AppServiceProvider;
@@ -22,7 +21,6 @@ $app['route_class'] = 'Lidsys\Application\Route';
 $app->register(new AppServiceProvider());
 $app->register(new AssetServiceProvider());
 $app->register(new ConfigServiceProvider());
-$app->register(new DatabaseServiceProvider());
 $app->register(new FootballServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new TemplateServiceProvider());

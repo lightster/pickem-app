@@ -9,6 +9,7 @@ use Lidsys\Football\View\WeekTransformation;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use function The\db;
 
 class Provider implements ServiceProviderInterface
 {
@@ -16,35 +17,35 @@ class Provider implements ServiceProviderInterface
     {
         $app['lidsys.football.fantasy-pick'] = $app->share(function ($app) {
             return new FantasyPickService(
-                $app['db'],
+                db(),
                 $app['lidsys.football.schedule']
             );
         });
         $app['lidsys.football.fantasy-player'] = $app->share(function ($app) {
             return new FantasyPlayerService(
-                $app['db']
+                db()
             );
         });
         $app['lidsys.football.fantasy-standings'] = $app->share(function ($app) {
             return new FantasyStandingService(
-                $app['db'],
+                db(),
                 $app['lidsys.football.schedule']
             );
         });
         $app['lidsys.football.schedule'] = $app->share(function ($app) {
             return new ScheduleService(
-                $app['db']
+                db()
             );
         });
         $app['lidsys.football.schedule-import'] = $app->share(function ($app) {
             return new ScheduleImportService(
-                $app['db'],
+                db(),
                 $app['lidsys.football.schedule']
             );
         });
         $app['lidsys.football.team'] = $app->share(function ($app) {
             return new TeamService(
-                $app['db'],
+                db(),
                 $app['lidsys.football.schedule']
             );
         });

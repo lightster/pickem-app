@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 
 use The\Db;
+use The\DbExpr;
 
 class ScheduleService
 {
@@ -231,15 +232,14 @@ class ScheduleService
         $data = json_decode($json, true);
 
         $sql = <<<'SQL'
-        UPDATE games
+        SELECT game_id
+        FROM games
         JOIN weeks USING (week_id)
         JOIN teams AS away_teams ON games.away_team_id = away_teams.team_id
         JOIN teams AS home_teams ON games.home_team_id = home_teams.team_id
-        SET away_score = $1,
-            home_score = $2
-        WHERE away_teams.abbreviation = $3
-            AND home_teams.abbreviation = $4
-            AND $5::date BETWEEN weeks.start_at AND weeks.end_at
+        WHERE away_teams.abbreviation = $1
+            AND home_teams.abbreviation = $2
+            AND $3::date BETWEEN weeks.start_at AND weeks.end_at
         SQL;
 
         foreach ($data['gameScores'] as $game) {
@@ -259,15 +259,17 @@ class ScheduleService
             $away_score     = $score['visitorTeamScore']['pointTotal'];
             $away_abbr      = $game_schedule['visitorTeam']['abbr'];
 
-            $this->db->query(
-                $sql,
+            $game_id = $this->db->fetchOne($sql, [$away_abbr, $home_abbr, $date_sql]);
+
+            $this->db->update(
+                'games',
                 [
-                    $away_score,
-                    $home_score,
-                    $away_abbr,
-                    $home_abbr,
-                    $date_sql,
-                ]
+                    'away_score' => $away_score,
+                    'home_score' => $home_score,
+                    'updated_at' => new DbExpr('NOW()'),
+                ],
+                'game_id = $1',
+                [$game_id]
             );
         }
     }

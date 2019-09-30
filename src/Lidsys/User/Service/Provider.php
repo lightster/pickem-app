@@ -4,6 +4,7 @@ namespace Lidsys\User\Service;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use function The\db;
 
 class Provider implements ServiceProviderInterface
 {
@@ -11,14 +12,13 @@ class Provider implements ServiceProviderInterface
     {
         $app['lidsys.user.authenticator'] = $app->share(function ($app) {
             return new AuthenticatorService(
-                $app['db'],
+                db(),
                 $app['config']['auth']
             );
         });
         $app['lidsys.user.auth-reset'] = $app->share(function ($app) {
             return new AuthenticationResetService(
                 $app['lidsys.user.authenticator'],
-                $app['db'],
                 $app['mailer'],
                 $app['config']['auth']
             );
@@ -26,7 +26,7 @@ class Provider implements ServiceProviderInterface
         $app['lidsys.user'] = $app->share(function ($app) {
             return new UserService(
                 $app['lidsys.user.authenticator'],
-                $app['db']
+                db()
             );
         });
     }

@@ -28,6 +28,10 @@ class MigrateToPostgresCommand extends Command implements AppAwareInterface
     {
         $app     = $this->getSilexApplication();
 
+        $app['db'] = $app->share(function ($app) {
+            return new DatabaseService($app, $app['config']['db.config']);
+        });
+
         $maria = $app['db'];
         $pg = \The\db();
 

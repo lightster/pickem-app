@@ -2,7 +2,7 @@
 
 namespace Lidsys\Football\Service;
 
-use Lstr\Silex\Database\DatabaseService;
+use The\Db;
 
 class FantasyPlayerService
 {
@@ -10,37 +10,39 @@ class FantasyPlayerService
 
 
 
-    public function __construct(DatabaseService $db)
+    public function __construct(Db $db)
     {
         $this->db    = $db;
     }
 
 
 
-    public function getPlayersForYear($year, $player_id)
+    public function getPlayersForYear($year, $user_id)
     {
         $players = array();
 
         $db    = $this->db;
         $query = $db->query(
-            "
-                SELECT
-                    playerId AS player_id,
-                    name AS name,
-                    bgcolor AS background_color
-                FROM player
-                LEFT JOIN nflFantPick pick USING (playerId)
-                LEFT JOIN nflGame game USING (gameId)
-                LEFT JOIN nflWeek week USING (weekId)
-                LEFT JOIN nflSeason season USING (seasonId)
-                WHERE (year = :year OR playerId = :player_id)
-            ",
-            array(
-                'year'      => $year,
-                'player_id' => $player_id,
-            )
+            <<<'SQL'
+            SELECT
+                user_id AS player_id,
+                display_name AS name,
+                display_color AS background_color
+            FROM users
+            WHERE user_id = $1
+                OR EXISTS (
+                    SELECT 1
+                    FROM picks
+                    JOIN games USING (game_id)
+                    JOIN weeks USING (week_id)
+                    JOIN seasons USING (season_id)
+                    WHERE year = $2
+                        AND users.user_id = picks.user_id
+                )
+            SQL,
+            [$user_id, $year]
         );
-        while ($player = $query->fetch()) {
+        while ($player = $query->fetchRow()) {
             $names = explode(" ", $player['name']);
             foreach ($names as $name_i => $name_part) {
                 if ($name_i > 0) {

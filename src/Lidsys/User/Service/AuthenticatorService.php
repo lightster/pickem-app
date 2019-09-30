@@ -4,14 +4,14 @@ namespace Lidsys\User\Service;
 
 use Exception;
 
-use Lstr\Silex\Database\DatabaseService;
+use The\Db;
 
 class AuthenticatorService
 {
     private $db;
     private $auth_config;
 
-    public function __construct(DatabaseService $db, array $auth_config)
+    public function __construct(Db $db, array $auth_config)
     {
         $this->db    = $db;
         $this->auth_config = $auth_config;
@@ -19,65 +19,38 @@ class AuthenticatorService
 
     public function getUserForUsername($username)
     {
-        return $this->findUserWithWhereClause(
-            "
-                WHERE u.username = :username
-            ",
-            [
-                'username' => $username,
-            ]
-        );
+        return $this->findUserWithWhereClause('WHERE username = $1', [$username]);
     }
 
     public function getUserForUsernameAndPassword($username, $password)
     {
         return $this->findUserWithWhereClause(
-            "
-                WHERE u.username = :username
-                    AND u.password = md5(concat(:password, u.securityHash))
-            ",
-            [
-                'username' => $username,
-                'password' => md5($password),
-            ]
+            'WHERE username = $1 AND password = md5(concat($2::varchar, security_hash))',
+            [$username, md5($password)]
         );
     }
 
     public function getUserForUserIdAndPassword($user_id, $password)
     {
         return $this->findUserWithWhereClause(
-            "
-                WHERE u.userId = :user_id
-                    AND u.password = md5(concat(:password, u.securityHash))
-            ",
-            [
-                'user_id' => $user_id,
-                'password' => md5($password),
-            ]
+            'WHERE user_id = $1 AND password = md5(concat($2::varchar, security_hash))',
+            [$user_id, md5($password)]
         );
     }
 
     public function getUserForUserId($user_id)
     {
         return $this->findUserWithWhereClause(
-            "
-                WHERE u.userId = :user_id
-            ",
-            [
-                'user_id' => $user_id,
-            ]
+            'WHERE user_id = $1',
+            [$user_id]
         );
     }
 
     public function getUserForEmail($email)
     {
         return $this->findUserWithWhereClause(
-            "
-                WHERE u.email = :email
-            ",
-            [
-                'email' => $email,
-            ]
+            'WHERE email = $1',
+            [$email]
         );
     }
 
@@ -85,63 +58,27 @@ class AuthenticatorService
     {
         $db = $this->db;
         $db->query(
-            "
-                UPDATE user
-                SET password = md5(concat(:password, securityHash)),
-                    passwordDate = NOW()
-                WHERE userId = :user_id
-            ",
-            [
-                'user_id'  => $user_id,
-                'password' => md5($password),
-            ]
+            <<<'SQL'
+            UPDATE users
+            SET password = md5(concat($1::varchar, security_hash)),
+                password_changed_at = NOW()
+            WHERE user_id = $2
+            SQL,
+            [md5($password), $user_id]
         );
 
         return true;
     }
 
-    public function resetPasswordForUsername($username)
-    {
-        $characters = '0123456789'
-            . 'abcdefghijklmnopqrstuvwxyz'
-            . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-            . '!@#$%^&*';
-        $character_count = strlen($characters);
-
-        $new_password = '';
-        for ($i = 0; $i < 14; $i++) {
-            $new_password .= $characters[mt_rand(0, $character_count - 1)];
-        }
-
-        $db = $this->db;
-        $db->query(
-            "
-                UPDATE user
-                SET password = md5(concat(:password, securityHash))
-                WHERE username = :username
-            ",
-            [
-                'username'  => $username,
-                'password' => md5($new_password),
-            ]
-        );
-
-        return $new_password;
-    }
-
     public function findUsersActiveSince($last_active)
     {
         $sql = <<<SQL
-{$this->getUserFindSql()}
-WHERE lastActive >= :last_active
-    AND email IS NOT NULL
-SQL;
-        $query = $this->db->query(
-            $sql,
-            [
-                'last_active' => $last_active,
-            ]
-        );
+        {$this->getUserFindSql()}
+        WHERE last_active_at >= $1
+            AND email IS NOT NULL
+        SQL;
+        $query = $this->db->query($sql, [$last_active]);
+
         return $query;
     }
 
@@ -210,30 +147,24 @@ SQL;
     private function findUserWithWhereClause($where_sql, array $params)
     {
         $query = $this->db->query(
-            $this->getUserFindSql() . $where_sql,
+            $this->getUserFindSql() . " {$where_sql}",
             $params
         );
-        return $query->fetch();
+        return $query->fetchRow();
     }
 
     private function getUserFindSql()
     {
         return <<<'SQL'
-SELECT
-    u.userId AS user_id,
-    u.username,
-    u.email,
-    u.timeZone AS time_zone,
-    u.passwordDate AS password_changed_at,
-    p.playerId As player_id,
-    p.name AS name,
-    p.bgcolor AS background_color
-FROM user AS u
-JOIN player_user AS pu
-    ON pu.userId = u.userId
-JOIN player AS p
-    ON p.playerId = pu.playerId
-SQL
-        ;
+        SELECT
+            user_id,
+            username,
+            email,
+            password_changed_at,
+            user_id AS player_id,
+            display_name AS name,
+            display_color AS background_color
+        FROM users
+        SQL;
     }
 }

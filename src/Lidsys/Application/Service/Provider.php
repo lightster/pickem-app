@@ -4,7 +4,6 @@ namespace Lidsys\Application\Service;
 
 use Lidsys\Application\View\ViewTransformer;
 
-use Lstr\Silex\Database\DatabaseService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -17,10 +16,6 @@ class Provider implements ServiceProviderInterface
                 __DIR__ . '/../../../../config/autoload/*.global.php',
                 __DIR__ . '/../../../../config/autoload/*.local.php',
             ]);
-        });
-
-        $app['db'] = $app->share(function ($app) {
-            return new DatabaseService($app, $app['config']['db.config']);
         });
 
         $app['mailer'] = $app->share(function ($app) {

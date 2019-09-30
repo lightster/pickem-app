@@ -2,7 +2,7 @@
 
 namespace Lidsys\Football\Service;
 
-use Lstr\Silex\Database\DatabaseService;
+use The\Db;
 
 class FantasyStandingService
 {
@@ -13,7 +13,7 @@ class FantasyStandingService
 
 
 
-    public function __construct(DatabaseService $db, ScheduleService $schedule)
+    public function __construct(Db $db, ScheduleService $schedule)
     {
         $this->db       = $db;
         $this->schedule = $schedule;
@@ -31,37 +31,35 @@ class FantasyStandingService
 
         $db    = $this->db;
         $query = $db->query(
-            "
+            <<<'SQL'
                 SELECT
-                    p.playerId AS player_id,
-                    w.weekId AS week_id,
+                    p.user_id AS player_id,
+                    g.week_id,
                     SUM(
-                        IF(
-                            (fp.teamId=g.homeId AND g.homeScore>=g.awayScore)
-                            OR (fp.teamId=g.awayId AND g.awayScore>=g.homeScore),
-                            winWeight,
-                            0
-                        )
+                        CASE WHEN
+                            (fp.team_id = g.home_team_id AND g.home_score >= g.away_score)
+                            OR (fp.team_id = g.away_team_id AND g.away_score >= g.home_score)
+                        THEN win_weight
+                        ELSE 0
+                        END
                     ) AS points,
                     SUM(
-                        IF(
-                            g.homeScore IS NULL OR g.awayScore IS NULL,
-                            0,
-                            winWeight
-                        )
+                        CASE WHEN
+                            g.home_score IS NULL OR g.away_score IS NULL
+                        THEN 0
+                        ELSE win_weight
+                        END
                     ) AS potential_points
-                FROM player AS p
-                LEFT JOIN nflFantPick AS fp ON p.playerId = fp.playerId
-                LEFT JOIN nflGame AS g ON fp.gameId=g.gameId
-                LEFT JOIN nflWeek AS w ON g.weekId=w.weekId
-                WHERE w.seasonId = :season_id
-                GROUP BY g.weekId, p.playerId
-            ",
-            array(
-                'season_id' => $season_id,
-            )
+                FROM users AS p
+                LEFT JOIN picks AS fp ON p.user_id = fp.user_id
+                LEFT JOIN games AS g ON fp.game_id = g.game_id
+                LEFT JOIN weeks AS w ON g.week_id = w.week_id
+                WHERE w.season_id = $1
+                GROUP BY g.week_id, p.user_id
+            SQL,
+            [$season_id]
         );
-        while ($player = $query->fetch()) {
+        while ($player = $query->fetchRow()) {
             $week_number = $schedule_service->getWeekNumberForWeekId($player['week_id']);
             $player_stats[$week_number][$player['player_id']] = $player;
         }

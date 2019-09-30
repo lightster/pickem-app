@@ -42,6 +42,6 @@ for HISTORICAL_DIR in "${HISTORICAL_DIRS[@]}"; do
 done
 
 echo -e "\n\nNotifying Honeybadger of completion"
-http --check-status --ignore-stdin "${HONEYBADGER_MARIA_BACKUPS_CHECKIN}"
+http --check-status --ignore-stdin "${HONEYBADGER_POSTGRES_SNAPSHOTS_CHECKIN}"
 
 echo -en "\n\n--\n\nAll done @ $(date)\n\n"

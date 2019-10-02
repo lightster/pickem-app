@@ -46,7 +46,7 @@ class Provider implements ControllerProviderInterface
             if ('lightster' === $authenticated_user['username']) {
                 $count = 0;
                 $user_results = $app['lidsys.user.authenticator']->findUsersActiveSince((date('Y') - 1) . '-09-01');
-                while ($user = $user_results->fetch()) {
+                while ($user = $user_results->fetchRow()) {
                     $app['lidsys.football.notification']->sendWelcomeEmail($user);
                     ++$count;
                 }

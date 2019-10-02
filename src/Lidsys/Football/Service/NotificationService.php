@@ -260,7 +260,7 @@ HTML
 
             $count = 0;
             $user_results = $this->authenticator->findUsersActiveSince($week['year'] . '-07-01');
-            while ($user = $user_results->fetch()) {
+            while ($user = $user_results->fetchRow()) {
                 $this->sendReminderEmail(
                     $user,
                     $week,
@@ -284,7 +284,7 @@ HTML
 
         $count = 0;
         $user_results = $this->authenticator->findUsersActiveSince((date('Y') - 1) . '-09-01');
-        while ($user = $user_results->fetch()) {
+        while ($user = $user_results->fetchRow()) {
             $this->sendWelcomeEmail($user);
             ++$count;
         }

@@ -23,8 +23,10 @@
 		"php": "~7.3.0",
 		"silex/silex": "~1.1",
 		"lightster/lstr-silex": "~0.2.1",
-		"mailgun/mailgun-php": "^1.7.1",
 		"davedevelopment/phpmig": "~1.0",
-		"kelvineducation/the-framework-php": "^3.0"
+		"kelvineducation/the-framework-php": "^3.0",
+		"mailgun/mailgun-php": "^3",
+		"kriswallsmith/buzz": "^1.0",
+		"nyholm/psr7": "^1.2"
 	}
 }

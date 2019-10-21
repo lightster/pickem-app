@@ -8,8 +8,6 @@ class MailerService
 {
     private $key;
     private $domain;
-    private $api_endpoint;
-    private $api_ssl;
 
     private $substitutions;
     private $defaults;
@@ -19,32 +17,26 @@ class MailerService
     public function __construct($key, $domain, array $options = [])
     {
         $substitutions = $defaults = $overrides = [];
-        $api_endpoint = 'api.mailgun.net';
-        $api_ssl = true;
         extract($options, EXTR_IF_EXISTS);
 
         $this->key           = $key;
         $this->domain        = $domain;
-        $this->api_endpoint  = $api_endpoint;
-        $this->api_ssl       = $api_ssl;
 
         $this->substitutions = $substitutions;
         $this->defaults      = $defaults;
         $this->overrides     = $overrides;
     }
 
+    /**
+     * @return Mailgun
+     */
     private function getMailgun()
     {
         if ($this->mailgun) {
             return $this->mailgun;
         }
 
-        $this->mailgun = new Mailgun(
-            $this->key,
-            $this->api_endpoint,
-            'v2',
-            $this->api_ssl
-        );
+        $this->mailgun = Mailgun::create($this->key);
 
         return $this->mailgun;
     }
@@ -65,7 +57,7 @@ class MailerService
         $this->substituteString($data, 'text', $substitutions);
         $this->substituteString($data, 'html', $substitutions);
 
-        return $this->getMailgun()->sendMessage($this->domain, $data);
+        return $this->getMailgun()->messages()->send($this->domain, $data);
     }
 
     private function substituteString(array & $data, $field, $substitutions)

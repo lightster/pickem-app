@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/the-vendor/autoload.php';
 
+use Honeybadger\Honeybadger;
 use function The\option;
 use function The\service;
 use The\Db;
@@ -23,11 +24,11 @@ option('session_save_handler', 'files');
 option('session_save_path', null);
 
 option('honeybadger', service(function () {
-    return new class {
-        public function notify($e)
-        {
-        }
-    };
+    return Honeybadger::new([
+        'api_key'          => getenv('HONEYBADGER_API_KEY') ?: null,
+        'environment_name' => getenv('APP_ENV') ?: 'unknown',
+        'handlers'         => ['exception' => false, 'error' => false],
+    ]);
 }));
 
 Model::setDb(function () {

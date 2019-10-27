@@ -30,6 +30,7 @@ services:
     environment:
       - APP_ENV
       - DATABASE_URL
+      - HONEYBADGER_API_KEY
     ports:
       - 9000
 

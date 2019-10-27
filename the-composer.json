@@ -18,7 +18,8 @@
         "mailgun/mailgun-php": "^3",
         "kriswallsmith/buzz": "^1.0",
         "nyholm/psr7": "^1.2",
-        "kelvineducation/the-framework-php": "^3.2"
+        "kelvineducation/the-framework-php": "^3.2",
+        "honeybadger-io/honeybadger-php": "^2.0"
     },
     "authors": [
         {

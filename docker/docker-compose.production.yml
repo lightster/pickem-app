@@ -28,6 +28,7 @@ services:
     environment:
       - APP_ENV
       - DATABASE_URL
+      - HONEYBADGER_API_KEY
 
   postgres:
     image: postgres:11.5-alpine

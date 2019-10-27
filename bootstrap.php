@@ -1,33 +1,35 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/the-bootstrap.php';
+require_once __DIR__ . '/the-vendor/autoload.php';
 
-use Lidsys\Application\Application;
+use function The\option;
+use function The\service;
+use The\Db;
+use The\Request;
+use The\Model;
 
-use Lstr\Silex\Asset\AssetServiceProvider;
-use Lstr\Silex\Config\ConfigServiceProvider;
-use Lstr\Silex\Template\TemplateServiceProvider;
+option('root_dir', __DIR__);
+option('views_dir', option('root_dir') . '/views');
 
-use Lidsys\Application\Service\Provider as AppServiceProvider;
-use Lidsys\Football\Service\Provider as FootballServiceProvider;
-use Lidsys\User\Service\Provider as UserServiceProvider;
+option('request', service(function () {
+    return new Request;
+}));
 
-use Silex\Provider\SessionServiceProvider;
+option('db', service(function () {
+    return new Db(getenv('DATABASE_URL'));
+}));
 
-$app = new Application();
-$app['route_class'] = 'Lidsys\Application\Route';
+option('session_save_handler', 'files');
+option('session_save_path', null);
 
-$app->register(new AppServiceProvider());
-$app->register(new AssetServiceProvider());
-$app->register(new ConfigServiceProvider());
-$app->register(new FootballServiceProvider());
-$app->register(new SessionServiceProvider());
-$app->register(new TemplateServiceProvider());
-$app->register(new UserServiceProvider());
+option('honeybadger', service(function () {
+    return new class {
+        public function notify($e)
+        {
+        }
+    };
+}));
 
-if (isset($app['config']['debug'])) {
-    $app['debug'] = $app['config']['debug'];
-}
-
-return $app;
+Model::setDb(function () {
+    return option('db');
+});

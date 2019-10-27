@@ -4,7 +4,7 @@
  * Lightdatasys tools
  */
 
-$app = require_once __DIR__ . '/../bootstrap.php';
+$app = require_once __DIR__ . '/../silex-bootstrap.php';
 
 use Lidsys\Application\Command\MigrateToPostgresCommand;
 use Lidsys\Football\Command\ImportScheduleCommand as FootballImportScheduleCommand;

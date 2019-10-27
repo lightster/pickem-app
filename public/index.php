@@ -1,6 +1,14 @@
 <?php
 
-$app = require_once __DIR__ . '/../bootstrap.php';
+$top_dir = trim(substr($_SERVER['REQUEST_URI'], 0, 5), '/');
+if ($top_dir !== 'app' && $top_dir !== 'api') {
+    require_once __DIR__ . '/../bootstrap.php';
+
+    \The\App::run(\The\WebContext::init());
+    return;
+}
+
+$app = require_once __DIR__ . '/../silex-bootstrap.php';
 
 use Lidsys\Application\Controller\Provider as AppControllerProvider;
 use Lidsys\Football\Controller\Provider as FootballControllerProvider;

@@ -1,4 +1,5 @@
 vendor
+/the-vendor
 node_modules
 config/autoload/*.local.php
 docker-compose.yml
@@ -7,3 +8,5 @@ docker-compose.yml
 /data/psql-history
 /.pier.overrides.yaml
 /.env
+/public/js
+/public/css/app.css

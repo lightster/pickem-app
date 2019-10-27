@@ -11,6 +11,7 @@ init:
 	docker-compose build
 	docker-compose up -d
 	docker-compose run --rm php-fpm composer install
+	docker-compose run --rm -e COMPOSER=the-composer.json php-fpm composer install
 	docker-compose run --rm php-fpm npm ci
 	docker-compose run --rm php-fpm bin/the migrate:setup
 	docker-compose run --rm php-fpm bin/the migrate

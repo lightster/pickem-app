@@ -47,6 +47,7 @@ services:
       - PSQL_HISTORY=/var/lib/postgresql/history/pickem
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+      - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
       - ./data/psql-history:/var/lib/postgresql/history
 
   postgres-snapshot:
@@ -60,25 +61,6 @@ services:
       - HONEYBADGER_POSTGRES_SNAPSHOTS_CHECKIN
     volumes:
       - ./bin:/app/bin
-
-  mariadb:
-    build:
-      context: .
-      dockerfile: docker/mariadb/Dockerfile
-    restart: always
-    ports:
-      - 3306
-    volumes:
-      - ./data/mariadb:/var/lib/mysql
-      - ./docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
-      - ./bin:/app/bin
-    environment:
-      - MYSQL_ROOT_PASSWORD=pickem
-      - MYSQL_USER=pickem
-      - MYSQL_PASSWORD=pickem
-      - MYSQL_DATABASE=pickem
-      - DROPBOX_TOKEN
-      - HONEYBADGER_MARIA_BACKUPS_CHECKIN
 
 networks:
   reverse-proxy:

@@ -1,5 +1,5 @@
 YESTERDAY=$(shell date -v-1d +"%Y-%m-%d")
-BACKUP_LOCATION="${HOME}/Dropbox/Apps/Pickem/maria-backups/latest/pickem.sql.gz"
+BACKUP_LOCATION="${HOME}/Dropbox/Apps/Pickem/postgres-snapshots/latest/pickem.pgc"
 
 install: install-${ENV}
 
@@ -17,10 +17,12 @@ init:
 	docker-compose run --rm php-fpm bin/the migrate
 
 install-dev-db:
-	rsync -aP ${BACKUP_LOCATION} ./docker/mariadb/initdb.d/
+	rsync -aP ${BACKUP_LOCATION} ./docker/postgres/initdb.d/
+	docker-compose run --rm postgres pg_restore -F c --no-owner --no-privileges -f \
+		/docker-entrypoint-initdb.d/pickem.sql \
+		/docker-entrypoint-initdb.d/pickem.pgc
 
 install-dev-config:
-	cp config/autoload/database.dev.php config/autoload/database.local.php
 	cp config/autoload/debug.dev.php config/autoload/debug.local.php
 
 npm-build:

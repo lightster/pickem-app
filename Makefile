@@ -9,7 +9,7 @@ install-production: init
 init:
 	ln -sfn docker/docker-compose.${ENV}.yml docker-compose.yml
 	docker-compose build
-	docker-compose up -d
+	docker-compose up -d --remove-orphans
 	docker-compose run --rm php-fpm composer install
 	docker-compose run --rm -e COMPOSER=the-composer.json php-fpm composer install
 	docker-compose run --rm php-fpm npm ci

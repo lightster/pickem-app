@@ -40,22 +40,15 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a href="/app/#/football/my-picks" class="nav-link">My Picks</a>
-          </li>
-          <li class="nav-item">
-            <a href="/app/#/football/league-picks" class="nav-link">League Picks</a>
-          </li>
-          <li class="nav-item">
-            <a href="/app/#/football/fantasy-standings" class="nav-link">Fantasy Standings</a>
-          </li>
-          <li class="nav-item">
-            <a href="/app/#/football/schedule" class="nav-link">Schedule</a>
-          </li>
-          <li class="nav-item">
-            <a href="/app/#/football/team-standings" class="nav-link">Team Standings</a>
-          </li>
-
+          <?php foreach ($this['_nav'] as $nav_item): ?>
+            <li class="nav-item">
+              <a href="<?= $nav_item['url'] ?>"
+                class="nav-link <?= $nav_item['class'] ?>"
+              >
+                <?= $nav_item['description'] ?>
+              </a>
+            </li>
+          <?php endforeach ?>
         </ul>
 
         <ul class="navbar-nav my-2 my-lg-0 ml-auto">

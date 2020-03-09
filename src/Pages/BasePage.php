@@ -40,7 +40,7 @@ abstract class BasePage extends FwPage
     {
         foreach ($nav_links as $page => $description) {
             $url = $this->weekUrlFor($page);
-            $class = ($page === self::class ? 'active' : '');
+            $class = ($page === static::class ? 'active' : '');
 
             yield [
                 'url'         => $url,

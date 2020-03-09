@@ -31,6 +31,21 @@ option('honeybadger', service(function () {
     ]);
 }));
 
+option('asset_buster', service(function () {
+    $buster = new \The\AssetBuster(
+        __DIR__ . '/asset_manifest.json',
+        __DIR__ . '/public',
+        [
+            'sync_manifest' => getenv('APP_ENV') === 'development',
+            'dirs'          => ['js', 'css'],
+            'links_dirname' => 'asset_links',
+        ]
+    );
+    $buster->initialize();
+
+    return $buster;
+}));
+
 Model::setDb(function () {
     return option('db');
 });

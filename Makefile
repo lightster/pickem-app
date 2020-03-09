@@ -3,8 +3,8 @@ BACKUP_LOCATION="${HOME}/Dropbox/Apps/Pickem/postgres-snapshots/latest/pickem.pg
 
 install: install-${ENV}
 
-install-development: install-dev-db install-dev-config init
-install-production: init
+install-development: install-dev-db install-dev-config init build
+install-production: init build
 
 init:
 	ln -sfn docker/docker-compose.${ENV}.yml docker-compose.yml
@@ -25,8 +25,11 @@ install-dev-db:
 install-dev-config:
 	cp config/autoload/debug.dev.php config/autoload/debug.local.php
 
-npm-build:
-	docker-compose run --rm php-fpm npm run build
+build:
+	rm -rf asset_manifest.json
+	docker-compose run --rm php-fpm php bin/app assets:generate-team-color-styles
+	docker-compose run --rm php-fpm npm run prod
+	docker-compose run --rm php-fpm php bin/the assets:compile
 
-watch: npm-build
+watch: build
 	docker-compose run --rm php-fpm npm run watch

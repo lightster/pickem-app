@@ -1,0 +1,35 @@
+<div class="btn-group">
+  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false"
+  >
+    <?= $this['selected_season'] ?>
+  </button>
+  <div class="dropdown-menu">
+    <?php foreach ($this['seasons'] as $season): ?>
+      <a
+        class="dropdown-item <?= $season['is_selected'] ? 'active': '' ?>"
+        href="<?= $season['url'] ?>"
+      >
+        <?= $season['season'] ?>
+      </a>
+    <?php endforeach ?>
+  </div>
+</div>
+
+<div class="btn-group">
+  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false"
+  >
+    Week <?= $this['selected_week'] ?>
+  </button>
+  <div class="dropdown-menu">
+    <?php foreach ($this['weeks'] as $week): ?>
+      <a
+        class="dropdown-item <?= $week['is_selected'] ? 'active': '' ?>"
+        href="<?= $week['url'] ?>"
+      >
+        Week <?= $week['week'] ?>
+      </a>
+    <?php endforeach ?>
+  </div>
+</div>

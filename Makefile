@@ -15,6 +15,8 @@ init:
 	docker-compose run --rm php-fpm npm ci
 	docker-compose run --rm php-fpm bin/the migrate:setup
 	docker-compose run --rm php-fpm bin/the migrate
+	docker-compose run --rm php-fpm php bin/app asset:generate-team-color-styles
+	docker-compose run --rm php-fpm npm run prod
 
 install-dev-db:
 	rsync -aP ${BACKUP_LOCATION} ./docker/postgres/initdb.d/
@@ -25,8 +27,8 @@ install-dev-db:
 install-dev-config:
 	cp config/autoload/debug.dev.php config/autoload/debug.local.php
 
-npm-build:
-	docker-compose run --rm php-fpm npm run build
-
-watch: npm-build
+watch:
+	rm -rf asset_manifest.json
+	docker-compose run --rm php-fpm php bin/app asset:generate-team-color-styles
+	docker-compose run --rm php-fpm npm run prod
 	docker-compose run --rm php-fpm npm run watch

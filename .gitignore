@@ -10,3 +10,5 @@ docker-compose.yml
 /.env
 /public/js
 /public/css/app.css
+/asset_manifest.json
+/assets/sass/_team_colors.scss

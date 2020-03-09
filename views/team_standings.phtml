@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="row align-items-end mb-1 mx-lg-3">
+        <div class="col">
+          <h1>Team standings</h1>
+        </div>
+        <div class="col-sm-auto mb-1">
+          <?= $this->partial('_week_selector.phtml', $this['_week_selector']) ?>
+        </div>
+      </div>
+      <div class="row mx-lg-3">
+        <?php foreach (['AFC', 'NFC'] as $conference): ?>
+          <div class="col-lg-6 col-12">
+            <table class="table">
+              <tr class="thead-dark">
+                <th></th>
+                <th colspan="4"><?= $conference ?></th>
+              </tr>
+              <tr>
+                <th style="width: 4%;"></th>
+                <th style="width: 42%;">Team</th>
+                <th class="text-center" style="width: 18%;">Wins</th>
+                <th class="text-center" style="width: 18%;">Losses</th>
+                <th class="text-center" style="width: 18%;">Ties</th>
+              </tr>
+              <?php foreach (['East', 'North', 'South', 'West'] as $division): ?>
+                <tr ng-repeat-start="division in divisions" class="thead-light">
+                  <th colspan="5">
+                    <?= $division ?>
+                  </th>
+                </tr>
+                <?php foreach ($this['standings'][$conference][$division] as $team): ?>
+                <tr>
+                  <td class="<?= \App\team_style($team['abbreviation'], 'secondary') ?>">&nbsp;</td>
+                  <td class="<?= \App\team_style($team['abbreviation'], 'primary') ?>">
+                    <?= $team['location'] ?> <?= $team['mascot'] ?>
+                  </td>
+                  <td class="text-center"><?= $team['win_count'] ?></td>
+                  <td class="text-center"><?= $team['loss_count'] ?></td>
+                  <td class="text-center"><?= $team['tie_count'] ?></td>
+                </tr>
+                <?php endforeach ?>
+              <?php endforeach ?>
+            </table>
+          </div>
+        <?php endforeach ?>
+      </div>
+    </div>
+  </div>
+</div>

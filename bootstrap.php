@@ -21,7 +21,7 @@ option('db', service(function () {
 }));
 
 option('session_save_handler', 'files');
-option('session_save_path', null);
+option('session_save_path', '');
 
 option('honeybadger', service(function () {
     return Honeybadger::new([

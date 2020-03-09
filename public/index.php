@@ -23,7 +23,16 @@ $app->before(function (Request $request) use ($app) {
         return;
     }
 
-    $user_id = $app['session']->get('user_id');
+    session_start([
+        'lifetime' => strtotime("2 hours") - time(),
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => true,
+        'httponly' => true,
+        'name'     => 'The',
+    ]);
+
+    $user_id = $_SESSION['user_id'];
 
     $authenticated_user = false;
 

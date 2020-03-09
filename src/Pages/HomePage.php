@@ -6,6 +6,7 @@ class HomePage extends BasePage
 {
     public function invoke()
     {
-        $this->redirectToUrl('/app');
+        $this->set('title', 'Pickem');
+        $this->render('home.phtml');
     }
 }

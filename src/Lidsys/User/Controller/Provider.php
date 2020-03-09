@@ -83,15 +83,12 @@ class Provider implements ControllerProviderInterface
 
             $response_data = [];
 
-            $app['session']->remove('user_id');
+            unset($_SESSION['user_id']);
 
             if ($authenticated_user) {
                 if ($authenticated_user['password_changed_at']) {
                     $response_data['authenticated_user'] = $authenticated_user;
-                    $app['session']->set(
-                        'user_id',
-                        $authenticated_user['user_id']
-                    );
+                    $_SESSION['user_id'] = $authenticated_user['user_id'];
                 } else {
                     $response_data['error'] = 'passwordless_account';
                 }
@@ -115,7 +112,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->post('/password/', function (Request $request, Application $app) {
-            $user_id = $app['session']->get('user_id');
+            $user_id = $_SESSION['user_id'];
 
             $authenticated_user = false;
 
@@ -155,7 +152,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->post('/user-profile/color/', function (Request $request, Application $app) {
-            $user_id = $app['session']->get('user_id');
+            $user_id = $_SESSION['user_id'];
 
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
@@ -178,7 +175,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->post('/authenticated-user/', function (Request $request, Application $app) {
-            $user_id = $app['session']->get('user_id');
+            $user_id = $_SESSION['user_id'];
 
             $authenticated_user = false;
             $cookies = $request->cookies;
@@ -195,10 +192,7 @@ class Provider implements ControllerProviderInterface
                     $app['lidsys.user.authenticator']->getUserFromRememberMeTokenData(
                         $remember_me_data
                     );
-                $app['session']->set(
-                    'user_id',
-                    $authenticated_user['user_id']
-                );
+                $_SESSION['user_id'] = $authenticated_user['user_id'];
             }
 
             return $app->json([
@@ -207,7 +201,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->post('/logout/', function (Request $request, Application $app) {
-            $app['session']->remove('user_id');
+            unset($_SESSION['user_id']);
 
             $response = $app->json([
                 'logged_out' => true,

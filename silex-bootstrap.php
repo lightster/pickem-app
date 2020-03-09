@@ -12,8 +12,6 @@ use Lidsys\Application\Service\Provider as AppServiceProvider;
 use Lidsys\Football\Service\Provider as FootballServiceProvider;
 use Lidsys\User\Service\Provider as UserServiceProvider;
 
-use Silex\Provider\SessionServiceProvider;
-
 use function The\option;
 use function The\service;
 use The\Db;
@@ -31,7 +29,6 @@ $app->register(new AppServiceProvider());
 $app->register(new AssetServiceProvider());
 $app->register(new ConfigServiceProvider());
 $app->register(new FootballServiceProvider());
-$app->register(new SessionServiceProvider());
 $app->register(new TemplateServiceProvider());
 $app->register(new UserServiceProvider());
 

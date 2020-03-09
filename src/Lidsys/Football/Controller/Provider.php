@@ -19,7 +19,7 @@ class Provider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/reminder', function (Application $app) {
-            $user_id = $app['session']->get('user_id');
+            $user_id = $_SESSION['user_id'];
 
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
@@ -38,7 +38,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->get('/welcome-emailer', function (Application $app) {
-            $user_id = $app['session']->get('user_id');
+            $user_id = $_SESSION['user_id'];
 
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
@@ -146,7 +146,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->get('/fantasy-picks/{year}/{week}', function ($year, $week, Application $app) {
-            $user_id = $app['session']->get('user_id');
+            $user_id = $_SESSION['user_id'];
 
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
@@ -167,7 +167,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->post('/fantasy-picks/', function (Request $request, Application $app) {
-            $user_id = $app['session']->get('user_id');
+            $user_id = $_SESSION['user_id'];
 
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);
@@ -191,7 +191,7 @@ class Provider implements ControllerProviderInterface
         });
 
         $controllers->get('/fantasy-players/{year}', function ($year, Application $app) {
-            $user_id = $app['session']->get('user_id');
+            $user_id = $_SESSION['user_id'];
 
             $authenticated_user =
                 $app['lidsys.user.authenticator']->getUserForUserId($user_id);

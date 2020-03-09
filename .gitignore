@@ -8,5 +8,9 @@ docker-compose.yml
 /data/psql-history
 /.pier.overrides.yaml
 /.env
+/public/js/*
+!/public/js/.keep
+/public/css/*
+!/public/css/.keep
 /asset_manifest.json
 /assets/sass/_team_colors.scss

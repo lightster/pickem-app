@@ -9,6 +9,6 @@ docker-compose.yml
 /.pier.overrides.yaml
 /.env
 /public/js
-/public/css/app.css
+/public/css
 /asset_manifest.json
 /assets/sass/_team_colors.scss

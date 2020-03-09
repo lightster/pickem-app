@@ -6,7 +6,7 @@ use App\Models\Team;
 use The\Cli\Cli;
 use function The\option;
 
-class AssetGenerateTeamColorStylesCli extends Cli
+class AssetsGenerateTeamColorStylesCli extends Cli
 {
     public function run(array $args)
     {

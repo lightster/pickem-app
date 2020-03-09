@@ -23,6 +23,10 @@ $app->before(function (Request $request) use ($app) {
         return;
     }
 
+    if (strpos($request->getPathInfo(), '/app/asset/') === 0) {
+        return;
+    }
+
     session_start([
         'lifetime' => strtotime("2 hours") - time(),
         'path'     => '/',

@@ -14,7 +14,7 @@ class TeamStandingsPage extends BasePage
     {
         $this->makeWeekSelector();
 
-        $this->set('title', 'Pickem Team Standings');
+        $this->set('title', 'Team Standings');
         $this->render('team_standings.phtml', [
             'standings' => $this->getStandingsForWeek(
                 $this->getSelectedSeason(),

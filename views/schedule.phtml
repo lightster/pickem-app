@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="row align-items-end mb-1 mx-lg-3">
+        <div class="col">
+          <h1>Schedule</h1>
+        </div>
+        <div class="col-sm-auto mb-1">
+          <?= $this->partial('_week_selector.phtml', $this['_week_selector']) ?>
+        </div>
+      </div>
+      <div class="row mx-lg-3">
+        <table class="col-12 table schedule">
+          <?php foreach($this['games'] as $game_time => $time_games): ?>
+            <tr class="week-header">
+              <th colspan="8">
+                <time datetime="<?= $game_time ?>"><?= $game_time ?></time>
+              </th>
+            </tr>
+            <?php foreach ($time_games as $game): ?>
+              <tr>
+                <td class="team--away <?= \App\team_style($game['away']['abbreviation'], 'primary') ?>">
+                  <?= $game['away']['location'] ?> <?= $game['away']['mascot'] ?>
+                </td>
+                <td class="team--away <?= \App\team_style($game['away']['abbreviation'], 'secondary') ?>">&nbsp;</td>
+                <td class="team--away <?= \App\score_style($game, $game['away']) ?>">
+                  <?= $game['away']['score'] ?>
+                </td>
+                <td class="team--home <?= \App\score_style($game, $game['home']) ?>">
+                  <?= $game['home']['score'] ?>
+                </td>
+                <td class="team--home <?= \App\team_style($game['home']['abbreviation'], 'secondary') ?>">&nbsp;</td>
+                <td class="team--home <?= \App\team_style($game['home']['abbreviation'], 'primary') ?>">
+                  <?= $game['home']['location'] ?> <?= $game['home']['mascot'] ?>
+                </td>
+              </tr>
+            <?php endforeach ?>
+          <?php endforeach ?>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

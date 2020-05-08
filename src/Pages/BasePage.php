@@ -15,7 +15,7 @@ abstract class BasePage extends FwPage
             '/app/#/football/my-picks/:season/:week'          => 'My Picks',
             '/app/#/football/league-picks/:season/:week'      => 'League Picks',
             '/app/#/football/fantasy-standings/:season/:week' => 'Fantasy Standings',
-            '/app/#/football/schedule/:season/:week'          => 'Schedule',
+            'App\Pages\SchedulePage'                          => 'Schedule',
             'App\Pages\TeamStandingsPage'                     => 'Team Standings',
         ]));
         $this->setLayout('default_layout.phtml');

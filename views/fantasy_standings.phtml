@@ -1,0 +1,95 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="row align-items-end mb-1 mx-lg-3">
+        <div class="col">
+          <h1>Fantasy standings</h1>
+        </div>
+        <div class="col-sm-auto mb-1">
+          <?= $this->partial('_week_selector.phtml', $this['_week_selector']) ?>
+        </div>
+      </div>
+      <div class="row mx-lg-3">
+        <div class="col-12">
+          <table class="table table-striped table-sm table-responsive fantasy-standings">
+            <tr class="table-secondary">
+              <th>Rank</th>
+              <th colspan="2">Player</th>
+              <?php foreach ($this['weeks'] as $week): ?>
+                <th class="week <?= $week['is_selected'] ? 'week--selected' : '' ?>">
+                  <?= $week['week_number'] ?>
+                </th>
+              <?php endforeach ?>
+              <th>Total</th>
+              <th>%</th>
+              <th rowspan="<?= count($this['user_standings']) + 3 ?>" class="bg-light secondary-stats"></th>
+              <th class="secondary-stats">Weeks<br />Won</th>
+              <th rowspan="<?= count($this['user_standings']) + 3 ?>" class="bg-light secondary-stats"></th>
+              <th class="secondary-stats"><abbr title="Games Played">GP</abbr></th>
+              <th class="secondary-stats">Weighted %</th>
+            </tr>
+            <?php foreach ($this['user_standings'] as $user_standing): ?>
+              <tr>
+                <td class="rank"><?= $user_standing['rank'] ?></td>
+                <td class="player-name"><?= $user_standing['display_name'] ?></td>
+                <td style="<?= \App\player_icon_style(
+                    $user_standing['display_color']
+                  ) ?>"
+                  class="player-icon"
+                >
+                  <?= $user_standing['short_name'] ?>
+                </td>
+                <?php foreach ($this['weeks'] as $week_number => $week): ?>
+                  <td
+                    style="<?= \App\fantasy_points_style(
+                      $this['week_stats'][$week_number],
+                      $user_standing['weeks'][$week_number] ?? []
+                    ) ?>"
+                    class="number week <?= $week['is_selected'] ? 'week--selected' : '' ?>"
+                    title="<?= $user_standing['weeks'][$week_number]['percent'] ?? 'N/A' ?>"
+                  >
+                    <?= $user_standing['weeks'][$week_number]['points'] ?? '' ?>
+                  </td>
+                <?php endforeach ?>
+                <td class="number point-total">
+                  <?= $user_standing['total_points'] ?>
+                </td>
+                <td class="number">
+                  <?= $user_standing['total_percent'] ?>
+                </td>
+                <td class="number secondary-stats">
+                  <?= $user_standing['weeks_won'] ?>
+                </td>
+                <td class="number secondary-stats">
+                  <?= $user_standing['total_potential'] ?>
+                </td>
+                <td class="number secondary-stats">
+                  <?= $user_standing['weighted_percent'] ?>
+                </td>
+              </tr>
+            <?php endforeach ?>
+<!--            <tr class="table-secondary">-->
+<!--              <th colspan="3" class="number">Played Points</th>-->
+<!--              <th ng-repeat="week in weeks" class="number week" ng-class="{'current-week': week.week_num == weeks.length}">-->
+<!--                {{week.week.games_played * week.week.win_weight}}-->
+<!--              </th>-->
+<!--              <th class="number point-total">{{playedPoints}}</th>-->
+<!--              <th class="number">{{playedPoints / possiblePoints * 100 | number:1}}%</th>-->
+<!--              <th class="secondary-stats bg-light" rowspan="2"></th>-->
+<!--              <th class="secondary-stats bg-light" rowspan="2" colspan="2"></th>-->
+<!--            </tr>-->
+<!--            <tr class="table-secondary">-->
+<!--              <th colspan="3" class="number">Possible Points</th>-->
+<!--              <th ng-repeat="week in weeks" class="number week" ng-class="{'current-week': week.week_num == weeks.length}">-->
+<!--                {{week.week.game_count * week.week.win_weight}}-->
+<!--              </th>-->
+<!--              <th class="number">{{possiblePoints}}</th>-->
+<!--              <th>&nbsp;</th>-->
+<!--            </tr>-->
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

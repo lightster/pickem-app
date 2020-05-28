@@ -19,6 +19,12 @@
   }
 }
 
+.table {
+  td.number, th.number {
+    text-align: right;
+  }
+}
+
 .table td.score-box {
   text-align: center;
   vertical-align: middle;
@@ -30,5 +36,28 @@
 
   &.score-box--losing-team {
     color: #999999;
+  }
+}
+
+.fantasy-standings {
+  .player-name, .rank {
+    text-align: right;
+  }
+
+  .player-icon {
+    width: 70px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575px) {
+  .fantasy-standings {
+    .week, .secondary-stats {
+      display: none;
+
+      &.current-week {
+        display: table-cell;
+      }
+    }
   }
 }

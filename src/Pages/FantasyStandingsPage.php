@@ -22,12 +22,14 @@ class FantasyStandingsPage extends BasePage
             $this->getSelectedSeason(),
             $this->getSelectedWeek(),
         );
+        $week_stats = $this->getWeekStats($weeks, $fantasy_standings);
 
         $this->set('title', 'Fantasy standings');
         $this->render('fantasy_standings.phtml', [
             'weeks'          => $weeks,
             'user_standings' => $this->getUserStandings($fantasy_standings, []),
-            'week_stats'     => $this->getWeekStats($weeks, $fantasy_standings),
+            'week_stats'     => $week_stats,
+            'season_stats'   => $this->getSeasonStats($week_stats),
         ]);
     }
 
@@ -251,12 +253,31 @@ class FantasyStandingsPage extends BasePage
             );
 
             $week_stats[$week_number] = [
-                'points_played' => $details['games_played'] * $details['win_weight'],
-                'max_points'    => $user_aggr['max'],
-                'min_points'    => $user_aggr['min'],
+                'points_played'    => $details['games_played'] * $details['win_weight'],
+                'points_scheduled' => $details['games_scheduled'] * $details['win_weight'],
+                'max_points'       => $user_aggr['max'],
+                'min_points'       => $user_aggr['min'],
             ];
         }
 
         return $week_stats;
+    }
+
+    private function getSeasonStats(array $week_stats)
+    {
+        $season_stats = [
+            'points_played'    => array_sum(array_column($week_stats, 'points_played')),
+            'points_scheduled' => array_sum(array_column($week_stats, 'points_scheduled')),
+            'percent'          => 'N/A',
+        ];
+
+        if ($season_stats['points_scheduled']) {
+            $season_stats['percent'] = number_format(
+                100 * $season_stats['points_played'] / $season_stats['points_scheduled'],
+                1
+            );
+        }
+
+        return $season_stats;
     }
 }

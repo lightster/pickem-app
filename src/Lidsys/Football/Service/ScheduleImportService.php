@@ -23,27 +23,41 @@ class ScheduleImportService
     public function importThirdPartySchedule($year)
     {
         $this->createStagingTemporaryTable();
-        $this->stageRetrievedGames($this->retrieveSeasonGamesFromThirdParty($year));
+        $this->stageSeasonGamesFromThirdParty($year);
         $this->createSeasonIfItDoesNotExist($year);
         $this->createWeeksIfTheyDoNotExist($year);
         $this->importStagedGames();
     }
 
-    private function retrieveSeasonGamesFromThirdParty($year)
+    private function stageSeasonGamesFromThirdParty($year)
     {
         $games = array();
-        for ($week = 1; $week <= 18; $week++) {
-            $week_games = $this->retrieveWeekGamesFromThirdParty($year, $week);
+        for ($week = 1; $week <= 1; $week++) {
+            $week_games = $this->stageWeekGamesFromThirdParty($year, $week);
             $games = $games + $week_games;
         }
 
         return $games;
     }
 
-    private function retrieveWeekGamesFromThirdParty($year, $week)
+    private function stageWeekGamesFromThirdParty($year, $week)
     {
         $week_name = ($week >= 18 ? 'POST' : "REG{$week}");
-        $html = file_get_contents("http://www.nfl.com/schedules/{$year}/{$week_name}");
+        $opts = [
+            'Name' => 'Schedules',
+            'Module' => [
+                'seasonFromUrl'          => $year,
+                'SeasonType'             => $week_name,
+                'WeekFromUrl'            => 1,
+                'PreSeasonPlacement'     => 0,
+                'RegularSeasonPlacement' => 0,
+                'PostSeasonPlacement'    => 0,
+                'TimeZoneID'             => 'America/Los_Angeles'
+            ],
+        ];
+        $url = "https://www.nfl.com/api/lazy/load?json=" . json_encode($opts);
+
+        $html = file_get_contents($url);
         $dom = new DOMDocument();
 
         libxml_use_internal_errors(true);
@@ -52,120 +66,70 @@ class ScheduleImportService
         $dom->loadHTML($html);
 
         $xpath = new DOMXPath($dom);
-        $game_li_elements = $xpath->query('//li');
+        $game_day_elements = $xpath->query('//section[contains(@class, "nfl-o-matchup-group")]');
 
         $games = [];
-        foreach ($game_li_elements as $game_li) {
-            if ($this->isGameElementSpecial($game_li)) {
-                continue;
-            }
-
-            $known_data = $this->extractKnownDataFromGameElement($xpath, $game_li);
-
-            if (!$known_data['game_id']) {
-                throw new Exception(
-                    "Game element matched but did not contain a 'data-gameid' value."
-                );
-            } elseif (empty($known_data['time_of_day'])) {
-                continue;
-            }
-
-            $games[$known_data['game_id']] = array(
-                'away_team' => $known_data['away_team'],
-                'home_team' => $known_data['home_team'],
-                'game_time' => gmdate(
-                    'Y-m-d H:i:s',
-                    $this->determineGameTimestamp($known_data)
-                ),
-            );
+        foreach ($game_day_elements as $game_day_element) {
+            $this->stageFromGameDayElement($xpath, $game_day_element);
         }
 
         return $games;
     }
 
-    private function isGameElementSpecial(DOMElement $game_li)
+    private function stageFromGameDayElement(DOMXPath $xpath, DOMElement $game_day_element)
     {
-        $li_class_obj = $game_li->attributes->getNamedItem('class');
-        $li_class = ($li_class_obj ? $li_class_obj->nodeValue : null);
+        $date_element = $xpath->query(
+            './/h2[contains(@class, "d3-o-section-title")]',
+            $game_day_element
+        );
+        if (!$date_element->length) {
+            throw new Exception("date element 'h2.class=d3-o-section-title' missing");
+        }
 
-        return !$li_class
-            || strpos($li_class, 'next-game') !== false
-            || strpos($li_class, 'schedules-list-matchup') === false;
+        $game_elements = $xpath->query(
+            './/div[contains(@class,"nfl-c-matchup-strip--pre-game")]',
+            $game_day_element
+        );
+        if (!$game_elements->length) {
+            throw new Exception("game element 'div.class=nfl-c-matchup-strip' missing");
+        }
+
+        for ($i = 0; $i < $game_elements->length; $i++) {
+             $this->stageFromGameElement(
+                $xpath,
+                ['date' => trim($date_element->item(0)->textContent)],
+                $game_elements->item($i)
+            );
+        }
     }
 
-    private function extractKnownDataFromGameElement(DOMXPath $xpath, DOMElement $game_li)
+    private function stageFromGameElement(DOMXPath $xpath, array $week_data, DOMElement $game_element)
     {
-        $game_data = $xpath->query(
-            './/div[contains(@class,"schedules-list-content")]',
-            $game_li
+        $time_element = $xpath->query(
+            './/p[contains(@class,"nfl-c-matchup-strip__date-info")]/span',
+            $game_element
         );
-
-        $known_data = array(
-            'game_id'   => null,
-            'away_team' => null,
-            'home_team' => null,
-            'time'      => null,
-        );
-
-        if ($game_data->length && ($data = $game_data->item(0))) {
-            $attrs = $data->attributes;
-            $known_data['game_id'] = $attrs->getNamedItem('data-gameid')->nodeValue;
-            $known_data['away_team'] = $attrs->getNamedItem('data-away-abbr')->nodeValue;
-            $known_data['home_team'] = $attrs->getNamedItem('data-home-abbr')->nodeValue;
+        if ($time_element->length != 2) {
+            throw new Exception("required two time elements 'div.class=nfl-c-matchup-strip__date-info span' missing");
         }
+        $time = trim($time_element->item(0)->textContent);
+        $tz = trim($time_element->item(1)->textContent);
 
-        $time_data = $xpath->query(
-            './/span[@class="time"]',
-            $game_li
+        $team_abbr_elements = $xpath->query(
+            './/span[contains(@class,"nfl-c-matchup-strip__team-abbreviation")]',
+            $game_element
         );
-        if ($time_data->length && ($time_div = $time_data->item(0))) {
-            $known_data['time'] = $time_div->textContent;
-        }
-
-        $time_of_day = $xpath->query(
-            './/span[@class="suff"]/span',
-            $game_li
-        );
-        if ($time_of_day->length && ($time_of_day_div = $time_of_day->item(0))) {
-            $known_data['time_of_day'] = trim($time_of_day_div->textContent);
-        }
-
-        return $known_data;
-    }
-
-    private function determineGameTimestamp(array $known_data)
-    {
-        if (!preg_match('#^(20[0-9]{2})([0-9]{2})([0-9]{2})#', $known_data['game_id'], $date_parts)) {
+        if ($team_abbr_elements->length != 2) {
             throw new Exception(
-                "Game date could not be parsed from game ID: {$game_id}"
+                "required two team elements 'span.class=nfl-c-matchup-strip__team-abbreviation' missing"
             );
         }
 
-        $date = array(
-            'year'  => $date_parts[1],
-            'month' => $date_parts[2],
-            'day'   => $date_parts[3],
-        );
-
-        $raw_time = explode(':', $known_data['time']);
-        $time = array(
-            'hour'   => intval($raw_time[0]) + ('PM' === $known_data['time_of_day'] && $raw_time[0] != 12 ? 12 : 0),
-            'minute' => intval($raw_time[1]),
-        );
-
-        $timezone = date_default_timezone_get();
-        date_default_timezone_set('America/New_York');
-        $timestamp  = mktime(
-            $time['hour'],
-            $time['minute'],
-            0,
-            $date['month'],
-            $date['day'],
-            $date['year']
-        );
-        date_default_timezone_set($timezone);
-
-        return $timestamp;
+        $this->stageGame([
+            'away_team' => trim($team_abbr_elements->item(0)->textContent),
+            'home_team' => trim($team_abbr_elements->item(1)->textContent),
+            'game_time' => date('c', strtotime("{$week_data['date']} {$time} {$tz}")),
+        ]);
     }
 
     private function createStagingTemporaryTable()
@@ -181,18 +145,16 @@ class ScheduleImportService
         $this->db->query($sql);
     }
 
-    private function stageRetrievedGames(array $games)
+    private function stageGame(array $game)
     {
-        foreach ($games as $game) {
-            $this->db->insert(
-                'game_import',
-                [
-                    'away_team' => $game['away_team'],
-                    'home_team' => $game['home_team'],
-                    'game_time' => $game['game_time'],
-                ]
-            );
-        }
+        $this->db->insert(
+            'game_import',
+            [
+                'away_team' => $game['away_team'],
+                'home_team' => $game['home_team'],
+                'game_time' => $game['game_time'],
+            ]
+        );
     }
 
     private function createSeasonIfItDoesNotExist($year)

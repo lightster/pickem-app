@@ -114,7 +114,7 @@ class TeamService
             GROUP BY t.team_id
             ORDER BY win_count DESC, tie_count DESC, loss_count DESC
             SQL,
-            [$first_week['start_date'], $selected_week['end_date']]
+            [$first_week['start_at'], $selected_week['end_at']]
         );
         while ($team_standing = $query->fetchRow()) {
             $team_standings[] = $team_standing;

@@ -55,6 +55,14 @@ services:
     volumes:
       - ./bin:/app/bin
 
+  scraper:
+    build:
+      context: .
+      dockerfile: docker/scraper/Dockerfile
+    restart: "always"
+    volumes:
+      - ./scraper/index.js:/app/index.js
+
 networks:
   reverse-proxy:
     external:

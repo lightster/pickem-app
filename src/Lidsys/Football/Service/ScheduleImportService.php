@@ -32,7 +32,7 @@ class ScheduleImportService
     private function stageSeasonGamesFromThirdParty($year)
     {
         $games = array();
-        for ($week = 1; $week <= 18; $week++) {
+        for ($week = 1; $week <= 17; $week++) {
             $week_games = $this->stageWeekGamesFromThirdParty($year, $week);
             $games = $games + $week_games;
         }
@@ -42,7 +42,7 @@ class ScheduleImportService
 
     private function stageWeekGamesFromThirdParty($year, $week)
     {
-        $week_name = ($week >= 18 ? 'POST' : "REG{$week}");
+        $week_name = ($week >= 21 ? ("POST" . ($week - 17)) : "REG{$week}");
         $opts = [
             'Name' => 'Schedules',
             'Module' => [
@@ -69,14 +69,19 @@ class ScheduleImportService
         $game_day_elements = $xpath->query('//section[contains(@class, "nfl-o-matchup-group")]');
 
         $games = [];
+        $first_date = null;
         foreach ($game_day_elements as $game_day_element) {
-            $this->stageFromGameDayElement($xpath, $game_day_element);
+            $date = $this->getDateFromGameDayElement($xpath, $game_day_element, $year) ?: $first_date;
+            $this->stageFromGameDayElement($xpath, $game_day_element, $date);
+            if (!$first_date) {
+                $first_date = $date;
+            }
         }
 
         return $games;
     }
 
-    private function stageFromGameDayElement(DOMXPath $xpath, DOMElement $game_day_element)
+    private function getDateFromGameDayElement(DOMXPath $xpath, DOMElement $game_day_element, $year)
     {
         $date_element = $xpath->query(
             './/h2[contains(@class, "d3-o-section-title")]',
@@ -86,6 +91,21 @@ class ScheduleImportService
             throw new Exception("date element 'h2.class=d3-o-section-title' missing");
         }
 
+        $timestamp = strtotime("{$date_element->item(0)->textContent}");
+        if (!$timestamp) {
+            return null;
+        }
+
+        // games in January are part of the last calendar year
+        if (date('n', $timestamp) <= 6) {
+            $timestamp = strtotime("{$date_element->item(0)->textContent}, " . ($year + 1));
+        }
+
+        return date('Y-m-d', $timestamp);
+    }
+
+    private function stageFromGameDayElement(DOMXPath $xpath, DOMElement $game_day_element, $date)
+    {
         $game_elements = $xpath->query(
             './/div[contains(@class,"nfl-c-matchup-strip--pre-game")]',
             $game_day_element
@@ -97,7 +117,7 @@ class ScheduleImportService
         for ($i = 0; $i < $game_elements->length; $i++) {
              $this->stageFromGameElement(
                 $xpath,
-                ['date' => trim($date_element->item(0)->textContent)],
+                ['date' => $date],
                 $game_elements->item($i)
             );
         }

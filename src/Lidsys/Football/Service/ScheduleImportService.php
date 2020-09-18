@@ -32,7 +32,7 @@ class ScheduleImportService
     private function stageSeasonGamesFromThirdParty($year)
     {
         $games = array();
-        for ($week = 1; $week <= 1; $week++) {
+        for ($week = 1; $week <= 18; $week++) {
             $week_games = $this->stageWeekGamesFromThirdParty($year, $week);
             $games = $games + $week_games;
         }

@@ -91,7 +91,7 @@ class ScheduleImportService
             $game_day_element
         );
         if (!$game_elements->length) {
-            throw new Exception("game element 'div.class=nfl-c-matchup-strip' missing");
+            return;
         }
 
         for ($i = 0; $i < $game_elements->length; $i++) {

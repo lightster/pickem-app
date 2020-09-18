@@ -22,40 +22,26 @@ const puppeteer = require('puppeteer');
     try {
       console.log(`${req.method} ${url.pathname}${url.search} -`);
 
-      let scoreUrls = [];
+      let games = {};
       page.on('requestfinished', async request => {
         const url = request.url();
         if (!url.startsWith('https://api.nfl.com/v3/shield/?query=query')
           || !url.includes('gameDetailsByIds')
+          || request.method() !== 'GET'
         ) {
           return;
         }
 
-        scoreUrls.push(url);
+        const responseBody = await request.response();
+        const json = await responseBody.json();
+        if (json.data && json.data.viewer && json.data.viewer.gameDetailsByIds) {
+          json.data.viewer.gameDetailsByIds.forEach(game => {
+            delete game.plays;
+            games[game.id] = game;
+          });
+        }
       });
       await page.goto(`https://www.nfl.com`, {waitUntil: 'networkidle2'});
-      page.removeAllListeners();
-
-      let scoreUrl;
-      const games = {};
-      while (scoreUrl = scoreUrls.pop()) {
-        let scorePage;
-        try {
-          scorePage = await browser.newPage();
-          const response = await scorePage.goto(scoreUrl);
-          const json = await response.json();
-
-          if (json.data && json.data.viewer && json.data.viewer.gameDetailsByIds) {
-            json.data.viewer.gameDetailsByIds.forEach(game => {
-              games[game.id] = game;
-            });
-          }
-        } finally {
-          if (scorePage) {
-            scorePage.close();
-          }
-        }
-      }
 
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.write(JSON.stringify(games, null, 2));

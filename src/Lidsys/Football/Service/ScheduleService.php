@@ -227,9 +227,9 @@ class ScheduleService
         }
         $week_number = $this->getWeekNumberForWeekId($week['week_id']);
 
-        $score_url = 'https://feeds.nfl.com/feeds-rs/scores.json';
+        $score_url = 'http://scraper/scores';
         $json = file_get_contents($score_url);
-        $data = json_decode($json, true);
+        $games = json_decode($json, true);
 
         $sql = <<<'SQL'
         SELECT game_id
@@ -242,22 +242,19 @@ class ScheduleService
             AND $3::date BETWEEN weeks.start_at AND weeks.end_at
         SQL;
 
-        foreach ($data['gameScores'] as $game) {
-            $game_schedule = $game['gameSchedule'];
-            $score = $game['score'];
-
-            $time = $score['phase'];
+        foreach ($games as $game) {
+            $time = $game['phase'];
             if ($time !== 'FINAL' && $time !== 'FINAL_OVERTIME') {
                 continue;
             }
 
-            $date = DateTime::createFromFormat('m/d/Y', $game_schedule['gameDate']);
+            $date = new DateTime($game['gameTime']);
             $date_sql = $date->format('Y-m-d');
 
-            $home_score     = $score['homeTeamScore']['pointTotal'];
-            $home_abbr      = $game_schedule['homeTeam']['abbr'];
-            $away_score     = $score['visitorTeamScore']['pointTotal'];
-            $away_abbr      = $game_schedule['visitorTeam']['abbr'];
+            $home_score     = $game['homePointsTotal'];
+            $home_abbr      = $game['homeTeam']['abbreviation'];
+            $away_score     = $game['visitorPointsTotal'];
+            $away_abbr      = $game['visitorTeam']['abbreviation'];
 
             $game_id = $this->db->fetchOne($sql, [$away_abbr, $home_abbr, $date_sql]);
 

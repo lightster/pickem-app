@@ -23,6 +23,19 @@ const puppeteer = require('puppeteer');
       console.log(`${req.method} ${url.pathname}${url.search} -`);
 
       let games = {};
+      await page.setRequestInterception(true);
+      page.on('request', async request => {
+        const url = request.url();
+        if (url.includes('doubleclick')
+          || request.resourceType() === 'image'
+          || request.resourceType() === 'video'
+        ) {
+          request.abort();
+          return;
+        }
+
+        request.continue();
+      });
       page.on('requestfinished', async request => {
         const url = request.url();
         if (!url.startsWith('https://api.nfl.com/v3/shield/?query=query')

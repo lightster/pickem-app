@@ -145,10 +145,14 @@ class ScheduleImportService
             );
         }
 
+        $game_time = strtotime("{$week_data['date']} {$time} {$tz}");
+        if (!$game_time) {
+            return;
+        }
         $this->stageGame([
             'away_team' => trim($team_abbr_elements->item(0)->textContent),
             'home_team' => trim($team_abbr_elements->item(1)->textContent),
-            'game_time' => date('c', strtotime("{$week_data['date']} {$time} {$tz}")),
+            'game_time' => date('c', $game_time),
         ]);
     }
 
@@ -207,6 +211,12 @@ class ScheduleImportService
     private function createWeeksIfTheyDoNotExist($year)
     {
         $season_id = $this->getSeasonIdForYear($year);
+        $week_types = [
+            18 => 'wildcard',
+            19 => 'division',
+            20 => 'conference',
+            21 => 'final',
+        ];
 
         $weeks_by_start = [];
         $week_number = 0;
@@ -238,6 +248,7 @@ class ScheduleImportService
                     'start_at'   => $start_date,
                     'end_at'     => date('c', $end_timestamp),
                     'win_weight' => ($week_number > 17 ? pow(2, $week_number - 17) : 1),
+                    'week_type'  => $week_types[$week_number] ?? 'regular',
                 ]
             );
         }
@@ -257,7 +268,7 @@ class ScheduleImportService
 
         SELECT DISTINCT game_time::date AS date
         FROM games
-        JOIN weeks USING (week_id)
+        JOIN weeks USING (week_id, season_id)
         JOIN seasons USING (season_id)
         WHERE year = $1
 
@@ -291,18 +302,24 @@ class ScheduleImportService
             week_id,
             away_team_id,
             home_team_id,
-            game_time
+            game_time,
+            season_id,
+            week_type
         )
         SELECT
             weeks.week_id,
             away_team.team_id,
             home_team.team_id,
-            game_import.game_time
+            game_import.game_time,
+            weeks.season_id,
+            weeks.week_type
         FROM game_import
         JOIN teams AS away_team ON game_import.away_team = away_team.abbreviation
         JOIN teams AS home_team ON game_import.home_team = home_team.abbreviation
         JOIN weeks ON game_import.game_time BETWEEN weeks.start_at AND weeks.end_at
-        ON CONFLICT (week_id, away_team_id, home_team_id) DO UPDATE SET game_time = excluded.game_time
+        ON CONFLICT (season_id, week_type, away_team_id, home_team_id) DO UPDATE 
+            SET week_id = excluded.week_id, game_time = excluded.game_time
+            WHERE games.away_score IS NULL AND games.home_score IS NULL
         SQL;
         $this->db->query($sql);
     }

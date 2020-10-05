@@ -34,7 +34,7 @@ class FantasyPlayerService
                     SELECT 1
                     FROM picks
                     JOIN games USING (game_id)
-                    JOIN weeks USING (week_id)
+                    JOIN weeks USING (week_id, season_id)
                     JOIN seasons USING (season_id)
                     WHERE year = $2
                         AND users.user_id = picks.user_id

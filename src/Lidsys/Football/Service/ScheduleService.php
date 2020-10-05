@@ -90,7 +90,7 @@ class ScheduleService
             ) AS games_played
         FROM weeks
         JOIN seasons USING (season_id)
-        JOIN games USING (week_id)
+        JOIN games USING (week_id, season_id)
         WHERE year = $1
         GROUP BY weeks.week_id, seasons.season_id
         ORDER BY start_at
@@ -123,7 +123,7 @@ class ScheduleService
             COUNT(DISTINCT games.game_id) AS game_count
         FROM weeks
         JOIN seasons USING (season_id)
-        JOIN games USING (week_id)
+        JOIN games USING (week_id, season_id)
         WHERE $1::date BETWEEN start_at AND end_at
         GROUP BY weeks.week_id, seasons.season_id
         LIMIT 1

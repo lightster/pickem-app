@@ -147,7 +147,7 @@ class ScheduleImportService
 
         $game_time = strtotime("{$week_data['date']} {$time} {$tz}");
         if (!$game_time) {
-            return;
+            $game_time = strtotime("{$week_data['date']}");
         }
         $this->stageGame([
             'away_team' => trim($team_abbr_elements->item(0)->textContent),

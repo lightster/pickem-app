@@ -55,6 +55,7 @@ const puppeteer = require('puppeteer');
       res.end();
     } finally {
       await page.close();
+      console.log((await browser.pages()).length + " pages are still open");
     }
   });
   console.log('Starting server');
